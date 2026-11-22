@@ -306,7 +306,22 @@
         <div id="tabCalendar" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #00695c; font-weight: 700;">3) กำหนดปฏิทินกิจกรรม</h5>
           <p class="grey-text text-darken-2">บันทึกข้อมูลลงชีท <b>ปฏิทินกิจกรรม</b> และกระจายชื่อกิจกรรมลงแถว 46 ของชีท <b>1/1 – 6/14</b> อัตโนมัติ</p>
-
+        <!-- แถบเครื่องมือ Export / Import ปฏิทินกิจกรรม -->
+          <div style="background: #e0f2f1; padding: 14px 16px; border-radius: 10px; border: 1px solid #80cbc4; margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+            <div>
+              <strong style="color: #004d40;">📂 นำเข้า / ส่งออกปฏิทินกิจกรรม (Excel / CSV)</strong><br>
+              <label style="cursor: pointer;">
+                <input type="checkbox" id="chkReplaceActivitiesOnImport" class="filled-in" />
+                <span class="black-text" style="font-size: 0.92rem;">ล้างปฏิทินกิจกรรมเดิมทั้งหมดก่อนนำเข้าไฟล์ใหม่</span>
+              </label>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <button type="button" class="btn-small green darken-2 waves-effect" onclick="exportActivitiesExcel()">📥 Export Excel</button>
+              <input type="file" id="importActivityFileInput" accept=".xlsx,.xls,.csv,.txt" class="hidden" onchange="handleImportActivitiesFile(this)">
+              <button type="button" id="btnImportActivities" class="btn-small teal darken-4 waves-effect" onclick="document.getElementById('importActivityFileInput').click()">📤 Import Excel/CSV</button>
+            </div>
+          </div>
+          
           <div class="row" style="margin-top: 20px;">
             <div class="col s12 m5" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600; font-size: 1rem;">เลือกวันที่เดือนปี</label><input id="actDateInput" type="date" class="custom-select" style="margin-top: 5px;"></div>
             <div class="col s12 m7" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600; font-size: 1rem;">ชื่อกิจกรรม</label><input id="actNameInput" type="text" class="browser-default custom-input-box" placeholder="ระบุชื่อกิจกรรม เช่น วันหยุดชดเชย, กิจกรรมกีฬาสี..."></div>
@@ -363,6 +378,19 @@
         <!-- ส่วนที่ 5 -->
         <div id="tabAdvisors" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #1565c0; font-weight: 700;">5) กำหนดครูที่ปรึกษาประจำชั้น (ชีท Advisors)</h5>
+         <!-- แถบเครื่องมือ Export / Import รายชื่อครูที่ปรึกษา -->
+          <div style="background: #e3f2fd; padding: 14px 16px; border-radius: 10px; border: 1px solid #90caf9; margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+            <div>
+              <strong style="color: #0d47a1;">📂 นำเข้า / ส่งออกรายชื่อครูที่ปรึกษา (Excel / CSV)</strong><br>
+              <span class="grey-text text-darken-2" style="font-size: 0.9rem;">แนะนำให้กด Export เพื่อนำไฟล์ต้นแบบไปกรอก (คอลัมน์ A=ห้องเรียน, B–D=ครูคนที่ 1–3) แล้วนำกลับมา Import ครับ</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <button type="button" class="btn-small green darken-2 waves-effect" onclick="exportAdvisorsExcel()">📥 Export Excel</button>
+              <input type="file" id="importAdvisorFileInput" accept=".xlsx,.xls,.csv,.txt" class="hidden" onchange="handleImportAdvisorsFile(this)">
+              <button type="button" id="btnImportAdvisors" class="btn-small blue darken-4 waves-effect" onclick="document.getElementById('importAdvisorFileInput').click()">📤 Import Excel/CSV</button>
+            </div>
+          </div>
+          
           <div class="row" style="margin-top: 20px;">
             <div class="col s12 m6" style="margin-bottom: 20px;"><label class="black-text" style="font-weight: 600; font-size: 1rem;">เลือกห้องเรียน</label><select id="settingAdvRoom" class="custom-select" style="margin-top: 5px;" onchange="onChangeSettingAdvisorRoom()"></select></div>
           </div>
@@ -2402,6 +2430,321 @@
           msgDiv.className = "center-align red-text"; msgDiv.innerText = "❌ " + res.message;
         }
       } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text"; msgDiv.innerText = "❌ " + err.message; }
+    }
+    // =========================================================================
+    // 📂 ระบบ Export & Import: ปฏิทินกิจกรรม (แท็บ 3) และ รายชื่อครูที่ปรึกษา (แท็บ 5)
+    // =========================================================================
+
+    // ชื่อไฟล์เริ่มต้นสำหรับ Export (ปรับแต่งได้ตามต้องการ)
+    var EXPORT_FILE_CONFIG = {
+      activityPrefix: "ปฏิทินกิจกรรม_",
+      advisorPrefix: "รายชื่อครูที่ปรึกษา_"
+    };
+
+    // ฟังก์ชันช่วยแปลงวันที่หลากหลายรูปแบบ (Excel Serial, พ.ศ., ค.ศ.) -> "YYYY-MM-DD" (ค.ศ.)
+    function parseAnyExcelDateToIso(rawVal) {
+      if (rawVal === null || rawVal === undefined || rawVal === "") return "";
+
+      // กรณีเป็นตัวเลข Serial Date ของ Excel (ใช้ตัวแปลงของ SheetJS เพื่อไม่ให้เพี้ยน Timezone)
+      if (typeof rawVal === "number" && typeof XLSX !== "undefined" && XLSX.SSF && XLSX.SSF.parse_date_code) {
+        var parsed = XLSX.SSF.parse_date_code(rawVal);
+        if (parsed && parsed.y && parsed.m && parsed.d) {
+          var py = parsed.y > 2400 ? parsed.y - 543 : parsed.y;
+          return py + "-" + ("0" + parsed.m).slice(-2) + "-" + ("0" + parsed.d).slice(-2);
+        }
+      }
+
+      var str = String(rawVal).trim();
+
+      // กรณีรูปแบบ YYYY-MM-DD หรือ YYYY/MM/DD
+      var isoMatch = str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+      if (isoMatch) {
+        var iy = parseInt(isoMatch[1], 10);
+        if (iy > 2400) iy -= 543;
+        return iy + "-" + ("0" + parseInt(isoMatch[2], 10)).slice(-2) + "-" + ("0" + parseInt(isoMatch[3], 10)).slice(-2);
+      }
+
+      // กรณีรูปแบบ DD/MM/YYYY หรือ DD-MM-YYYY (รองรับทั้ง พ.ศ. และ ค.ศ.)
+      var dmyMatch = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+      if (dmyMatch) {
+        var dy = parseInt(dmyMatch[3], 10);
+        if (dy > 2400) dy -= 543;
+        var dm = parseInt(dmyMatch[2], 10);
+        var dd = parseInt(dmyMatch[1], 10);
+        if (dm >= 1 && dm <= 12 && dd >= 1 && dd <= 31) {
+          return dy + "-" + ("0" + dm).slice(-2) + "-" + ("0" + dd).slice(-2);
+        }
+      }
+
+      // กรณีรูปแบบวันที่ภาษาไทย เช่น "15 พ.ค. 2569" หรือ "15 พฤษภาคม 2569"
+      var thaiMonthsShort = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+      var thaiMonthsFull = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+      var thMatch = str.match(/^(\d{1,2})\s+([ก-๙\.]+)\s+(\d{4})/);
+      if (thMatch) {
+        var td = parseInt(thMatch[1], 10);
+        var tmText = thMatch[2].trim();
+        var ty = parseInt(thMatch[3], 10);
+        if (ty > 2400) ty -= 543;
+        var tmIdx = thaiMonthsShort.indexOf(tmText);
+        if (tmIdx === -1) tmIdx = thaiMonthsFull.indexOf(tmText);
+        if (tmIdx !== -1) {
+          return ty + "-" + ("0" + (tmIdx + 1)).slice(-2) + "-" + ("0" + td).slice(-2);
+        }
+      }
+
+      return "";
+    }
+
+    // ฟังก์ชันช่วยอ่านไฟล์ Excel (.xlsx, .xls) หรือ CSV เป็นอาร์เรย์ 2 มิติ
+    function readUploadedSheetFile(file, callback) {
+      var fileName = file.name.toLowerCase();
+      if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            var wb = XLSX.read(new Uint8Array(e.target.result), { type: "array" });
+            var ws = wb.Sheets[wb.SheetNames[0]];
+            var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", raw: true });
+            callback(null, rows);
+          } catch (err) {
+            callback(err, null);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      } else {
+        var textReader = new FileReader();
+        textReader.onload = function(e) {
+          try {
+            var lines = e.target.result.split(/\r?\n/);
+            var rows = lines.map(function(line) {
+              var sep = line.indexOf("\t") !== -1 ? "\t" : ",";
+              return line.split(sep).map(function(c) { return c.replace(/^["']|["']$/g, "").trim(); });
+            });
+            callback(null, rows);
+          } catch (err) {
+            callback(err, null);
+          }
+        };
+        textReader.readAsText(file, "UTF-8");
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 📌 3) Export & Import ปฏิทินกิจกรรม
+    // -------------------------------------------------------------------------
+    function exportActivitiesExcel() {
+      if (typeof XLSX === "undefined") {
+        M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
+        return;
+      }
+
+      var rows = [["วันเดือนปี (DD/MM/YYYY)", "ชื่อกิจกรรม"]];
+      if (settingsDB.activities && settingsDB.activities.length > 0) {
+        settingsDB.activities.forEach(function(item) {
+          rows.push([item.date || "", item.name || ""]);
+        });
+      } else {
+        // หากยังไม่มีข้อมูล ให้ใส่แถวตัวอย่างเพื่อใช้เป็นไฟล์ต้นแบบ
+        var d = new Date();
+        var sampleDate = ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + (d.getFullYear() + 543);
+        rows.push([sampleDate, "ตัวอย่างกิจกรรม (สามารถลบแถวนี้แล้วกรอกใหม่ได้)"]);
+      }
+
+      var ws = XLSX.utils.aoa_to_sheet(rows);
+      ws["!cols"] = [{ wch: 24 }, { wch: 45 }];
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "ปฏิทินกิจกรรม");
+      XLSX.writeFile(wb, EXPORT_FILE_CONFIG.activityPrefix + getLocalTodayIso() + ".xlsx");
+      M.toast({ html: "✅ ดาวน์โหลดไฟล์ Excel ปฏิทินกิจกรรมสำเร็จ!", classes: "green darken-2 rounded" });
+    }
+
+    function handleImportActivitiesFile(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      var file = inputEl.files[0];
+      var msgDiv = document.getElementById("actStatusMsg");
+      var btn = document.getElementById("btnImportActivities");
+      var replaceAll = document.getElementById("chkReplaceActivitiesOnImport") ? document.getElementById("chkReplaceActivitiesOnImport").checked : false;
+
+      if (replaceAll && !confirm("⚠️ คุณเลือก 'ล้างปฏิทินกิจกรรมเดิมทั้งหมดก่อนนำเข้า'\nยืนยันดำเนินการใช่หรือไม่?")) {
+        inputEl.value = "";
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "📂 กำลังอ่านไฟล์ปฏิทินกิจกรรม...";
+
+      readUploadedSheetFile(file, async function(err, rows) {
+        inputEl.value = "";
+        if (err || !rows) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ อ่านไฟล์ไม่สำเร็จ: " + err;
+          return;
+        }
+
+        var itemsToSend = [];
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i];
+          if (!r || r.length < 2) continue;
+          var col0 = r[0];
+          var col1 = r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "";
+
+          // ข้ามแถวหัวตาราง
+          if (typeof col0 === "string" && (col0.indexOf("วัน") !== -1 || col0.toLowerCase().indexOf("date") !== -1)) continue;
+          if (!col1) continue;
+
+          var dateIso = parseAnyExcelDateToIso(col0);
+          if (dateIso) {
+            itemsToSend.push({ dateIso: dateIso, name: col1 });
+          }
+        }
+
+        if (itemsToSend.length === 0) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "⚠️ ไม่พบข้อมูลวันที่และชื่อกิจกรรมที่ถูกต้องในไฟล์ (คอลัมน์ A=วันเดือนปี, คอลัมน์ B=ชื่อกิจกรรม)";
+          return;
+        }
+
+        msgDiv.innerText = "⌛ กำลังนำเข้าปฏิทินกิจกรรม " + itemsToSend.length + " รายการ และอัปเดตแถวที่ 46 ทุกห้องเรียน...";
+        try {
+          var res = await callGasApi({
+            action: "importActivitiesBatch",
+            adminPassword: currentAdminPassword,
+            items: itemsToSend,
+            replaceAll: replaceAll
+          });
+          btn.disabled = false;
+          if (res && res.success) {
+            msgDiv.className = "center-align green-text text-darken-2";
+            msgDiv.innerText = "✅ " + res.message;
+            if (res.activities) {
+              settingsDB.activities = res.activities;
+              renderActivityTable();
+            }
+            if (document.getElementById("chkReplaceActivitiesOnImport")) {
+              document.getElementById("chkReplaceActivitiesOnImport").checked = false;
+            }
+          } else {
+            msgDiv.className = "center-align red-text text-darken-2";
+            msgDiv.innerText = "❌ " + ((res && res.message) || "นำเข้าไม่สำเร็จ");
+          }
+        } catch (apiErr) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้: " + apiErr.message;
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 👩‍🏫 5) Export & Import รายชื่อครูที่ปรึกษา
+    // -------------------------------------------------------------------------
+    function exportAdvisorsExcel() {
+      if (typeof XLSX === "undefined") {
+        M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
+        return;
+      }
+
+      var rows = [["ห้องเรียน", "ครูที่ปรึกษาคนที่ 1", "ครูที่ปรึกษาคนที่ 2", "ครูที่ปรึกษาคนที่ 3"]];
+      var rooms = (settingsDB.classrooms && settingsDB.classrooms.length > 0) ? settingsDB.classrooms : [];
+
+      if (rooms.length === 0) {
+        for (var g = 1; g <= 6; g++) {
+          for (var r = 1; r <= 14; r++) rooms.push(g + "/" + r);
+        }
+      }
+
+      rooms.forEach(function(roomKey) {
+        var adv = (settingsDB.advisorMap && settingsDB.advisorMap[roomKey]) ? settingsDB.advisorMap[roomKey] : ["", "", ""];
+        // เติม "ม." นำหน้าชื่อห้องเพื่อป้องกันโปรแกรม Excel แปลงเลขห้อง (เช่น 1/1) เป็นวันที่
+        var safeRoomLabel = roomKey.indexOf("ม.") === 0 ? roomKey : ("ม." + roomKey);
+        rows.push([safeRoomLabel, adv[0] || "", adv[1] || "", adv[2] || ""]);
+      });
+
+      var ws = XLSX.utils.aoa_to_sheet(rows);
+      ws["!cols"] = [{ wch: 14 }, { wch: 28 }, { wch: 28 }, { wch: 28 }];
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Advisors");
+      XLSX.writeFile(wb, EXPORT_FILE_CONFIG.advisorPrefix + getLocalTodayIso() + ".xlsx");
+      M.toast({ html: "✅ ดาวน์โหลดไฟล์ Excel รายชื่อครูที่ปรึกษาสำเร็จ!", classes: "green darken-2 rounded" });
+    }
+
+    function handleImportAdvisorsFile(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      var file = inputEl.files[0];
+      var msgDiv = document.getElementById("advStatusMsg");
+      var btn = document.getElementById("btnImportAdvisors");
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "📂 กำลังอ่านไฟล์รายชื่อครูที่ปรึกษา...";
+
+      readUploadedSheetFile(file, async function(err, rows) {
+        inputEl.value = "";
+        if (err || !rows) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ อ่านไฟล์ไม่สำเร็จ: " + err;
+          return;
+        }
+
+        var itemsToSend = [];
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i];
+          if (!r || r.length === 0) continue;
+          var rawRoom = r[0] !== undefined && r[0] !== null ? String(r[0]).trim() : "";
+
+          // ข้ามแถวว่างและแถวหัวตาราง
+          if (!rawRoom || rawRoom.indexOf("ห้อง") !== -1 || rawRoom.toLowerCase().indexOf("room") !== -1) continue;
+          if (rawRoom.indexOf("/") === -1) continue;
+
+          itemsToSend.push({
+            room: rawRoom,
+            t1: r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "",
+            t2: r[2] !== undefined && r[2] !== null ? String(r[2]).trim() : "",
+            t3: r[3] !== undefined && r[3] !== null ? String(r[3]).trim() : ""
+          });
+        }
+
+        if (itemsToSend.length === 0) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "⚠️ ไม่พบข้อมูลห้องเรียนที่ถูกต้องในไฟล์ (คอลัมน์ A ต้องเป็นชื่อห้อง เช่น ม.1/1 หรือ 1/1)";
+          return;
+        }
+
+        msgDiv.innerText = "⌛ กำลังนำเข้าข้อมูลครูที่ปรึกษา " + itemsToSend.length + " ห้องเรียนลงชีท Advisors...";
+        try {
+          var res = await callGasApi({
+            action: "importAdvisorsBatch",
+            adminPassword: currentAdminPassword,
+            items: itemsToSend
+          });
+          btn.disabled = false;
+          if (res && res.success) {
+            if (res.initData && res.initData.success) {
+              var currentRoom = document.getElementById("settingAdvRoom").value;
+              settingsDB = res.initData;
+              populateAdvisorSettingsUI();
+              if (currentRoom && settingsDB.classrooms.indexOf(currentRoom) !== -1) {
+                document.getElementById("settingAdvRoom").value = currentRoom;
+                onChangeSettingAdvisorRoom();
+              }
+            }
+            msgDiv.className = "center-align green-text text-darken-2";
+            msgDiv.innerText = "✅ " + res.message;
+          } else {
+            msgDiv.className = "center-align red-text text-darken-2";
+            msgDiv.innerText = "❌ " + ((res && res.message) || "นำเข้าไม่สำเร็จ");
+          }
+        } catch (apiErr) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้: " + apiErr.message;
+        }
+      });
     }
   </script>
 </body>
