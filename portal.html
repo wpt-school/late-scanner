@@ -60,14 +60,22 @@
     .custom-textarea { width: 100%; min-height: 140px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; background-color: #fff; font-family: 'Sarabun', sans-serif; font-size: 0.95rem; box-sizing: border-box; margin-top: 5px; }
 
     @media only screen and (min-width: 601px) and (max-width: 992px) {
-      .container { width: 92%; margin-top: 25px; } .card { padding: 30px 20px; } h4 { font-size: 1.6rem !important; }
+      .container { width: 92%; margin-top: 25px; }
+      .card { padding: 30px 20px; }
+      h4 { font-size: 1.6rem !important; }
     }
     @media only screen and (max-width: 600px) {
-      .container { width: 100%; margin-top: 10px; margin-bottom: 10px; padding: 0 8px; } .card { padding: 25px 15px; border-radius: 12px; }
-      h4 { font-size: 1.35rem !important; } h5 { font-size: 1.2rem !important; } .btn-large { width: 100% !important; font-size: 1rem; height: 50px; line-height: 50px; }
-      .chart-col-left { padding-right: 0 !important; border-right: none !important; margin-bottom: 40px; } .chart-col-right { padding-left: 0 !important; }
-      #scanInput { font-size: 1.2rem !important; } .daily-box h1, .weekly-box h1, .report-box h1 { font-size: 3rem !important; margin: 5px 0 !important; }
-      .report-box { padding: 20px 15px; text-align: center; justify-content: center; } .report-box .col { width: 100% !important; margin-bottom: 15px; }
+      .container { width: 100%; margin-top: 10px; margin-bottom: 10px; padding: 0 8px; }
+      .card { padding: 25px 15px; border-radius: 12px; }
+      h4 { font-size: 1.35rem !important; }
+      h5 { font-size: 1.2rem !important; }
+      .btn-large { width: 100% !important; font-size: 1rem; height: 50px; line-height: 50px; }
+      .chart-col-left { padding-right: 0 !important; border-right: none !important; margin-bottom: 40px; }
+      .chart-col-right { padding-left: 0 !important; }
+      #scanInput { font-size: 1.2rem !important; }
+      .daily-box h1, .weekly-box h1, .report-box h1 { font-size: 3rem !important; margin: 5px 0 !important; }
+      .report-box { padding: 20px 15px; text-align: center; justify-content: center; }
+      .report-box .col { width: 100% !important; margin-bottom: 15px; }
       .search-input { max-width: 100%; margin-top: 15px; }
       .settings-tab-btn { width: 100%; text-align: left; }
     }
@@ -90,13 +98,19 @@
   <main>
     <div class="container">
 
-      <!-- หน้าแรก -->
+      <!-- =====================================================================
+           1. หน้าแรก (เมนูผู้บริหาร/ฝ่ายปกครอง & ล็อกอินเจ้าหน้าที่)
+      ===================================================================== -->
       <div id="loginSection" class="card z-depth-0">
         <div class="center-align" style="margin-bottom: 30px;">
           <img src="https://i.ibb.co/FqhdPDpB/logo.png" alt="ตราโรงเรียน" style="width: 140px; height: auto; margin-bottom: 20px;">
-          <h4 style="color: #1565c0; font-weight: 700; margin-top: 0;">ระบบเช็คชื่อและรายงานนักเรียนมาสาย<br><span style="font-size: 1.2rem; color: #555; font-weight: 500;">(Attendance Management System)</span></h4>
+          <h4 style="color: #1565c0; font-weight: 700; margin-top: 0;">
+            ระบบเช็คชื่อและรายงานนักเรียนมาสาย<br>
+            <span style="font-size: 1.2rem; color: #555; font-weight: 500;">(Attendance Management System)</span>
+          </h4>
           <div id="clockLogin" style="font-size: 1.05rem; color: #757575; margin-top: 10px; font-weight: 500;">กำลังโหลดเวลา...</div>
         </div>
+
         <div class="row" style="margin-bottom: 0;">
           <div class="col s12 m6" style="margin-bottom: 20px;">
             <div class="center-align" style="background-color: #f8f9fa; padding: 25px 15px; border-radius: 12px; height: 100%;">
@@ -105,31 +119,46 @@
               <button type="button" class="btn waves-effect waves-light amber darken-4 btn-large" onclick="showAdvanced()" style="width: 100%; max-width: 350px; margin-bottom: 15px;">📂 สรุปสถิติตามระดับชั้น</button><br>
               <button type="button" class="btn waves-effect waves-light teal darken-2 btn-large" onclick="openClassroomModal()" style="width: 100%; max-width: 350px; margin-bottom: 15px;">📋 ดูแบบบันทึกการมาสายรายห้อง</button><br>
               <button type="button" class="btn waves-effect waves-light deep-purple darken-3 btn-large" onclick="showAdminAuth()" style="width: 100%; max-width: 350px; margin-bottom: 15px;">⚙️ ตั้งค่าระบบ</button><br>
-              <!-- ลิงก์สลับไปหน้าสแกนกล้องมือถือ (index.html ใน GitHub เดียวกัน) -->
               <a href="./index.html" class="btn waves-effect waves-light blue-grey darken-2 btn-large" style="width: 100%; max-width: 350px;">📱 โหมดสแกนสำหรับโทรศัพท์มือถือ</a>
             </div>
           </div>
+
           <div class="col s12 m6">
             <div class="center-align" style="padding: 10px 20px;">
               <p class="grey-text text-darken-2" style="font-weight: 600; font-size: 1.1rem; margin-top: 10px;">เจ้าหน้าที่สแกนบัตร (กรุณาล็อกอิน)</p>
-              <div class="input-field col s12" style="margin-top: 25px;"><input id="username" type="text"><label class="active" for="username">ชื่อผู้ใช้งาน (Username)</label></div>
-              <div class="input-field col s12" style="margin-top: 15px;"><input id="password" type="password" onkeypress="if(event.key==='Enter') doLogin()"><label class="active" for="password">รหัสผ่าน (Password)</label></div>
-              <div class="col s12 center-align" style="margin-top: 25px;"><button type="button" id="btnDoLogin" class="btn waves-effect waves-light green darken-2 btn-large" onclick="doLogin()" style="width: 100%; max-width: 350px;">เข้าสู่ระบบ</button></div>
+              <div class="input-field col s12" style="margin-top: 25px;">
+                <input id="username" type="text">
+                <label class="active" for="username">ชื่อผู้ใช้งาน (Username)</label>
+              </div>
+              <div class="input-field col s12" style="margin-top: 15px;">
+                <input id="password" type="password" onkeypress="if(event.key==='Enter') doLogin()">
+                <label class="active" for="password">รหัสผ่าน (Password)</label>
+              </div>
+              <div class="col s12 center-align" style="margin-top: 25px;">
+                <button type="button" id="btnDoLogin" class="btn waves-effect waves-light green darken-2 btn-large" onclick="doLogin()" style="width: 100%; max-width: 350px;">เข้าสู่ระบบ</button>
+              </div>
               <div id="loginMsg" class="col s12 red-text center-align" style="margin-top: 15px; font-weight: 500;"></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- หน้าสแกนเช็คชื่อมาสาย (คอมพิวเตอร์ + Batch Sync + ส่งข้อมูลทันที) -->
+      <!-- =====================================================================
+           2. หน้าสแกนเช็คชื่อมาสาย (คอมพิวเตอร์ + Batch Sync + ส่งข้อมูลทันที)
+      ===================================================================== -->
       <div id="scanSection" class="card z-depth-0 hidden">
         <div class="row" style="border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
           <div class="col s8 m9">
             <h5 style="margin: 0; color: #d32f2f; font-weight: 700;">🔴 ระบบเช็คชื่อนักเรียนมาสาย</h5>
             <div id="clockScan" style="font-size: 1rem; color: #757575; margin-top: 5px; font-weight: 500;"></div>
-            <div style="margin-top: 5px;"><span class="grey-text" style="font-size: 1.1rem;">ผู้บันทึก: </span><strong id="activeStaff" class="blue-text text-darken-2" style="font-size: 1.1rem;"></strong></div>
+            <div style="margin-top: 5px;">
+              <span class="grey-text" style="font-size: 1.1rem;">ผู้บันทึก: </span>
+              <strong id="activeStaff" class="blue-text text-darken-2" style="font-size: 1.1rem;"></strong>
+            </div>
           </div>
-          <div class="col s4 m3 right-align"><button type="button" class="btn red darken-1 btn-small" onclick="doLogout()">ออกจากระบบ</button></div>
+          <div class="col s4 m3 right-align">
+            <button type="button" class="btn red darken-1 btn-small" onclick="doLogout()">ออกจากระบบ</button>
+          </div>
         </div>
 
         <div class="center-align" style="margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap;">
@@ -138,7 +167,10 @@
         </div>
 
         <div class="center-box" style="margin-top: 25px; margin-bottom: 10px;">
-          <div class="input-field col s12"><input id="scanInput" type="text" autocomplete="off" placeholder="สแกน QR Code หรือพิมพ์รหัสที่นี่..." style="text-align: center; border-bottom: 2px solid #9e9e9e;"><label class="active" for="scanInput" style="font-size: 1.1rem;">ช่องสแกนบัตร / กรอกเลขประจำตัว</label></div>
+          <div class="input-field col s12">
+            <input id="scanInput" type="text" autocomplete="off" placeholder="สแกน QR Code หรือพิมพ์รหัสที่นี่..." style="text-align: center; border-bottom: 2px solid #9e9e9e;">
+            <label class="active" for="scanInput" style="font-size: 1.1rem;">ช่องสแกนบัตร / กรอกเลขประจำตัว</label>
+          </div>
         </div>
 
         <div id="resultBox" class="hidden center-box"></div>
@@ -147,47 +179,96 @@
           <div class="col s12">
             <h6 style="font-weight: 700; color: #555; padding-bottom: 8px; border-bottom: 2px solid #e0e0e0;">⏱️ ประวัติการสแกนล่าสุด (5 รายการ)</h6>
             <table class="striped centered" style="margin-top: 15px;">
-              <thead><tr><th style="width: 20%;">เวลา</th><th style="width: 20%;">รหัส</th><th style="width: 45%; text-align: left;">ชื่อ-สกุล</th><th style="width: 15%;">ห้อง</th></tr></thead>
-              <tbody id="recentScansBody"><tr><td colspan="4" class="center-align grey-text" style="padding: 20px;">ยังไม่มีข้อมูลการสแกนในรอบการเข้าสู่ระบบนี้</td></tr></tbody>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">เวลา</th>
+                  <th style="width: 20%;">รหัส</th>
+                  <th style="width: 45%; text-align: left;">ชื่อ-สกุล</th>
+                  <th style="width: 15%;">ห้อง</th>
+                </tr>
+              </thead>
+              <tbody id="recentScansBody">
+                <tr><td colspan="4" class="center-align grey-text" style="padding: 20px;">ยังไม่มีข้อมูลการสแกนในรอบการเข้าสู่ระบบนี้</td></tr>
+              </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- หน้า Dashboard -->
+      <!-- =====================================================================
+           3. หน้า Dashboard (สถิติรวม รายวัน / รายสัปดาห์ / รายเดือน)
+      ===================================================================== -->
       <div id="dashboardSection" class="card z-depth-0 hidden">
         <div class="row" style="border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
-          <div class="col s12 m8"><h4 style="margin: 0; color: #1565c0; font-weight: 700;">📊 แบบรายงานสถิตินักเรียนมาสาย (ทั้งโรงเรียน)<br><span style="font-size: 1.1rem; color: #555; font-weight: 500;">(Attendance Dashboard)</span></h4></div>
+          <div class="col s12 m8">
+            <h4 style="margin: 0; color: #1565c0; font-weight: 700;">
+              📊 แบบรายงานสถิตินักเรียนมาสาย (ทั้งโรงเรียน)<br>
+              <span style="font-size: 1.1rem; color: #555; font-weight: 500;">(Attendance Dashboard)</span>
+            </h4>
+          </div>
           <div class="col s12 m4 right-align" style="margin-top: 8px;">
             <button type="button" class="btn blue darken-1 btn-small" onclick="refreshAllStatsData('dashboard')" style="margin-right: 6px;">🔄 อัปเดตข้อมูล</button>
             <button type="button" class="btn grey darken-1 btn-small" onclick="goHome()">⬅️ หน้าหลัก</button>
           </div>
         </div>
+
         <div id="dashLoadingMsg" class="center-align blue-text hidden" style="font-weight: 600; margin-top: 10px;">⏳ กำลังโหลดข้อมูลล่าสุดจาก Google Sheets...</div>
+
         <div class="row center-align" style="margin-top: 20px; margin-bottom: 30px;">
-          <div class="col s12"><label class="grey-text text-darken-1" style="font-size: 1.1rem; font-weight: 500;">เลือกวันที่/เดือน/ปี ที่ต้องการ</label><input type="date" id="datePicker" class="custom-select" style="max-width: 250px; margin: 10px auto 0 auto; text-align: center;" onchange="loadDashboardData()"></div>
+          <div class="col s12">
+            <label class="grey-text text-darken-1" style="font-size: 1.1rem; font-weight: 500;">เลือกวันที่/เดือน/ปี ที่ต้องการ</label>
+            <input type="date" id="datePicker" class="custom-select" style="max-width: 250px; margin: 10px auto 0 auto; text-align: center;" onchange="loadDashboardData()">
+          </div>
         </div>
+
         <div class="row" style="margin-bottom: 0;">
           <div class="col s12 l6 chart-col-left">
-            <div class="center-align daily-box"><p class="blue-text text-darken-2" style="margin: 0; font-size: 1.2rem; font-weight: 600;">นักเรียนที่มาสาย <span style="text-decoration: underline;">ประจำวัน</span> <br><span id="displayDailyDate" style="font-size: 1.05rem;">...</span></p><h1 class="blue-text text-darken-4" style="margin: 15px 0; font-weight: 700;"><span id="totalDailyCount">...</span> <span style="font-size: 1.5rem; font-weight: 600; color: #1565c0;">ราย</span></h1></div>
+            <div class="center-align daily-box">
+              <p class="blue-text text-darken-2" style="margin: 0; font-size: 1.2rem; font-weight: 600;">
+                นักเรียนที่มาสาย <span style="text-decoration: underline;">ประจำวัน</span><br>
+                <span id="displayDailyDate" style="font-size: 1.05rem;">...</span>
+              </p>
+              <h1 class="blue-text text-darken-4" style="margin: 15px 0; font-weight: 700;">
+                <span id="totalDailyCount">...</span> <span style="font-size: 1.5rem; font-weight: 600; color: #1565c0;">ราย</span>
+              </h1>
+            </div>
             <div><canvas id="dailyChart" height="250"></canvas></div>
           </div>
+
           <div class="col s12 l6 chart-col-right">
-            <div class="center-align weekly-box"><p class="orange-text text-darken-3" style="margin: 0; font-size: 1.2rem; font-weight: 600;">นักเรียนที่มาสาย <span style="text-decoration: underline;">ประจำสัปดาห์</span> <br><span id="displayWeeklyDate" style="font-size: 1.05rem;">...</span></p><h1 class="orange-text text-darken-4" style="margin: 15px 0; font-weight: 700;"><span id="totalWeeklyCount">...</span> <span style="font-size: 1.5rem; font-weight: 600; color: #ef6c00;">ราย</span></h1></div>
+            <div class="center-align weekly-box">
+              <p class="orange-text text-darken-3" style="margin: 0; font-size: 1.2rem; font-weight: 600;">
+                นักเรียนที่มาสาย <span style="text-decoration: underline;">ประจำสัปดาห์</span><br>
+                <span id="displayWeeklyDate" style="font-size: 1.05rem;">...</span>
+              </p>
+              <h1 class="orange-text text-darken-4" style="margin: 15px 0; font-weight: 700;">
+                <span id="totalWeeklyCount">...</span> <span style="font-size: 1.5rem; font-weight: 600; color: #ef6c00;">ราย</span>
+              </h1>
+            </div>
             <div><canvas id="weeklyChart" height="250"></canvas></div>
           </div>
         </div>
+
         <div class="row" style="margin-top: 40px; padding-top: 30px; border-top: 2px dashed #ddd;">
           <div class="col s12">
             <div class="row report-box">
-              <div class="col s12 m8" style="text-align: left;"><p class="purple-text text-darken-3" style="margin: 0; font-size: 1.2rem; font-weight: 600;">นักเรียนที่มาสาย <span style="text-decoration: underline;">ประจำเดือน</span> <span id="displayMonthlyDate">...</span></p><h1 class="purple-text text-darken-4" style="margin: 10px 0; font-weight: 700;"><span id="totalMonthlyCount">...</span> <span style="font-size: 1.5rem; font-weight: 600; color: #6a1b9a;">ราย</span></h1></div>
+              <div class="col s12 m8" style="text-align: left;">
+                <p class="purple-text text-darken-3" style="margin: 0; font-size: 1.2rem; font-weight: 600;">
+                  นักเรียนที่มาสาย <span style="text-decoration: underline;">ประจำเดือน</span> <span id="displayMonthlyDate">...</span>
+                </p>
+                <h1 class="purple-text text-darken-4" style="margin: 10px 0; font-weight: 700;">
+                  <span id="totalMonthlyCount">...</span> <span style="font-size: 1.5rem; font-weight: 600; color: #6a1b9a;">ราย</span>
+                </h1>
+              </div>
             </div>
             <div style="margin-top: 20px;"><canvas id="monthlyChart" height="120"></canvas></div>
           </div>
         </div>
       </div>
 
-      <!-- หน้าสรุปสถิติตามระดับชั้น -->
+      <!-- =====================================================================
+           4. หน้าสรุปสถิติตามระดับชั้น & ดาวน์โหลด Excel
+      ===================================================================== -->
       <div id="advancedSection" class="card z-depth-0 hidden">
         <div class="row" style="border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
           <div class="col s12 m8"><h4 style="margin: 0; color: #ff8f00; font-weight: 700;">📂 แบบรายงานสถิตินักเรียนมาสาย (ระดับชั้น)</h4></div>
@@ -196,21 +277,69 @@
             <button type="button" class="btn grey darken-1 btn-small" onclick="goHome()">⬅️ หน้าหลัก</button>
           </div>
         </div>
+
         <div id="advLoadingMsg" class="center-align blue-text hidden" style="font-weight: 600; margin-top: 10px;">⏳ กำลังโหลดข้อมูลล่าสุดจาก Google Sheets...</div>
+
         <div class="row" style="background-color: #f5f5f5; padding: 20px; border-radius: 12px; margin-top: 20px;">
-          <div class="col s12 m4" style="margin-bottom: 15px;"><label class="grey-text text-darken-2" style="font-size: 1rem;">เลือกวันที่/เดือน/ปี ที่ต้องการ</label><input type="date" id="advDatePicker" class="custom-select" onchange="loadAdvancedData()"></div>
-          <div class="col s6 m4"><label class="grey-text text-darken-2" style="font-size: 1rem;">ระดับชั้น</label><select id="advGrade" class="custom-select" onchange="updateRoomDropdown()"><option value="ทั้งหมด" selected>รวมทุกระดับชั้น</option><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select></div>
-          <div class="col s6 m4"><label class="grey-text text-darken-2" style="font-size: 1rem;">ห้องเรียน</label><select id="advRoom" class="custom-select" onchange="loadAdvancedData()"><option value="ทั้งหมด">รวมทุกห้อง</option></select></div>
+          <div class="col s12 m4" style="margin-bottom: 15px;">
+            <label class="grey-text text-darken-2" style="font-size: 1rem;">เลือกวันที่/เดือน/ปี ที่ต้องการ</label>
+            <input type="date" id="advDatePicker" class="custom-select" onchange="loadAdvancedData()">
+          </div>
+          <div class="col s6 m4">
+            <label class="grey-text text-darken-2" style="font-size: 1rem;">ระดับชั้น</label>
+            <select id="advGrade" class="custom-select" onchange="updateRoomDropdown()">
+              <option value="ทั้งหมด" selected>รวมทุกระดับชั้น</option>
+              <option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option>
+              <option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option>
+            </select>
+          </div>
+          <div class="col s6 m4">
+            <label class="grey-text text-darken-2" style="font-size: 1rem;">ห้องเรียน</label>
+            <select id="advRoom" class="custom-select" onchange="loadAdvancedData()">
+              <option value="ทั้งหมด">รวมทุกห้อง</option>
+            </select>
+          </div>
         </div>
+
         <div class="row center-align">
-          <div class="col s12"><div style="padding: 20px 30px; border-radius: 12px; background-color: #e3f2fd; max-width: 400px; margin: 0 auto 30px auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);"><p class="blue-text text-darken-2" style="margin: 0; font-weight: 600; font-size: 1.1rem;">จำนวนนักเรียนที่มาสาย ในวันที่ <span id="advDisplayDate">...</span></p><h2 class="blue-text text-darken-4" style="margin: 10px 0 0 0; font-weight: 700;"><span id="advDailyCount">...</span> <span style="font-size: 1.2rem; font-weight: 600;">ราย</span></h2></div></div>
+          <div class="col s12">
+            <div style="padding: 20px 30px; border-radius: 12px; background-color: #e3f2fd; max-width: 400px; margin: 0 auto 30px auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+              <p class="blue-text text-darken-2" style="margin: 0; font-weight: 600; font-size: 1.1rem;">จำนวนนักเรียนที่มาสาย ในวันที่ <span id="advDisplayDate">...</span></p>
+              <h2 class="blue-text text-darken-4" style="margin: 10px 0 0 0; font-weight: 700;"><span id="advDailyCount">...</span> <span style="font-size: 1.2rem; font-weight: 600;">ราย</span></h2>
+            </div>
+          </div>
         </div>
 
         <div class="row" style="margin-bottom: 10px; display: flex; align-items: flex-end; flex-wrap: wrap;">
-          <div class="col s12 m3" style="margin-bottom: 15px;"><label class="black-text" style="font-size: 0.95rem; font-weight: 600;">การกลั่นกรองข้อมูล (สถานะ)</label><select id="advFilterStatus" class="custom-select" onchange="applySortAndPagination()"><option value="all" selected>แสดงนักเรียนทั้งหมด</option><option value="late">เฉพาะนักเรียนที่มาสาย</option><option value="ontime">เฉพาะนักเรียนที่ไม่มาสาย</option></select></div>
-          <div class="col s12 m4" style="margin-bottom: 15px;"><label class="black-text" style="font-size: 0.95rem; font-weight: 600;">การกลั่นกรองข้อมูล (จัดเรียง)</label><select id="advSort" class="custom-select" onchange="applySortAndPagination()"><option value="default" selected>จัดเรียงอัตโนมัติตามชั้น/ห้อง</option><option value="num_asc">เลขที่: น้อยไปมาก</option><option value="num_desc">เลขที่: มากไปน้อย</option><option value="lates_desc">สายสะสม: มากไปน้อย</option></select></div>
-          <div class="col s12 m2" style="margin-bottom: 15px;"><label class="black-text" style="font-size: 0.95rem; font-weight: 600;">แสดงหน้าละ</label><select id="advPageSize" class="custom-select" onchange="applySortAndPagination()"><option value="10" selected>10 คน</option><option value="20">20 คน</option><option value="40">40 คน</option><option value="100">100 คน</option></select></div>
-          <div class="col s12 m3 right-align" style="margin-bottom: 15px;"><button type="button" class="btn-large waves-effect waves-light green darken-3" onclick="openReportAuth()" style="width: 100%; border-radius: 8px;">📊 ดาวน์โหลด Excel</button></div>
+          <div class="col s12 m3" style="margin-bottom: 15px;">
+            <label class="black-text" style="font-size: 0.95rem; font-weight: 600;">การกลั่นกรองข้อมูล (สถานะ)</label>
+            <select id="advFilterStatus" class="custom-select" onchange="applySortAndPagination()">
+              <option value="all" selected>แสดงนักเรียนทั้งหมด</option>
+              <option value="late">เฉพาะนักเรียนที่มาสาย</option>
+              <option value="ontime">เฉพาะนักเรียนที่ไม่มาสาย</option>
+            </select>
+          </div>
+          <div class="col s12 m4" style="margin-bottom: 15px;">
+            <label class="black-text" style="font-size: 0.95rem; font-weight: 600;">การกลั่นกรองข้อมูล (จัดเรียง)</label>
+            <select id="advSort" class="custom-select" onchange="applySortAndPagination()">
+              <option value="default" selected>จัดเรียงอัตโนมัติตามชั้น/ห้อง</option>
+              <option value="num_asc">เลขที่: น้อยไปมาก</option>
+              <option value="num_desc">เลขที่: มากไปน้อย</option>
+              <option value="lates_desc">สายสะสม: มากไปน้อย</option>
+            </select>
+          </div>
+          <div class="col s12 m2" style="margin-bottom: 15px;">
+            <label class="black-text" style="font-size: 0.95rem; font-weight: 600;">แสดงหน้าละ</label>
+            <select id="advPageSize" class="custom-select" onchange="applySortAndPagination()">
+              <option value="10" selected>10 คน</option>
+              <option value="20">20 คน</option>
+              <option value="40">40 คน</option>
+              <option value="100">100 คน</option>
+            </select>
+          </div>
+          <div class="col s12 m3 right-align" style="margin-bottom: 15px;">
+            <button type="button" class="btn-large waves-effect waves-light green darken-3" onclick="openReportAuth()" style="width: 100%; border-radius: 8px;">📊 ดาวน์โหลด Excel</button>
+          </div>
           <div class="col s12 right-align" id="totalRowsInfo"></div>
         </div>
 
@@ -222,36 +351,64 @@
         <div class="row">
           <div class="col s12">
             <table class="striped centered" style="margin-top: 10px;">
-              <thead><tr><th style="width: 8%;">เลขที่</th><th style="width: 14%;">รหัสประจำตัวนักเรียน</th><th style="width: 28%; text-align: left;">ชื่อ-นามสกุล</th><th style="width: 10%;">ห้อง</th><th style="width: 15%;">จำนวนการมาสาย (สะสม)</th><th style="width: 15%;">สถานะการมาสายในวันที่เลือก</th><th style="width: 10%;">ดูข้อมูล</th></tr></thead>
+              <thead>
+                <tr>
+                  <th style="width: 8%;">เลขที่</th>
+                  <th style="width: 14%;">รหัสประจำตัวนักเรียน</th>
+                  <th style="width: 28%; text-align: left;">ชื่อ-นามสกุล</th>
+                  <th style="width: 10%;">ห้อง</th>
+                  <th style="width: 15%;">จำนวนการมาสาย (สะสม)</th>
+                  <th style="width: 15%;">สถานะการมาสายในวันที่เลือก</th>
+                  <th style="width: 10%;">ดูข้อมูล</th>
+                </tr>
+              </thead>
               <tbody id="advTableBody"></tbody>
             </table>
           </div>
         </div>
 
-        <div class="row center-align" style="margin-top: 30px;"><div class="col s12"><button type="button" class="btn-small blue darken-3 waves-effect" id="btnPrevPage" onclick="changePage(-1)">◀ ก่อนหน้า</button><span id="advPageInfo" style="margin: 0 20px; font-weight: bold; font-size: 1.1rem; color: #555;">หน้า 1 / 1</span><button type="button" class="btn-small blue darken-3 waves-effect" id="btnNextPage" onclick="changePage(1)">ถัดไป ▶</button></div></div>
+        <div class="row center-align" style="margin-top: 30px;">
+          <div class="col s12">
+            <button type="button" class="btn-small blue darken-3 waves-effect" id="btnPrevPage" onclick="changePage(-1)">◀ ก่อนหน้า</button>
+            <span id="advPageInfo" style="margin: 0 20px; font-weight: bold; font-size: 1.1rem; color: #555;">หน้า 1 / 1</span>
+            <button type="button" class="btn-small blue darken-3 waves-effect" id="btnNextPage" onclick="changePage(1)">ถัดไป ▶</button>
+          </div>
+        </div>
       </div>
 
-      <!-- หน้าตรวจสอบสิทธิ์ผู้ดูแลระบบ (ตรวจสอบที่หลังบ้าน 100%) -->
+      <!-- =====================================================================
+           5. หน้าตรวจสอบสิทธิ์ผู้ดูแลระบบ (Admin Auth)
+      ===================================================================== -->
       <div id="adminAuthSection" class="card z-depth-0 hidden">
         <div class="center-align">
           <h4 style="color: #4527a0; font-weight: 700;">🔒 ตรวจสอบสิทธิ์ผู้ดูแลระบบ</h4>
           <p class="grey-text text-darken-1" style="font-size: 1.1rem;">กรุณากรอกรหัสผ่าน Admin เพื่อยืนยันสิทธิ์กับเซิร์ฟเวอร์</p>
         </div>
         <div class="center-box" style="margin-top: 40px; margin-bottom: 20px;">
-          <div class="input-field col s12"><input id="adminPassword" type="password" style="text-align: center; font-size: 1.5rem;"><label class="active" for="adminPassword">รหัสผ่านสำหรับผู้ดูแลระบบ</label></div>
+          <div class="input-field col s12">
+            <input id="adminPassword" type="password" style="text-align: center; font-size: 1.5rem;">
+            <label class="active" for="adminPassword">รหัสผ่านสำหรับผู้ดูแลระบบ</label>
+          </div>
           <div id="adminAuthMsg" class="red-text center-align" style="margin-bottom: 20px; font-weight: 600;"></div>
-          <div class="center-align"><button type="button" id="btnVerifyAdmin" class="btn waves-effect waves-light deep-purple darken-2 btn-large" onclick="verifyAdmin()" style="margin-right: 15px; width: 160px;">ยืนยัน</button><button type="button" class="btn waves-effect waves-light grey btn-large" onclick="goHome()" style="width: 160px;">ยกเลิก</button></div>
+          <div class="center-align">
+            <button type="button" id="btnVerifyAdmin" class="btn waves-effect waves-light deep-purple darken-2 btn-large" onclick="verifyAdmin()" style="margin-right: 15px; width: 160px;">ยืนยัน</button>
+            <button type="button" class="btn waves-effect waves-light grey btn-large" onclick="goHome()" style="width: 160px;">ยกเลิก</button>
+          </div>
         </div>
       </div>
 
-      <!-- ⚙️ หน้าต่างตั้งค่าระบบ (ครบทั้ง 7 เมนูเดิม + แท็บที่ 8 เปลี่ยนรหัสผ่าน Admin) -->
+      <!-- =====================================================================
+           6. หน้าตั้งค่าการทำงานของระบบ (ครบทั้ง 8 เมนู)
+      ===================================================================== -->
       <div id="settingsSection" class="card z-depth-0 hidden">
         <div class="row" style="border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
           <div class="col s8 m9">
             <h4 style="margin: 0; color: #4527a0; font-weight: 700;">⚙️ ตั้งค่าการทำงานของระบบ</h4>
             <span class="grey-text text-darken-1">จัดการภาคเรียน ตารางเวลา ปฏิทิน เจ้าหน้าที่ ครูที่ปรึกษา เลื่อนชั้นเรียน ลงทะเบียนนักเรียน และความปลอดภัย</span>
           </div>
-          <div class="col s4 m3 right-align"><button type="button" class="btn grey darken-1 btn-small" onclick="goHome()">⬅️ กลับสู่หน้าหลัก</button></div>
+          <div class="col s4 m3 right-align">
+            <button type="button" class="btn grey darken-1 btn-small" onclick="goHome()">⬅️ กลับสู่หน้าหลัก</button>
+          </div>
         </div>
 
         <div class="settings-tabs">
@@ -264,7 +421,7 @@
           <button type="button" class="settings-tab-btn" onclick="switchSettingsTab('tabAdminPass', this)">🔐 8. รหัสผ่าน Admin</button>
         </div>
 
-        <!-- ส่วนที่ 1 & 2 -->
+        <!-- แท็บ 1-2: ภาคเรียน & ตารางเปิดภาคเรียน 20 สัปดาห์ -->
         <div id="tabSemester" class="settings-panel">
           <h5 style="margin-top: 0; color: #311b92; font-weight: 700;">1) กำหนดภาคเรียนและปีการศึกษาใหม่ & 2) กำหนดวันเปิดภาคเรียน (20 สัปดาห์)</h5>
           <p class="grey-text text-darken-2">ระบบจะนำข้อมูลภาคเรียนและปีการศึกษาไปใส่ในคอลัมน์ <b>A2:D2</b> และนับวันจันทร์-ศุกร์ ต่อเนื่อง 20 สัปดาห์ไปใส่ในคอลัมน์ <b>E-CZ</b> ของชีท <b>1/1 – 6/14</b> อัตโนมัติ</p>
@@ -302,11 +459,11 @@
           </div>
         </div>
 
-        <!-- ส่วนที่ 3 -->
+        <!-- แท็บ 3: ปฏิทินกิจกรรม (+ Export / Import Excel) -->
         <div id="tabCalendar" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #00695c; font-weight: 700;">3) กำหนดปฏิทินกิจกรรม</h5>
           <p class="grey-text text-darken-2">บันทึกข้อมูลลงชีท <b>ปฏิทินกิจกรรม</b> และกระจายชื่อกิจกรรมลงแถว 46 ของชีท <b>1/1 – 6/14</b> อัตโนมัติ</p>
-        <!-- แถบเครื่องมือ Export / Import ปฏิทินกิจกรรม -->
+
           <div style="background: #e0f2f1; padding: 14px 16px; border-radius: 10px; border: 1px solid #80cbc4; margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
             <div>
               <strong style="color: #004d40;">📂 นำเข้า / ส่งออกปฏิทินกิจกรรม (Excel / CSV)</strong><br>
@@ -321,23 +478,33 @@
               <button type="button" id="btnImportActivities" class="btn-small teal darken-4 waves-effect" onclick="document.getElementById('importActivityFileInput').click()">📤 Import Excel/CSV</button>
             </div>
           </div>
-          
+
           <div class="row" style="margin-top: 20px;">
-            <div class="col s12 m5" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600; font-size: 1rem;">เลือกวันที่เดือนปี</label><input id="actDateInput" type="date" class="custom-select" style="margin-top: 5px;"></div>
-            <div class="col s12 m7" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600; font-size: 1rem;">ชื่อกิจกรรม</label><input id="actNameInput" type="text" class="browser-default custom-input-box" placeholder="ระบุชื่อกิจกรรม เช่น วันหยุดชดเชย, กิจกรรมกีฬาสี..."></div>
+            <div class="col s12 m5" style="margin-bottom: 15px;">
+              <label class="black-text" style="font-weight: 600; font-size: 1rem;">เลือกวันที่เดือนปี</label>
+              <input id="actDateInput" type="date" class="custom-select" style="margin-top: 5px;">
+            </div>
+            <div class="col s12 m7" style="margin-bottom: 15px;">
+              <label class="black-text" style="font-weight: 600; font-size: 1rem;">ชื่อกิจกรรม</label>
+              <input id="actNameInput" type="text" class="browser-default custom-input-box" placeholder="ระบุชื่อกิจกรรม เช่น วันหยุดชดเชย, กิจกรรมกีฬาสี...">
+            </div>
           </div>
 
           <div id="actStatusMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 15px;"></div>
-          <div class="center-align" style="margin-bottom: 25px;"><button type="button" class="btn-large waves-effect waves-light teal darken-3" onclick="doSaveActivity()">📌 บันทึกกิจกรรมและกระจายลงแถว 46 ทุกห้อง</button></div>
+          <div class="center-align" style="margin-bottom: 25px;">
+            <button type="button" class="btn-large waves-effect waves-light teal darken-3" onclick="doSaveActivity()">📌 บันทึกกิจกรรมและกระจายลงแถว 46 ทุกห้อง</button>
+          </div>
 
           <h6 style="font-weight: 700; color: #555; border-bottom: 1px solid #ddd; padding-bottom: 8px;">📋 รายการในชีทปฏิทินกิจกรรมปัจจุบัน</h6>
           <div style="max-height: 250px; overflow-y: auto;">
-            <table class="striped"><thead><tr><th style="width: 30%;">วันเดือนปี</th><th style="width: 70%;">ชื่อกิจกรรม</th></tr></thead><tbody id="activityTableBody"><tr><td colspan="2" class="center-align grey-text">กำลังโหลดข้อมูล...</td></tr></tbody></table>
+            <table class="striped">
+              <thead><tr><th style="width: 30%;">วันเดือนปี</th><th style="width: 70%;">ชื่อกิจกรรม</th></tr></thead>
+              <tbody id="activityTableBody"><tr><td colspan="2" class="center-align grey-text">กำลังโหลดข้อมูล...</td></tr></tbody>
+            </table>
           </div>
         </div>
 
-        <!-- ส่วนที่ 4 -->
-        <!-- ส่วนที่ 4: ลงทะเบียน + แสดง/แก้ไข/ลบ รายชื่อเจ้าหน้าที่ -->
+        <!-- แท็บ 4: ระบบจัดการและลงทะเบียนเจ้าหน้าที่ -->
         <div id="tabStaff" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #4527a0; font-weight: 700;">4) ระบบจัดการและลงทะเบียนเจ้าหน้าที่</h5>
           <div class="center-box" style="margin-top: 20px; margin-bottom: 15px;">
@@ -375,10 +542,10 @@
           </div>
         </div>
 
-        <!-- ส่วนที่ 5 -->
+        <!-- แท็บ 5: กำหนดครูที่ปรึกษาประจำชั้น (+ Export / Import Excel) -->
         <div id="tabAdvisors" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #1565c0; font-weight: 700;">5) กำหนดครูที่ปรึกษาประจำชั้น (ชีท Advisors)</h5>
-         <!-- แถบเครื่องมือ Export / Import รายชื่อครูที่ปรึกษา -->
+
           <div style="background: #e3f2fd; padding: 14px 16px; border-radius: 10px; border: 1px solid #90caf9; margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
             <div>
               <strong style="color: #0d47a1;">📂 นำเข้า / ส่งออกรายชื่อครูที่ปรึกษา (Excel / CSV)</strong><br>
@@ -390,20 +557,37 @@
               <button type="button" id="btnImportAdvisors" class="btn-small blue darken-4 waves-effect" onclick="document.getElementById('importAdvisorFileInput').click()">📤 Import Excel/CSV</button>
             </div>
           </div>
-          
+
           <div class="row" style="margin-top: 20px;">
-            <div class="col s12 m6" style="margin-bottom: 20px;"><label class="black-text" style="font-weight: 600; font-size: 1rem;">เลือกห้องเรียน</label><select id="settingAdvRoom" class="custom-select" style="margin-top: 5px;" onchange="onChangeSettingAdvisorRoom()"></select></div>
+            <div class="col s12 m6" style="margin-bottom: 20px;">
+              <label class="black-text" style="font-weight: 600; font-size: 1rem;">เลือกห้องเรียน</label>
+              <select id="settingAdvRoom" class="custom-select" style="margin-top: 5px;" onchange="onChangeSettingAdvisorRoom()"></select>
+            </div>
           </div>
           <div class="row">
-            <div class="col s12 m4" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600;">ครูที่ปรึกษาคนที่ 1</label><select id="settingAdv1" class="custom-select" style="margin-top: 5px;" onchange="toggleCustomAdvisorInput(1)"></select><input id="settingAdvCustom1" type="text" class="browser-default custom-input-box hidden" placeholder="พิมพ์ชื่อครูคนที่ 1..."></div>
-            <div class="col s12 m4" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600;">ครูที่ปรึกษาคนที่ 2</label><select id="settingAdv2" class="custom-select" style="margin-top: 5px;" onchange="toggleCustomAdvisorInput(2)"></select><input id="settingAdvCustom2" type="text" class="browser-default custom-input-box hidden" placeholder="พิมพ์ชื่อครูคนที่ 2..."></div>
-            <div class="col s12 m4" style="margin-bottom: 15px;"><label class="black-text" style="font-weight: 600;">ครูที่ปรึกษาคนที่ 3</label><select id="settingAdv3" class="custom-select" style="margin-top: 5px;" onchange="toggleCustomAdvisorInput(3)"></select><input id="settingAdvCustom3" type="text" class="browser-default custom-input-box hidden" placeholder="พิมพ์ชื่อครูคนที่ 3..."></div>
+            <div class="col s12 m4" style="margin-bottom: 15px;">
+              <label class="black-text" style="font-weight: 600;">ครูที่ปรึกษาคนที่ 1</label>
+              <select id="settingAdv1" class="custom-select" style="margin-top: 5px;" onchange="toggleCustomAdvisorInput(1)"></select>
+              <input id="settingAdvCustom1" type="text" class="browser-default custom-input-box hidden" placeholder="พิมพ์ชื่อครูคนที่ 1...">
+            </div>
+            <div class="col s12 m4" style="margin-bottom: 15px;">
+              <label class="black-text" style="font-weight: 600;">ครูที่ปรึกษาคนที่ 2</label>
+              <select id="settingAdv2" class="custom-select" style="margin-top: 5px;" onchange="toggleCustomAdvisorInput(2)"></select>
+              <input id="settingAdvCustom2" type="text" class="browser-default custom-input-box hidden" placeholder="พิมพ์ชื่อครูคนที่ 2...">
+            </div>
+            <div class="col s12 m4" style="margin-bottom: 15px;">
+              <label class="black-text" style="font-weight: 600;">ครูที่ปรึกษาคนที่ 3</label>
+              <select id="settingAdv3" class="custom-select" style="margin-top: 5px;" onchange="toggleCustomAdvisorInput(3)"></select>
+              <input id="settingAdvCustom3" type="text" class="browser-default custom-input-box hidden" placeholder="พิมพ์ชื่อครูคนที่ 3...">
+            </div>
           </div>
           <div id="advStatusMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 15px;"></div>
-          <div class="center-align"><button type="button" class="btn-large waves-effect waves-light blue darken-3" onclick="doSaveRoomAdvisors()">💾 บันทึกข้อมูลครูที่ปรึกษา</button></div>
+          <div class="center-align">
+            <button type="button" class="btn-large waves-effect waves-light blue darken-3" onclick="doSaveRoomAdvisors()">💾 บันทึกข้อมูลครูที่ปรึกษา</button>
+          </div>
         </div>
 
-        <!-- ส่วนที่ 6 -->
+        <!-- แท็บ 6: เลื่อนชั้นเรียน & ซิงค์ห้องเรียน -->
         <div id="tabPromote" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #d84315; font-weight: 700;">6.1) ระบบเลื่อนชั้นเรียนประจำปีการศึกษา (ชีท Students)</h5>
           <ul class="browser-default" style="color: #444; font-size: 1.02rem; line-height: 1.7;">
@@ -426,10 +610,12 @@
           <hr style="margin: 35px 0; border: 0; border-top: 2px dashed #ccc;">
           <h5 style="margin-top: 0; color: #1565c0; font-weight: 700;">6.2) อัปเดตรายชื่อนักเรียนไปยังชีทห้องเรียน (1/1 – 6/14) อัตโนมัติ</h5>
           <div id="syncRoomsStatusMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 15px;"></div>
-          <div class="center-align"><button type="button" id="btnSyncAllRooms" class="btn-large waves-effect waves-light blue darken-3" onclick="doSyncStudentsToClassrooms()">🔄 อัปเดตรายชื่อนักเรียนเข้าชีทห้องเรียนทั้งหมดทันที</button></div>
+          <div class="center-align">
+            <button type="button" id="btnSyncAllRooms" class="btn-large waves-effect waves-light blue darken-3" onclick="doSyncStudentsToClassrooms()">🔄 อัปเดตรายชื่อนักเรียนเข้าชีทห้องเรียนทั้งหมดทันที</button>
+          </div>
         </div>
 
-        <!-- ส่วนที่ 7: สแกน QR (3 เงื่อนไข) + เพิ่มนักเรียนแบบเรียงเพศ/รหัส + จัดการแก้ไข/ลบรายห้อง + อัปโหลดกลุ่ม -->
+        <!-- แท็บ 7: สแกน QR (3 เงื่อนไข) + เพิ่ม/แก้ไข/ลบ รายบุคคล + อัปโหลด Excel กลุ่ม -->
         <div id="tabStudentsManage" class="settings-panel hidden">
 
           <!-- 7.1 สแกน QR Code (URL) อัจฉริยะ 3 กรณี -->
@@ -450,12 +636,10 @@
               <button type="button" id="btnScanSmartQr" class="btn waves-effect waves-light green darken-3" onclick="processScannedQrInputNow(true)">🔍 ตรวจสอบ / บันทึกจากลิงก์ QR Code</button>
             </div>
 
-            <!-- กล่องแสดงข้อมูลเดิม (กรณีพบข้อมูลใน Students แล้ว) -->
             <div id="qrExistingInfoBox" class="col s12 hidden" style="margin-top: 14px; background: #fff; padding: 14px; border-radius: 8px; border-left: 5px solid #2e7d32;">
               <div id="qrExistingInfoContent" style="font-size: 1.02rem; line-height: 1.7;"></div>
             </div>
 
-            <!-- กล่องยืนยันเพิ่มนักเรียนใหม่ (กรณีสแกนแล้วไม่พบในชีท Students) -->
             <div id="qrNewStudentConfirmBox" class="col s12 hidden" style="margin-top: 14px; background: #fff8e1; padding: 16px; border-radius: 8px; border: 2px solid #ffb300;">
               <h6 style="margin-top: 0; color: #e65100; font-weight: 700;">🆕 ไม่พบรหัสนี้ในชีท Students — กรุณาเลือกระดับชั้นและห้องเพื่อแทรกข้อมูล</h6>
               <input type="hidden" id="qrNewUrl">
@@ -484,7 +668,7 @@
 
           <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
 
-          <!-- 7.2 เพิ่มรายชื่อนักเรียนใหม่ด้วยตนเอง (เรียงเพศ + แทรกตามรหัส + ล็อกไม่เกิน 40 คน) -->
+          <!-- 7.2 เพิ่มรายชื่อนักเรียนใหม่ด้วยตนเอง -->
           <h5 style="margin-top: 0; color: #1565c0; font-weight: 700;">7.2) เพิ่มรายชื่อนักเรียนใหม่ (แทรกตามเพศ & เลขประจำตัวอัตโนมัติ)</h5>
           <p class="grey-text text-darken-2" style="margin-top: 4px;">ระบบจะจำแนกเพศจากคำนำหน้า (ชายก่อนหญิง) แทรกระหว่างเลขประจำตัว เรียงเลขที่ใหม่ และรักษาข้อมูลเช็คชื่อ (E–CZ) ครบทั้งห้อง (จำกัดไม่เกิน 40 คน/ห้อง)</p>
 
@@ -522,7 +706,7 @@
 
           <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
 
-          <!-- 7.3 จัดการรายชื่อนักเรียนรายห้อง (แก้ไขชื่อ / ย้ายห้อง / ลบ -> รักษา E:CZ) -->
+          <!-- 7.3 จัดการรายชื่อนักเรียนรายห้อง -->
           <h5 style="margin-top: 0; color: #4527a0; font-weight: 700;">7.3) จัดการรายชื่อนักเรียนรายห้อง (แก้ไขชื่อ / ย้ายห้อง / ลบ & เรียงเลขที่ใหม่)</h5>
           <div class="row" style="background: #f3e5f5; padding: 15px; border-radius: 10px; border: 1px solid #ce93d8; margin-top: 12px; display: flex; align-items: flex-end; flex-wrap: wrap;">
             <div class="col s5 m4" style="margin-bottom: 8px;">
@@ -562,7 +746,7 @@
 
           <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
 
-          <!-- 7.4 อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (รองรับ Excel โรงเรียน B,C,E,F,G) -->
+          <!-- 7.4 อัปโหลดรายชื่อนักเรียนแบบกลุ่ม -->
           <h5 style="margin-top: 0; color: #00695c; font-weight: 700;">7.4) อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (Excel / CSV / วางข้อความ)</h5>
           <div class="row" style="background: #e0f2f1; padding: 18px; border-radius: 10px; border: 1px solid #80cbc4; margin-top: 15px;">
             <div class="col s12" style="margin-bottom: 14px;">
@@ -603,10 +787,12 @@
             </div>
           </div>
           <div id="bulkUploadStatusMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 15px;"></div>
-          <div class="center-align"><button type="button" id="btnBulkUploadStu" class="btn-large waves-effect waves-light teal darken-3" onclick="doBulkUploadStudents()">📤 อัปโหลดปรับปรุงรายชื่อ & ติดตาม URL คอลัมน์ F ทันที</button></div>
+          <div class="center-align">
+            <button type="button" id="btnBulkUploadStu" class="btn-large waves-effect waves-light teal darken-3" onclick="doBulkUploadStudents()">📤 อัปโหลดปรับปรุงรายชื่อ & ติดตาม URL คอลัมน์ F ทันที</button>
+          </div>
         </div>
 
-        <!-- ส่วนที่ 8 (ใหม่): เปลี่ยนรหัสผ่านผู้ดูแลระบบที่หลังบ้าน -->
+        <!-- แท็บ 8: เปลี่ยนรหัสผ่านผู้ดูแลระบบ -->
         <div id="tabAdminPass" class="settings-panel hidden">
           <h5 style="margin-top: 0; color: #b71c1c; font-weight: 700;">🔐 8) เปลี่ยนรหัสผ่านผู้ดูแลระบบ (Admin Password)</h5>
           <p class="grey-text text-darken-2">รหัสผ่านจะถูกจัดเก็บอย่างปลอดภัยในเซิร์ฟเวอร์ Google Apps Script (PropertiesService) โดยไม่ปรากฏในโค้ดหน้าเว็บ GitHub Pages</p>
@@ -614,12 +800,18 @@
             <div class="input-field col s12"><input id="newAdminPass1" type="password"><label class="active" for="newAdminPass1">รหัสผ่าน Admin ใหม่ (อย่างน้อย 6 ตัวอักษร)</label></div>
             <div class="input-field col s12" style="margin-top: 18px;"><input id="newAdminPass2" type="password"><label class="active" for="newAdminPass2">ยืนยันรหัสผ่าน Admin ใหม่อีกครั้ง</label></div>
             <div id="adminPassChangeMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin: 18px 0; min-height: 26px;"></div>
-            <div class="center-align"><button type="button" id="btnChangeAdminPass" class="btn-large waves-effect waves-light red darken-3" onclick="doChangeAdminPassword()" style="width: 100%; max-width: 320px;">🔑 บันทึกรหัสผ่านใหม่</button></div>
+            <div class="center-align">
+              <button type="button" id="btnChangeAdminPass" class="btn-large waves-effect waves-light red darken-3" onclick="doChangeAdminPassword()" style="width: 100%; max-width: 320px;">🔑 บันทึกรหัสผ่านใหม่</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Modal ดาวน์โหลดรายงาน Excel -->
+      <!-- =====================================================================
+           7. หน้าต่างป๊อปอัป (Modals ทั้ง 5 ชุด)
+      ===================================================================== -->
+
+      <!-- Modal 1: ยืนยันดาวน์โหลดรายงาน Excel -->
       <div id="reportAuthModal" class="modal" style="border-radius: 12px; max-width: 450px;">
         <div class="modal-content center-align">
           <h5 style="color: #1565c0; font-weight: 700;">🔐 ยืนยันตัวตนเจ้าหน้าที่</h5>
@@ -641,7 +833,7 @@
         </div>
       </div>
 
-      <!-- Modal เลือกห้องเรียนดู Google Sheet -->
+      <!-- Modal 2: เลือกห้องเรียนเพื่อเปิด Google Sheet -->
       <div id="classroomSheetModal" class="modal" style="border-radius: 12px; max-width: 450px;">
         <div class="modal-content center-align">
           <h5 style="color: #00695c; font-weight: 700;">📋 เลือกแบบบันทึกการมาสายรายห้อง</h5>
@@ -649,7 +841,10 @@
           <div class="row" style="margin-top: 25px;">
             <div class="col s6">
               <label class="black-text" style="font-weight: 600;">ระดับชั้น</label>
-              <select id="modalSelectGrade" class="custom-select" onchange="updateModalRoomDropdown()"><option value="1">ม.1</option><option value="2">ม.2</option><option value="3">ม.3</option><option value="4">ม.4</option><option value="5">ม.5</option><option value="6">ม.6</option></select>
+              <select id="modalSelectGrade" class="custom-select" onchange="updateModalRoomDropdown()">
+                <option value="1">ม.1</option><option value="2">ม.2</option><option value="3">ม.3</option>
+                <option value="4">ม.4</option><option value="5">ม.5</option><option value="6">ม.6</option>
+              </select>
             </div>
             <div class="col s6">
               <label class="black-text" style="font-weight: 600;">ห้องเรียน</label>
@@ -664,7 +859,7 @@
         </div>
       </div>
 
-      <!-- Modal ยืนยันรหัส Admin ซ้ำก่อนบันทึกภาคเรียน & ตาราง 20 สัปดาห์ (ข้อ 3) -->
+      <!-- Modal 3: ยืนยันรหัส Admin ซ้ำก่อนบันทึกภาคเรียนและตาราง 20 สัปดาห์ -->
       <div id="confirmSemesterModal" class="modal" style="border-radius: 12px; max-width: 460px;">
         <div class="modal-content center-align">
           <h5 style="color: #4527a0; font-weight: 700;">🔒 ยืนยันรหัสผ่านผู้ดูแลระบบอีกครั้ง</h5>
@@ -681,7 +876,7 @@
         </div>
       </div>
 
-      <!-- Modal แก้ไขข้อมูลและรหัสผ่านเจ้าหน้าที่ (ข้อ 4) -->
+      <!-- Modal 4: แก้ไขข้อมูลและรหัสผ่านเจ้าหน้าที่ -->
       <div id="editStaffModal" class="modal" style="border-radius: 12px; max-width: 460px;">
         <div class="modal-content">
           <h5 class="center-align" style="color: #1565c0; font-weight: 700; margin-bottom: 20px;">✏️ แก้ไขข้อมูลเจ้าหน้าที่</h5>
@@ -706,7 +901,7 @@
         </div>
       </div>
 
-      <!-- Modal แก้ไขข้อมูลนักเรียน (เปลี่ยนชื่อ / ย้ายห้อง โดยรักษาประวัติเช็คชื่อ E:CZ) -->
+      <!-- Modal 5: แก้ไขข้อมูลนักเรียน (เปลี่ยนชื่อ / ย้ายห้อง รักษา E:CZ) -->
       <div id="editStudentModal" class="modal" style="border-radius: 12px; max-width: 500px;">
         <div class="modal-content">
           <h5 class="center-align" style="color: #4527a0; font-weight: 700; margin-bottom: 18px;">✏️ แก้ไขข้อมูลนักเรียน</h5>
@@ -759,31 +954,40 @@
 
   <script>
     // =========================================================================
-    // ⚙️ ตั้งค่าหลัก: วางลิงก์ Web App (/exec) ของ Google Apps Script ที่นี่
+    // 1. การตั้งค่าหลักและตัวแปรกลางของระบบ (Config & Global State)
     // =========================================================================
     var GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAi6qtV1dklnPLaW-l-vV6Tnm_oPsKuMnFpRx-QpPqxIyjTAT-W3NFNOkk6bHszscJIw/exec";
 
-    // พารามิเตอร์ Batch Sync ฝั่งคอมพิวเตอร์ (ปรับแต่งได้)
+    // พารามิเตอร์ Batch Sync ฝั่งคอมพิวเตอร์ (ปรับแต่งได้ตามความเหมาะสมหน้างาน)
     var BATCH_CONFIG = {
       triggerSize: 10,    // สแกนครบ 10 คน -> ส่งเป็นชุดทันที
       maxBatchSize: 15,   // ส่งสูงสุดครั้งละ 15 คนต่อชุด
       waitMs: 2000        // รอรวมชุด 2 วินาที
     };
 
+    // พารามิเตอร์ตั้งชื่อไฟล์เริ่มต้นตอน Export (ปรับแต่งได้)
+    var EXPORT_FILE_CONFIG = {
+      activityPrefix: "ปฏิทินกิจกรรม_",
+      advisorPrefix: "รายชื่อครูที่ปรึกษา_"
+    };
+
+    // ตัวแปรสถานะการทำงานหลัก
     var currentStaffName = "";
-    var currentAdminPassword = ""; // เก็บเฉพาะใน RAM ระหว่างเปิดหน้าตั้งค่า ไม่บันทึกลงไฟล์หรือเครื่อง
+    var currentAdminPassword = ""; // เก็บเฉพาะใน RAM ระหว่างเปิดหน้าตั้งค่า
     var isFrontendDataLoaded = false;
 
+    // ตัวแปรสำหรับกราฟและตารางสถิติ
     var dailyChartInstance = null;
     var weeklyChartInstance = null;
     var monthlyChartInstance = null;
-    var recentScansList = [];
     var advancedRawList = [];
     var advancedDefaultSortType = "all";
     var advCurrentPage = 1;
 
+    // ตัวแปรสำหรับฐานข้อมูลและคิวสแกนฝั่งคอมพิวเตอร์
     var localStudentDB = {};
     var localLogsDB = [];
+    var recentScansList = [];
     var scanQueue = [];
     var isUploading = false;
     var isForceFlushing = false;
@@ -793,11 +997,16 @@
     var lastScanTime = 0;
     var currentMemoryDate = new Date().toDateString();
 
+    // ตัวแปรสำหรับหน้าตั้งค่าระบบ (แท็บ 1 - 8)
     var settingsDB = { classrooms: [], teachers: [], advisorMap: {}, activities: [] };
+    var staffListCache = [];
+    var roomStudentsCache = [];
+    var qrFetchTimer = null;
+    var isFetchingQrUrl = false;
 
-    // -------------------------------------------------------------------------
-    // 🌐 ฟังก์ชันกลางสื่อสารกับหลังบ้าน Google Apps Script (แทน google.script.run)
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 2. เครื่องมือพื้นฐานและการเชื่อมต่อหลังบ้าน (Core API & Utilities)
+    // =========================================================================
     async function callGasApi(payloadObj) {
       if (GAS_WEB_APP_URL.indexOf("https://script.google.com") !== 0) {
         throw new Error("กรุณาใส่ลิงก์ Web App (/exec) ในตัวแปร GAS_WEB_APP_URL ก่อนใช้งาน");
@@ -810,6 +1019,141 @@
       });
       if (!res.ok) throw new Error("เซิร์ฟเวอร์ตอบกลับผิดปกติ (HTTP " + res.status + ")");
       return await res.json();
+    }
+
+    // ป้องกันอักขระพิเศษทำให้ตาราง HTML เพี้ยน
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // แปลงวันที่ปัจจุบันเป็น YYYY-MM-DD ตามเวลาท้องถิ่น (ไม่เพี้ยนช่วง 00:00 - 06:59 น.)
+    function getLocalTodayIso() {
+      var d = new Date();
+      var y = d.getFullYear();
+      var m = ("0" + (d.getMonth() + 1)).slice(-2);
+      var day = ("0" + d.getDate()).slice(-2);
+      return y + "-" + m + "-" + day;
+    }
+
+    // แปลงแป้นพิมพ์ภาษาไทยเป็นอังกฤษ (แปลงเฉพาะเมื่อพบอักษรไทย ก-๙ เพื่อไม่ให้ '/' ใน URL เพี้ยน)
+    function fixThaiKeyboard(str) {
+      if (!str) return "";
+      if (!/[ก-๙]/.test(str)) return str;
+      var charMap = {
+        'ๅ':'1', '/':'2', '-':'3', 'ภ':'4', 'ถ':'5', 'ุ':'6', 'ึ':'7', 'ค':'8', 'ต':'9', 'จ':'0', 'ข':'-', 'ช':'=',
+        'ๆ':'q', 'ไ':'w', 'ำ':'e', 'พ':'r', 'ะ':'t', 'ั':'y', 'ี':'u', 'ร':'i', 'น':'o', 'ย':'p',
+        'ฟ':'a', 'ห':'s', 'ก':'d', 'ด':'f', 'เ':'g', '้':'h', '่':'j', 'า':'k', 'ส':'l', 'ซ':':',
+        'ผ':'z', 'ป':'x', 'แ':'c', 'อ':'v', 'ิ':'b', 'ท':'n', 'ม':'m', 'ใ':'.', 'ฝ':'/', 'ฦ':'?',
+        '๑':'!', '๒':'@', '๓':'#', '๔':'$', 'ู':'^', '฿':'&', '๕':'*', '๖':'(', '๗':')', '๘':'_', '๙':'+'
+      };
+      var result = "";
+      for (var i = 0; i < str.length; i++) result += charMap[str[i]] || str[i];
+      return result;
+    }
+
+    // แยกคำนำหน้าและชื่อ-สกุลออกจากกัน
+    function splitClientPrefixAndName(fullName) {
+      var text = fullName ? fullName.toString().trim() : "";
+      var prefixes = ["เด็กชาย", "เด็กหญิง", "นางสาว", "นาย"];
+      for (var i = 0; i < prefixes.length; i++) {
+        if (text.indexOf(prefixes[i]) === 0) {
+          return { prefix: prefixes[i], nameOnly: text.substring(prefixes[i].length).trim() };
+        }
+      }
+      if (text.indexOf("ด.ช.") === 0) return { prefix: "เด็กชาย", nameOnly: text.substring(4).trim() };
+      if (text.indexOf("ด.ญ.") === 0) return { prefix: "เด็กหญิง", nameOnly: text.substring(4).trim() };
+      if (text.indexOf("น.ส.") === 0) return { prefix: "นางสาว", nameOnly: text.substring(4).trim() };
+      return { prefix: "เด็กชาย", nameOnly: text };
+    }
+
+    // แปลงวันที่จาก Excel (Serial, พ.ศ., ค.ศ., ชื่อเดือนไทย) -> "YYYY-MM-DD" (ค.ศ.)
+    function parseAnyExcelDateToIso(rawVal) {
+      if (rawVal === null || rawVal === undefined || rawVal === "") return "";
+
+      if (typeof rawVal === "number" && typeof XLSX !== "undefined" && XLSX.SSF && XLSX.SSF.parse_date_code) {
+        var parsed = XLSX.SSF.parse_date_code(rawVal);
+        if (parsed && parsed.y && parsed.m && parsed.d) {
+          var py = parsed.y > 2400 ? parsed.y - 543 : parsed.y;
+          return py + "-" + ("0" + parsed.m).slice(-2) + "-" + ("0" + parsed.d).slice(-2);
+        }
+      }
+
+      var str = String(rawVal).trim();
+
+      var isoMatch = str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+      if (isoMatch) {
+        var iy = parseInt(isoMatch[1], 10);
+        if (iy > 2400) iy -= 543;
+        return iy + "-" + ("0" + parseInt(isoMatch[2], 10)).slice(-2) + "-" + ("0" + parseInt(isoMatch[3], 10)).slice(-2);
+      }
+
+      var dmyMatch = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+      if (dmyMatch) {
+        var dy = parseInt(dmyMatch[3], 10);
+        if (dy > 2400) dy -= 543;
+        var dm = parseInt(dmyMatch[2], 10);
+        var dd = parseInt(dmyMatch[1], 10);
+        if (dm >= 1 && dm <= 12 && dd >= 1 && dd <= 31) {
+          return dy + "-" + ("0" + dm).slice(-2) + "-" + ("0" + dd).slice(-2);
+        }
+      }
+
+      var thaiMonthsShort = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+      var thaiMonthsFull = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+      var thMatch = str.match(/^(\d{1,2})\s+([ก-๙\.]+)\s+(\d{4})/);
+      if (thMatch) {
+        var td = parseInt(thMatch[1], 10);
+        var tmText = thMatch[2].trim();
+        var ty = parseInt(thMatch[3], 10);
+        if (ty > 2400) ty -= 543;
+        var tmIdx = thaiMonthsShort.indexOf(tmText);
+        if (tmIdx === -1) tmIdx = thaiMonthsFull.indexOf(tmText);
+        if (tmIdx !== -1) {
+          return ty + "-" + ("0" + (tmIdx + 1)).slice(-2) + "-" + ("0" + td).slice(-2);
+        }
+      }
+
+      return "";
+    }
+
+    // อ่านไฟล์ Excel (.xlsx, .xls) หรือ CSV เป็นอาร์เรย์ 2 มิติ
+    function readUploadedSheetFile(file, callback) {
+      var fileName = file.name.toLowerCase();
+      if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            var wb = XLSX.read(new Uint8Array(e.target.result), { type: "array" });
+            var ws = wb.Sheets[wb.SheetNames[0]];
+            var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", raw: true });
+            callback(null, rows);
+          } catch (err) {
+            callback(err, null);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      } else {
+        var textReader = new FileReader();
+        textReader.onload = function(e) {
+          try {
+            var lines = e.target.result.split(/\r?\n/);
+            var rows = lines.map(function(line) {
+              var sep = line.indexOf("\t") !== -1 ? "\t" : ",";
+              return line.split(sep).map(function(c) { return c.replace(/^["']|["']$/g, "").trim(); });
+            });
+            callback(null, rows);
+          } catch (err) {
+            callback(err, null);
+          }
+        };
+        textReader.readAsText(file, "UTF-8");
+      }
     }
 
     // เตือนหากเผลอปิดหน้าเว็บขณะยังมีข้อมูลสแกนรอส่ง
@@ -835,15 +1179,6 @@
     updateClock();
     setInterval(updateClock, 1000);
 
-    // แปลงวันที่ปัจจุบันเป็น YYYY-MM-DD ตามเวลาท้องถิ่น (ไม่เพี้ยนช่วง 00:00 - 06:59 น.)
-    function getLocalTodayIso() {
-      var d = new Date();
-      var y = d.getFullYear();
-      var m = ("0" + (d.getMonth() + 1)).slice(-2);
-      var day = ("0" + d.getDate()).slice(-2);
-      return y + "-" + m + "-" + day;
-    }
-
     function initAppPage() {
       try {
         var today = getLocalTodayIso();
@@ -852,15 +1187,45 @@
         if (document.getElementById("adminPassword")) {
           document.getElementById("adminPassword").onkeypress = function(e) { if (e.key === "Enter") { e.preventDefault(); verifyAdmin(); } };
         }
-        if (typeof M !== "undefined" && M.Modal) M.Modal.init(document.querySelectorAll('.modal'));
+        if (typeof M !== "undefined" && M.Modal) M.Modal.init(document.querySelectorAll(".modal"));
         updateModalRoomDropdown();
       } catch (err) {}
     }
     window.addEventListener("load", initAppPage);
 
+    // =========================================================================
+    // 3. การสลับหน้าจอ และ Modal เปิดชีทห้องเรียน (Navigation)
+    // =========================================================================
+    function goHome() {
+      currentAdminPassword = "";
+      staffListCache = [];
+      roomStudentsCache = [];
+
+      var staffTbody = document.getElementById("staffTableBody");
+      if (staffTbody) staffTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text">กำลังโหลดรายชื่อเจ้าหน้าที่...</td></tr>';
+      var roomTbody = document.getElementById("manageRoomTableBody");
+      if (roomTbody) roomTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text" style="padding: 20px;">เลือกชั้นและห้องด้านบน แล้วกดปุ่มแสดงรายชื่อครับ</td></tr>';
+      if (document.getElementById("qrExistingInfoBox")) document.getElementById("qrExistingInfoBox").classList.add("hidden");
+      if (document.getElementById("qrNewStudentConfirmBox")) document.getElementById("qrNewStudentConfirmBox").classList.add("hidden");
+
+      document.getElementById("scanSection").classList.add("hidden");
+      document.getElementById("dashboardSection").classList.add("hidden");
+      document.getElementById("advancedSection").classList.add("hidden");
+      document.getElementById("adminAuthSection").classList.add("hidden");
+      document.getElementById("settingsSection").classList.add("hidden");
+      document.getElementById("loginSection").classList.remove("hidden");
+
+      document.getElementById("adminPassword").value = "";
+      document.getElementById("adminAuthMsg").innerText = "";
+      document.getElementById("newStaffName").value = "";
+      document.getElementById("newStaffUsername").value = "";
+      document.getElementById("newStaffPassword").value = "";
+      document.getElementById("regMsg").innerText = "";
+    }
+
     function openClassroomModal() {
       document.getElementById("modalSheetErrorMsg").innerText = "";
-      var modalEl = document.getElementById('classroomSheetModal');
+      var modalEl = document.getElementById("classroomSheetModal");
       var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
       instance.open();
     }
@@ -871,7 +1236,9 @@
       if (!gradeEl || !roomSelect) return;
       var grade = gradeEl.value;
       roomSelect.innerHTML = "";
-      for (var i = 1; i <= 14; i++) { roomSelect.innerHTML += '<option value="' + grade + '/' + i + '">ห้อง ' + i + '</option>'; }
+      for (var i = 1; i <= 14; i++) {
+        roomSelect.innerHTML += '<option value="' + grade + '/' + i + '">ห้อง ' + i + '</option>';
+      }
     }
 
     async function redirectToClassroomSheet() {
@@ -883,10 +1250,10 @@
         var response = await callGasApi({ action: "getClassroomSheetUrl", roomName: roomVal });
         if (response.success) {
           errorDiv.innerText = "";
-          var modalEl = document.getElementById('classroomSheetModal');
+          var modalEl = document.getElementById("classroomSheetModal");
           var instance = M.Modal.getInstance(modalEl);
           if (instance) instance.close();
-          window.open(response.url, '_blank');
+          window.open(response.url, "_blank");
         } else {
           errorDiv.innerText = response.message;
           errorDiv.className = "red-text";
@@ -897,43 +1264,19 @@
       }
     }
 
-    function goHome() {
-      currentAdminPassword = ""; // ล้างสิทธิ์ Admin ออกจากหน่วยความจำ
-      staffListCache = [];       // ล้างข้อมูลและรหัสผ่านเจ้าหน้าที่
-      roomStudentsCache = [];    // ล้างแคชรายชื่อนักเรียนในแท็บ 7.3
-
-      var staffTbody = document.getElementById("staffTableBody");
-      if (staffTbody) staffTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text">กำลังโหลดรายชื่อเจ้าหน้าที่...</td></tr>';
-      var roomTbody = document.getElementById("manageRoomTableBody");
-      if (roomTbody) roomTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text" style="padding: 20px;">เลือกชั้นและห้องด้านบน แล้วกดปุ่มแสดงรายชื่อครับ</td></tr>';
-      if (document.getElementById("qrExistingInfoBox")) document.getElementById("qrExistingInfoBox").classList.add("hidden");
-      if (document.getElementById("qrNewStudentConfirmBox")) document.getElementById("qrNewStudentConfirmBox").classList.add("hidden");
-
-      // ... (บรรทัดซ่อน Section และล้าง input เดิมที่เหลือคงไว้เหมือนเดิมครับ)
-
-      document.getElementById("scanSection").classList.add("hidden");
-      document.getElementById("dashboardSection").classList.add("hidden");
-      document.getElementById("advancedSection").classList.add("hidden");
-      document.getElementById("adminAuthSection").classList.add("hidden");
-      document.getElementById("settingsSection").classList.add("hidden");
-      document.getElementById("loginSection").classList.remove("hidden");
-      document.getElementById("adminPassword").value = "";
-      document.getElementById("adminAuthMsg").innerText = "";
-      document.getElementById("newStaffName").value = "";
-      document.getElementById("newStaffUsername").value = "";
-      document.getElementById("newStaffPassword").value = "";
-      document.getElementById("regMsg").innerText = "";
-    }
-
-    // -------------------------------------------------------------------------
-    // 🔐 เข้าสู่ระบบเจ้าหน้าที่ & สแกนเช็คชื่อ (Batch Sync)
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 4. ระบบเจ้าหน้าที่สแกนเช็คชื่อฝั่งคอมพิวเตอร์ (Login + Batch Sync)
+    // =========================================================================
     async function doLogin() {
       var user = document.getElementById("username").value.trim();
       var pass = document.getElementById("password").value.trim();
       var msgDiv = document.getElementById("loginMsg");
       var btn = document.getElementById("btnDoLogin");
-      if (!user || !pass) { msgDiv.className = "col s12 red-text center-align"; msgDiv.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน"; return; }
+      if (!user || !pass) {
+        msgDiv.className = "col s12 red-text center-align";
+        msgDiv.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน";
+        return;
+      }
 
       btn.disabled = true;
       msgDiv.className = "col s12 blue-text center-align";
@@ -973,28 +1316,16 @@
       }
     }
 
-    function fixThaiKeyboard(str) {
-      if (!str) return "";
-      if (!/[ก-๙]/.test(str)) return str;
-      var charMap = {
-        'ๅ':'1', '/':'2', '-':'3', 'ภ':'4', 'ถ':'5', 'ุ':'6', 'ึ':'7', 'ค':'8', 'ต':'9', 'จ':'0', 'ข':'-', 'ช':'=',
-        'ๆ':'q', 'ไ':'w', 'ำ':'e', 'พ':'r', 'ะ':'t', 'ั':'y', 'ี':'u', 'ร':'i', 'น':'o', 'ย':'p',
-        'ฟ':'a', 'ห':'s', 'ก':'d', 'ด':'f', 'เ':'g', '้':'h', '่':'j', 'า':'k', 'ส':'l', 'ซ':':',
-        'ผ':'z', 'ป':'x', 'แ':'c', 'อ':'v', 'ิ':'b', 'ท':'n', 'ม':'m', 'ใ':'.', 'ฝ':'/', 'ฦ':'?',
-        '๑':'!', '๒':'@', '๓':'#', '๔':'$', 'ู':'^', '฿':'&', '๕':'*', '๖':'(', '๗':')', '๘':'_', '๙':'+'
-      };
-      var result = "";
-      for (var i = 0; i < str.length; i++) result += charMap[str[i]] || str[i];
-      return result;
-    }
-
     function initScanInput() {
       var input = document.getElementById("scanInput");
       input.focus();
       input.oninput = function() {
         var fixedVal = fixThaiKeyboard(input.value);
-        if (fixedVal.toLowerCase().indexOf("h") === 0 || fixedVal.toLowerCase().indexOf("scs") !== -1) input.style.color = "transparent";
-        else input.style.color = "#333";
+        if (fixedVal.toLowerCase().indexOf("h") === 0 || fixedVal.toLowerCase().indexOf("scs") !== -1) {
+          input.style.color = "transparent";
+        } else {
+          input.style.color = "#333";
+        }
         if (/^\d{5}$/.test(fixedVal)) processAttendance(fixedVal);
       };
       input.onkeypress = function(event) {
@@ -1018,16 +1349,23 @@
         try { finalInput = new URL(finalInput).searchParams.get("id") || finalInput; }
         catch (e) { finalInput = finalInput.split("id=")[1].split("&")[0]; }
       }
-      inputField.value = ""; inputField.style.color = "#333"; inputField.focus();
+      inputField.value = "";
+      inputField.style.color = "#333";
+      inputField.focus();
 
       var todayDateStr = new Date().toDateString();
-      if (currentMemoryDate !== todayDateStr) { localScannedToday = {}; recentScansList = []; updateRecentScansUI(); currentMemoryDate = todayDateStr; }
+      if (currentMemoryDate !== todayDateStr) {
+        localScannedToday = {};
+        recentScansList = [];
+        updateRecentScansUI();
+        currentMemoryDate = todayDateStr;
+      }
 
       var resultBox = document.getElementById("resultBox");
       var student = localStudentDB[finalInput];
       if (!student) {
         resultBox.className = "error-bg z-depth-1 center-box";
-        resultBox.innerHTML = '<h5 style="margin: 0; font-weight: 700; font-size: 1.2rem;">❌ ไม่พบรหัสนักเรียน: ' + finalInput + '</h5>';
+        resultBox.innerHTML = '<h5 style="margin: 0; font-weight: 700; font-size: 1.2rem;">❌ ไม่พบรหัสนักเรียน: ' + escapeHtml(finalInput) + '</h5>';
         resultBox.classList.remove("hidden");
         if (window.resultBoxTimeout) clearTimeout(window.resultBoxTimeout);
         window.resultBoxTimeout = setTimeout(function() { resultBox.classList.add("hidden"); }, 3000);
@@ -1036,11 +1374,12 @@
 
       var currentTime = new Date().getTime();
       if (finalInput === lastScannedCode && (currentTime - lastScanTime < 2000)) return;
-      lastScannedCode = finalInput; lastScanTime = currentTime;
+      lastScannedCode = finalInput;
+      lastScanTime = currentTime;
 
       if (localScannedToday[student.id]) {
         resultBox.className = "warning-bg z-depth-1 center-box";
-        resultBox.innerHTML = '<h5 style="margin: 0; font-weight: 700; font-size: 1.3rem;">⚠️ ' + student.name + ' บันทึกข้อมูลไปแล้ว</h5>';
+        resultBox.innerHTML = '<h5 style="margin: 0; font-weight: 700; font-size: 1.3rem;">⚠️ ' + escapeHtml(student.name) + ' บันทึกข้อมูลไปแล้ว</h5>';
         resultBox.classList.remove("hidden");
         if (window.resultBoxTimeout) clearTimeout(window.resultBoxTimeout);
         window.resultBoxTimeout = setTimeout(function() { resultBox.classList.add("hidden"); }, 3000);
@@ -1056,7 +1395,7 @@
       updateRecentScansUI();
 
       resultBox.className = "success-bg z-depth-1 center-box";
-      resultBox.innerHTML = '<h5 style="margin-top: 0; margin-bottom: 5px; font-weight: 700; font-size: 1.4rem;">✅ บันทึกข้อมูลสำเร็จ</h5><span style="font-size: 1.3rem; font-weight: 600; color: #1b5e20;">' + student.name + '</span><br>รหัส: ' + student.id + ' | ห้อง: ' + classroom;
+      resultBox.innerHTML = '<h5 style="margin-top: 0; margin-bottom: 5px; font-weight: 700; font-size: 1.4rem;">✅ บันทึกข้อมูลสำเร็จ</h5><span style="font-size: 1.3rem; font-weight: 600; color: #1b5e20;">' + escapeHtml(student.name) + '</span><br>รหัส: ' + escapeHtml(student.id) + ' | ห้อง: ' + escapeHtml(classroom);
       resultBox.classList.remove("hidden");
       if (window.resultBoxTimeout) clearTimeout(window.resultBoxTimeout);
       window.resultBoxTimeout = setTimeout(function() { resultBox.classList.add("hidden"); }, 3000);
@@ -1067,9 +1406,15 @@
       scheduleDesktopBatchSync();
     }
 
-    function saveDesktopQueue() { try { localStorage.setItem("desktop_late_queue", JSON.stringify(scanQueue)); } catch (e) {} }
+    function saveDesktopQueue() {
+      try { localStorage.setItem("desktop_late_queue", JSON.stringify(scanQueue)); } catch (e) {}
+    }
+
     function restoreDesktopQueue() {
-      try { var s = localStorage.getItem("desktop_late_queue"); if (s) scanQueue = JSON.parse(s) || []; } catch (e) { scanQueue = []; }
+      try {
+        var s = localStorage.getItem("desktop_late_queue");
+        if (s) scanQueue = JSON.parse(s) || [];
+      } catch (e) { scanQueue = []; }
       updateDesktopQueueUI(false);
     }
 
@@ -1078,7 +1423,8 @@
       var btn = document.getElementById("btnDesktopForceSync");
       if (scanQueue.length === 0) {
         badge.innerText = "✅ ส่งข้อมูลเข้าชีทครบแล้ว";
-        badge.style.background = "#e8f5e9"; badge.style.color = "#2e7d32";
+        badge.style.background = "#e8f5e9";
+        badge.style.color = "#2e7d32";
         btn.classList.add("hidden");
       } else {
         badge.innerText = (isRetrying ? "🔄 กำลังลองส่งซ้ำ (" : "⏳ รอส่งเป็นชุด (") + scanQueue.length + " รายการ)";
@@ -1103,7 +1449,10 @@
       if (isForceFlushing || scanQueue.length >= BATCH_CONFIG.triggerSize) {
         syncQueueWithServer();
       } else {
-        desktopBatchTimer = setTimeout(function() { desktopBatchTimer = null; syncQueueWithServer(); }, BATCH_CONFIG.waitMs);
+        desktopBatchTimer = setTimeout(function() {
+          desktopBatchTimer = null;
+          syncQueueWithServer();
+        }, BATCH_CONFIG.waitMs);
       }
     }
 
@@ -1117,7 +1466,6 @@
       try {
         var response = await callGasApi({ action: "recordBatch", items: batchItems });
 
-        // กรณีคิวหลังบ้านหนาแน่น -> สุ่มรอแล้วส่งซ้ำโดยไม่ลบคิว
         if (response && response.isBusy) {
           updateDesktopQueueUI(true);
           var jitter = 1500 + Math.floor(Math.random() * 1200);
@@ -1125,20 +1473,18 @@
           return;
         }
 
-        // กรณีเซิร์ฟเวอร์ตอบกลับว่าไม่สำเร็จ (เช่น ยังไม่ได้ Deploy recordBatch) -> ห้ามลบคิวและแจ้งเตือนทันที
         if (!response || !response.success) {
           updateDesktopQueueUI(true);
           isUploading = false;
           isForceFlushing = false;
           M.toast({
-            html: '❌ ส่งข้อมูลไม่สำเร็จ: ' + ((response && response.message) || 'กรุณาตรวจสอบการ Deploy หลังบ้าน'),
-            classes: 'red darken-2 rounded',
+            html: "❌ ส่งข้อมูลไม่สำเร็จ: " + ((response && response.message) || "กรุณาตรวจสอบการ Deploy หลังบ้าน"),
+            classes: "red darken-2 rounded",
             displayLength: 5000
           });
           return;
         }
 
-        // บันทึกสำเร็จจริง -> ลบเฉพาะชุดที่ส่งออกไปแล้ว
         scanQueue.splice(0, batchItems.length);
         saveDesktopQueue();
         isUploading = false;
@@ -1151,13 +1497,13 @@
         } else {
           if (isForceFlushing) {
             isForceFlushing = false;
-            M.toast({ html: '✅ ส่งข้อมูลทั้งหมดเข้า Google Sheets เรียบร้อยแล้ว!', classes: 'green darken-2 rounded' });
+            M.toast({ html: "✅ ส่งข้อมูลทั้งหมดเข้า Google Sheets เรียบร้อยแล้ว!", classes: "green darken-2 rounded" });
           }
           updateDesktopQueueUI(false);
         }
       } catch (err) {
         updateDesktopQueueUI(true);
-        M.toast({ html: '📡 เน็ตหลุด กำลังลองส่งชุดข้อมูลใหม่...', classes: 'orange darken-3 rounded' });
+        M.toast({ html: "📡 เน็ตหลุด กำลังลองส่งชุดข้อมูลใหม่...", classes: "orange darken-3 rounded" });
         setTimeout(function() { isUploading = false; syncQueueWithServer(); }, 3000);
       }
     }
@@ -1169,7 +1515,7 @@
         return;
       }
       tbody.innerHTML = recentScansList.map(function(student, index) {
-        return '<tr class="' + (index === 0 ? "new-row" : "") + '"><td style="color: #1565c0; font-weight: 600;">' + student.time + '</td><td class="grey-text">' + student.id + '</td><td style="font-weight: 600; color: #2e7d32; text-align: left;">' + student.name + '</td><td>' + student.room + '</td></tr>';
+        return '<tr class="' + (index === 0 ? "new-row" : "") + '"><td style="color: #1565c0; font-weight: 600;">' + escapeHtml(student.time) + '</td><td class="grey-text">' + escapeHtml(student.id) + '</td><td style="font-weight: 600; color: #2e7d32; text-align: left;">' + escapeHtml(student.name) + '</td><td>' + escapeHtml(student.room) + '</td></tr>';
       }).join("");
     }
 
@@ -1179,14 +1525,17 @@
       document.getElementById("username").value = "";
       document.getElementById("password").value = "";
       document.getElementById("loginMsg").innerText = "";
-      recentScansList = []; isUploading = false; isForceFlushing = false; localScannedToday = {};
+      recentScansList = [];
+      isUploading = false;
+      isForceFlushing = false;
+      localScannedToday = {};
       updateRecentScansUI();
       goHome();
     }
 
-    // -------------------------------------------------------------------------
-    // 📊 ระบบโหลดข้อมูล Dashboard และสถิติรายระดับชั้น
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 5. ระบบ Dashboard และกราฟสถิติรวม
+    // =========================================================================
     async function ensureFrontendDataLoaded(forceRefresh, loadingElId, callback) {
       if (!forceRefresh && isFrontendDataLoaded && Object.keys(localStudentDB).length > 0) {
         callback();
@@ -1210,12 +1559,12 @@
         callback();
       } catch (err) {
         if (loadEl) loadEl.classList.add("hidden");
-        M.toast({ html: '❌ โหลดข้อมูลไม่สำเร็จ: ' + err.message, classes: 'red darken-2 rounded' });
+        M.toast({ html: "❌ โหลดข้อมูลไม่สำเร็จ: " + err.message, classes: "red darken-2 rounded" });
       }
     }
 
     function refreshAllStatsData(mode) {
-      if (mode === 'dashboard') ensureFrontendDataLoaded(true, "dashLoadingMsg", loadDashboardData);
+      if (mode === "dashboard") ensureFrontendDataLoaded(true, "dashLoadingMsg", loadDashboardData);
       else ensureFrontendDataLoaded(true, "advLoadingMsg", loadAdvancedData);
     }
 
@@ -1248,49 +1597,280 @@
         var logDateString = formatDateStr(logDateObj);
         var logMonthString = ("0" + (logDateObj.getMonth() + 1)).slice(-2) + "/" + logDateObj.getFullYear();
         var gradeStr = log.grade;
-        if (gradeStr && gradeStr.indexOf("ม.") === -1) gradeStr = "ม." + gradeStr.replace(/[^0-9]/g, '');
+        if (gradeStr && gradeStr.indexOf("ม.") === -1) gradeStr = "ม." + gradeStr.replace(/[^0-9]/g, "");
 
-        if (logDateString === searchDateString) { dailyStats.total++; if (dailyStats.grades[gradeStr] !== undefined) dailyStats.grades[gradeStr]++; }
-        if (logDateObj >= startOfWeek && logDateObj <= endOfWeek) { var dayName = dayNames[logDateObj.getDay()]; if (weeklyStats.days[dayName] !== undefined) { weeklyStats.days[dayName]++; weeklyStats.total++; } }
-        if (logMonthString === targetMonthStr) { monthlyTotal++; var weekNum = Math.ceil(logDateObj.getDate() / 7); if (weekNum > 5) weekNum = 5; rawWeeks["สัปดาห์ที่ " + weekNum]++; }
+        if (logDateString === searchDateString) {
+          dailyStats.total++;
+          if (dailyStats.grades[gradeStr] !== undefined) dailyStats.grades[gradeStr]++;
+        }
+        if (logDateObj >= startOfWeek && logDateObj <= endOfWeek) {
+          var dayName = dayNames[logDateObj.getDay()];
+          if (weeklyStats.days[dayName] !== undefined) {
+            weeklyStats.days[dayName]++;
+            weeklyStats.total++;
+          }
+        }
+        if (logMonthString === targetMonthStr) {
+          monthlyTotal++;
+          var weekNum = Math.ceil(logDateObj.getDate() / 7);
+          if (weekNum > 5) weekNum = 5;
+          rawWeeks["สัปดาห์ที่ " + weekNum]++;
+        }
       });
 
-      document.getElementById("displayDailyDate").innerText = searchDateString; document.getElementById("totalDailyCount").innerText = dailyStats.total; renderDailyChart(dailyStats.grades);
-      document.getElementById("displayWeeklyDate").innerText = formatDateStr(startOfWeek) + " ถึง " + formatDateStr(endOfWeek); document.getElementById("totalWeeklyCount").innerText = weeklyStats.total; renderWeeklyChart(weeklyStats.days);
+      document.getElementById("displayDailyDate").innerText = searchDateString;
+      document.getElementById("totalDailyCount").innerText = dailyStats.total;
+      renderDailyChart(dailyStats.grades);
+
+      document.getElementById("displayWeeklyDate").innerText = formatDateStr(startOfWeek) + " ถึง " + formatDateStr(endOfWeek);
+      document.getElementById("totalWeeklyCount").innerText = weeklyStats.total;
+      renderWeeklyChart(weeklyStats.days);
+
       var thaiMonths = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-      document.getElementById("displayMonthlyDate").innerText = thaiMonths[targetDateObj.getMonth()] + " " + (targetDateObj.getFullYear() + 543); document.getElementById("totalMonthlyCount").innerText = monthlyTotal;
+      document.getElementById("displayMonthlyDate").innerText = thaiMonths[targetDateObj.getMonth()] + " " + (targetDateObj.getFullYear() + 543);
+      document.getElementById("totalMonthlyCount").innerText = monthlyTotal;
 
       var lastDay = new Date(targetDateObj.getFullYear(), targetDateObj.getMonth() + 1, 0).getDate();
       var sm = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."][targetDateObj.getMonth()];
-      var monthlyChartData = []; var monthlyChartLabels = []; var maxWeeks = lastDay >= 29 ? 5 : 4;
-      for (var w = 1; w <= maxWeeks; w++) { monthlyChartData.push(rawWeeks["สัปดาห์ที่ " + w] || 0); var dateRange = w === 1 ? "1-7 " : w === 2 ? "8-14 " : w === 3 ? "15-21 " : w === 4 ? "22-28 " : "29-" + lastDay + " "; monthlyChartLabels.push(["สัปดาห์ที่ " + w, "(" + dateRange + sm + ")"]); }
+      var monthlyChartData = [];
+      var monthlyChartLabels = [];
+      var maxWeeks = lastDay >= 29 ? 5 : 4;
+      for (var w = 1; w <= maxWeeks; w++) {
+        monthlyChartData.push(rawWeeks["สัปดาห์ที่ " + w] || 0);
+        var dateRange = w === 1 ? "1-7 " : w === 2 ? "8-14 " : w === 3 ? "15-21 " : w === 4 ? "22-28 " : "29-" + lastDay + " ";
+        monthlyChartLabels.push(["สัปดาห์ที่ " + w, "(" + dateRange + sm + ")"]);
+      }
       renderMonthlyChart(monthlyChartLabels, monthlyChartData);
     }
 
     function renderDailyChart(gradesData) {
-      var ctx = document.getElementById('dailyChart'); var fixedOrder = ["ม.1", "ม.2", "ม.3", "ม.4", "ม.5", "ม.6"]; var dataPoints = fixedOrder.map(function(grade) { return gradesData[grade] || 0; });
-      if (dailyChartInstance) dailyChartInstance.destroy(); Chart.defaults.font.family = "'Sarabun', sans-serif";
-      var gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400); gradient.addColorStop(0, 'rgba(33, 150, 243, 1)'); gradient.addColorStop(1, 'rgba(100, 181, 246, 0.4)');
-      dailyChartInstance = new Chart(ctx, { type: 'bar', data: { labels: fixedOrder, datasets: [{ label: 'จำนวน (รายวัน)', data: dataPoints, backgroundColor: gradient, borderColor: '#1e88e5', borderWidth: 1, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: 'จำนวนนักเรียน (ราย)', font: { size: 13, weight: 'bold' }, color: '#1565c0' } }, x: { grid: { display: false }, title: { display: true, text: 'ระดับชั้นมัธยมศึกษาปีที่', font: { size: 13, weight: 'bold' }, color: '#555' } } }, plugins: { legend: { display: false } } } });
+      var ctx = document.getElementById("dailyChart");
+      var fixedOrder = ["ม.1", "ม.2", "ม.3", "ม.4", "ม.5", "ม.6"];
+      var dataPoints = fixedOrder.map(function(grade) { return gradesData[grade] || 0; });
+      if (dailyChartInstance) dailyChartInstance.destroy();
+      Chart.defaults.font.family = "'Sarabun', sans-serif";
+      var gradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, "rgba(33, 150, 243, 1)");
+      gradient.addColorStop(1, "rgba(100, 181, 246, 0.4)");
+      dailyChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: { labels: fixedOrder, datasets: [{ label: "จำนวน (รายวัน)", data: dataPoints, backgroundColor: gradient, borderColor: "#1e88e5", borderWidth: 1, borderRadius: 6 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: "จำนวนนักเรียน (ราย)", font: { size: 13, weight: "bold" }, color: "#1565c0" } },
+            x: { grid: { display: false }, title: { display: true, text: "ระดับชั้นมัธยมศึกษาปีที่", font: { size: 13, weight: "bold" }, color: "#555" } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
     }
 
     function renderWeeklyChart(daysData) {
-      var ctx = document.getElementById('weeklyChart'); var fixedOrder = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์"]; var dataPoints = fixedOrder.map(function(day) { return daysData[day] || 0; });
-      if (weeklyChartInstance) weeklyChartInstance.destroy(); Chart.defaults.font.family = "'Sarabun', sans-serif";
-      var bgColors = ['rgba(253, 216, 53, 0.8)', 'rgba(240, 98, 146, 0.8)', 'rgba(76, 175, 80, 0.8)', 'rgba(255, 152, 0, 0.8)', 'rgba(33, 150, 243, 0.8)']; var bdColors = ['#fbc02d', '#e91e63', '#388e3c', '#f57c00', '#1976d2'];
-      weeklyChartInstance = new Chart(ctx, { type: 'bar', data: { labels: fixedOrder, datasets: [{ label: 'จำนวนนักเรียน', data: dataPoints, backgroundColor: bgColors, borderColor: bdColors, borderWidth: 1, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: 'จำนวนนักเรียน (ราย)', font: { size: 13, weight: 'bold' }, color: '#ef6c00' } }, x: { grid: { display: false }, title: { display: true, text: 'วันในสัปดาห์', font: { size: 13, weight: 'bold' }, color: '#555' } } }, plugins: { legend: { display: false } } } });
+      var ctx = document.getElementById("weeklyChart");
+      var fixedOrder = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์"];
+      var dataPoints = fixedOrder.map(function(day) { return daysData[day] || 0; });
+      if (weeklyChartInstance) weeklyChartInstance.destroy();
+      Chart.defaults.font.family = "'Sarabun', sans-serif";
+      var bgColors = ["rgba(253, 216, 53, 0.8)", "rgba(240, 98, 146, 0.8)", "rgba(76, 175, 80, 0.8)", "rgba(255, 152, 0, 0.8)", "rgba(33, 150, 243, 0.8)"];
+      var bdColors = ["#fbc02d", "#e91e63", "#388e3c", "#f57c00", "#1976d2"];
+      weeklyChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: { labels: fixedOrder, datasets: [{ label: "จำนวนนักเรียน", data: dataPoints, backgroundColor: bgColors, borderColor: bdColors, borderWidth: 1, borderRadius: 6 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: "จำนวนนักเรียน (ราย)", font: { size: 13, weight: "bold" }, color: "#ef6c00" } },
+            x: { grid: { display: false }, title: { display: true, text: "วันในสัปดาห์", font: { size: 13, weight: "bold" }, color: "#555" } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
     }
 
     function renderMonthlyChart(labels, dataPoints) {
-      var ctx = document.getElementById('monthlyChart'); if (monthlyChartInstance) monthlyChartInstance.destroy(); Chart.defaults.font.family = "'Sarabun', sans-serif";
-      var gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400); gradient.addColorStop(0, 'rgba(156, 39, 176, 0.9)'); gradient.addColorStop(1, 'rgba(206, 147, 216, 0.4)');
-      monthlyChartInstance = new Chart(ctx, { type: 'bar', data: { labels: labels, datasets: [{ label: 'จำนวนนักเรียน', data: dataPoints, backgroundColor: gradient, borderColor: '#8e24aa', borderWidth: 1, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: 'จำนวนนักเรียน (ราย)', font: { size: 13, weight: 'bold' }, color: '#6a1b9a' } }, x: { grid: { display: false } } }, plugins: { legend: { display: false } } } });
+      var ctx = document.getElementById("monthlyChart");
+      if (monthlyChartInstance) monthlyChartInstance.destroy();
+      Chart.defaults.font.family = "'Sarabun', sans-serif";
+      var gradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, "rgba(156, 39, 176, 0.9)");
+      gradient.addColorStop(1, "rgba(206, 147, 216, 0.4)");
+      monthlyChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: { labels: labels, datasets: [{ label: "จำนวนนักเรียน", data: dataPoints, backgroundColor: gradient, borderColor: "#8e24aa", borderWidth: 1, borderRadius: 6 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: "จำนวนนักเรียน (ราย)", font: { size: 13, weight: "bold" }, color: "#6a1b9a" } },
+            x: { grid: { display: false } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    // =========================================================================
+    // 6. ระบบสถิติตามระดับชั้น & ดาวน์โหลด Excel
+    // =========================================================================
+    function showAdvanced() {
+      document.getElementById("loginSection").classList.add("hidden");
+      document.getElementById("advancedSection").classList.remove("hidden");
+      updateRoomDropdown();
+      ensureFrontendDataLoaded(false, "advLoadingMsg", loadAdvancedData);
+    }
+
+    function updateRoomDropdown() {
+      var grade = document.getElementById("advGrade").value;
+      var roomSelect = document.getElementById("advRoom");
+      roomSelect.innerHTML = '<option value="ทั้งหมด">รวมทุกห้อง</option>';
+      if (grade !== "ทั้งหมด") {
+        for (var i = 1; i <= 14; i++) {
+          roomSelect.innerHTML += '<option value="' + grade + '/' + i + '">' + grade + '/' + i + '</option>';
+        }
+      }
+      if (advancedRawList.length > 0) loadAdvancedData();
+    }
+
+    function loadAdvancedData() {
+      var dateVal = document.getElementById("advDatePicker").value;
+      var gradeVal = document.getElementById("advGrade").value;
+      var roomVal = document.getElementById("advRoom").value;
+      document.getElementById("advSearchInput").value = "";
+
+      var targetDate = dateVal ? new Date(dateVal) : new Date();
+      var targetDayString = ("0" + targetDate.getDate()).slice(-2) + "/" + ("0" + (targetDate.getMonth() + 1)).slice(-2) + "/" + targetDate.getFullYear();
+
+      var latesMap = {};
+      var lateTodayMap = {};
+      var lateTimeMap = {};
+      localLogsDB.forEach(function(log) {
+        var logDateObj = new Date(log.time);
+        var logDayStr = ("0" + logDateObj.getDate()).slice(-2) + "/" + ("0" + (logDateObj.getMonth() + 1)).slice(-2) + "/" + logDateObj.getFullYear();
+        latesMap[log.id] = (latesMap[log.id] || 0) + 1;
+        if (logDayStr === targetDayString && !lateTodayMap[log.id]) {
+          lateTodayMap[log.id] = true;
+          lateTimeMap[log.id] = logDateObj;
+        }
+      });
+
+      var filteredStudents = [];
+      var dailyCount = 0;
+      var seenIds = {};
+      for (var key in localStudentDB) {
+        var student = localStudentDB[key];
+        if (!student || seenIds[student.id]) continue;
+        seenIds[student.id] = true;
+        var id = student.id;
+        var fullClassroom = student.grade + "/" + student.room;
+
+        if ((gradeVal === "ทั้งหมด" || student.grade === gradeVal) && (roomVal === "ทั้งหมด" || fullClassroom === roomVal)) {
+          var isLateToday = !!lateTodayMap[id];
+          var lateType = 0;
+          if (isLateToday) {
+            dailyCount++;
+            var scanTime = lateTimeMap[id];
+            var timeInMin = scanTime.getHours() * 60 + scanTime.getMinutes();
+            lateType = (timeInMin <= 510) ? 1 : 2;
+          }
+          var finalProfileUrl = (student.qrUrl && student.qrUrl.toString().trim() !== "")
+            ? student.qrUrl.toString().trim()
+            : ("https://scs.wpt.ac.th/admin/students/qrcode.php?id=" + id);
+
+          filteredStudents.push({
+            id: id, number: student.number, name: student.name, grade: student.grade, room: student.room,
+            fullClassroom: fullClassroom, totalLates: latesMap[id] || 0,
+            lateToday: isLateToday, lateType: lateType, profileUrl: finalProfileUrl
+          });
+        }
+      }
+
+      document.getElementById("advDailyCount").innerText = dailyCount;
+      document.getElementById("advDisplayDate").innerText = targetDayString;
+      advancedRawList = filteredStudents;
+      advancedDefaultSortType = gradeVal === "ทั้งหมด" ? "all" : (roomVal === "ทั้งหมด" ? "grade" : "room");
+      advCurrentPage = 1;
+      applySortAndPagination();
+    }
+
+    function applySortAndPagination() {
+      var statusValue = document.getElementById("advFilterStatus").value;
+      var sortValue = document.getElementById("advSort").value;
+      var pageSize = parseInt(document.getElementById("advPageSize").value, 10);
+      var searchValue = document.getElementById("advSearchInput").value.trim();
+
+      var filteredList = advancedRawList.filter(function(student) {
+        var matchStatus = statusValue === "all" || (statusValue === "late" && student.lateToday) || (statusValue === "ontime" && !student.lateToday);
+        var matchSearch = searchValue === "" || student.id.toString().indexOf(searchValue) !== -1;
+        return matchStatus && matchSearch;
+      });
+
+      filteredList.sort(function(a, b) {
+        if (sortValue === "num_asc") return a.number - b.number;
+        if (sortValue === "num_desc") return b.number - a.number;
+        if (sortValue === "lates_desc") return (b.totalLates !== a.totalLates) ? (b.totalLates - a.totalLates) : (a.number - b.number);
+        if (advancedDefaultSortType === "all") {
+          if (a.grade !== b.grade) return a.grade.localeCompare(b.grade, "th");
+          if (a.room !== b.room) return a.room.localeCompare(b.room, "th", { numeric: true });
+          return a.number - b.number;
+        }
+        if (advancedDefaultSortType === "grade") {
+          if (a.room !== b.room) return a.room.localeCompare(b.room, "th", { numeric: true });
+          return a.number - b.number;
+        }
+        return a.number - b.number;
+      });
+
+      var totalRows = filteredList.length;
+      document.getElementById("totalRowsInfo").innerHTML = '<b style="color:#e65100;">ค้นพบทั้งหมด ' + totalRows + ' รายการ</b>';
+      var totalPages = Math.ceil(totalRows / pageSize) || 1;
+      if (advCurrentPage > totalPages) advCurrentPage = totalPages;
+      if (advCurrentPage < 1) advCurrentPage = 1;
+
+      document.getElementById("advPageInfo").innerText = "หน้า " + advCurrentPage + " / " + totalPages;
+      document.getElementById("btnPrevPage").disabled = (advCurrentPage === 1);
+      document.getElementById("btnNextPage").disabled = (advCurrentPage === totalPages);
+
+      var paginatedList = filteredList.slice((advCurrentPage - 1) * pageSize, advCurrentPage * pageSize);
+      var tbody = document.getElementById("advTableBody");
+      if (paginatedList.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='7' class='center-align grey-text' style='padding: 30px; font-size: 1.1rem;'>ไม่พบรายชื่อนักเรียนที่ตรงกับการค้นหา</td></tr>";
+        return;
+      }
+
+      tbody.innerHTML = paginatedList.map(function(student) {
+        var totalBadge = student.totalLates >= 3
+          ? '<span style="font-weight:bold; font-size: 1.1rem; color: #c62828; background-color: #ffebee; padding: 3px 12px; border-radius: 12px; border: 1px solid #ef9a9a;">' + student.totalLates + '</span>'
+          : '<span style="font-weight:bold; font-size: 1.1rem; color: #1565c0;">' + student.totalLates + '</span>';
+        var todayStatus = '<span style="color:#9e9e9e; font-weight:bold;">-</span>';
+        if (student.lateToday) {
+          todayStatus = '<span style="color:#c62828; font-weight:bold; background-color: #ffebee; padding: 4px 10px; border-radius: 8px;">' + (student.lateType === 1 ? "ไม่ทันเข้าแถว" : "ไม่ทันเข้าเรียน") + '</span>';
+        }
+        return '<tr>' +
+          '<td style="font-weight:bold;">' + escapeHtml(student.number || "-") + '</td>' +
+          '<td class="grey-text">' + escapeHtml(student.id) + '</td>' +
+          '<td style="font-weight: 500; text-align: left;">' + escapeHtml(student.name) + '</td>' +
+          '<td>' + escapeHtml(student.fullClassroom) + '</td>' +
+          '<td class="center-align">' + totalBadge + '</td>' +
+          '<td class="center-align">' + todayStatus + '</td>' +
+          '<td class="center-align"><a href="' + escapeHtml(student.profileUrl) + '" target="_blank" class="btn-small blue lighten-1 waves-effect" style="padding: 0 10px; border-radius: 50%;">🔍</a></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    function changePage(direction) {
+      advCurrentPage += direction;
+      applySortAndPagination();
     }
 
     function openReportAuth() {
-      document.getElementById("reportUser").value = ""; document.getElementById("reportPass").value = ""; document.getElementById("reportAuthMsg").innerText = "";
+      document.getElementById("reportUser").value = "";
+      document.getElementById("reportPass").value = "";
+      document.getElementById("reportAuthMsg").innerText = "";
       if (typeof M !== "undefined" && M.updateTextFields) M.updateTextFields();
-      var modalEl = document.getElementById('reportAuthModal');
+      var modalEl = document.getElementById("reportAuthModal");
       var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
       instance.open();
     }
@@ -1307,7 +1887,8 @@
 
       if (!user || !pass) { msgDiv.innerText = "กรุณากรอกชื่อผู้ใช้งานและรหัสผ่าน"; return; }
       btn.disabled = true;
-      msgDiv.innerText = "กำลังประมวลผลข้อมูล และจัดเตรียมไฟล์ Excel..."; msgDiv.className = "blue-text text-darken-2";
+      msgDiv.innerText = "กำลังประมวลผลข้อมูล และจัดเตรียมไฟล์ Excel...";
+      msgDiv.className = "blue-text text-darken-2";
 
       try {
         var response = await callGasApi({
@@ -1317,124 +1898,34 @@
         });
         btn.disabled = false;
         if (response.success) {
-          var modalEl = document.getElementById('reportAuthModal');
+          var modalEl = document.getElementById("reportAuthModal");
           var instance = M.Modal.getInstance(modalEl);
           if (instance) instance.close();
-          M.toast({ html: 'สร้าง Excel สำเร็จ! กำลังดาวน์โหลดลงเครื่อง...', classes: 'green darken-2 rounded', displayLength: 5000 });
+          M.toast({ html: "สร้าง Excel สำเร็จ! กำลังดาวน์โหลดลงเครื่อง...", classes: "green darken-2 rounded", displayLength: 5000 });
           var binaryString = window.atob(response.fileData);
           var bytes = new Uint8Array(binaryString.length);
           for (var i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
           var blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-          var link = document.createElement('a'); link.href = window.URL.createObjectURL(blob); link.download = response.fileName;
-          document.body.appendChild(link); link.click(); document.body.removeChild(link);
+          var link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = response.fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         } else {
-          msgDiv.innerText = response.message || "ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง"; msgDiv.className = "red-text";
+          msgDiv.innerText = response.message || "ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง";
+          msgDiv.className = "red-text";
         }
       } catch (err) {
         btn.disabled = false;
-        msgDiv.innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อ: " + err.message; msgDiv.className = "red-text";
+        msgDiv.innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อ: " + err.message;
+        msgDiv.className = "red-text";
       }
     }
 
-    function showAdvanced() {
-      document.getElementById("loginSection").classList.add("hidden");
-      document.getElementById("advancedSection").classList.remove("hidden");
-      updateRoomDropdown();
-      ensureFrontendDataLoaded(false, "advLoadingMsg", loadAdvancedData);
-    }
-
-    function updateRoomDropdown() {
-      var grade = document.getElementById("advGrade").value;
-      var roomSelect = document.getElementById("advRoom");
-      roomSelect.innerHTML = '<option value="ทั้งหมด">รวมทุกห้อง</option>';
-      if (grade !== "ทั้งหมด") { for (var i = 1; i <= 14; i++) roomSelect.innerHTML += '<option value="' + grade + '/' + i + '">' + grade + '/' + i + '</option>'; }
-      if (advancedRawList.length > 0) loadAdvancedData();
-    }
-
-    function loadAdvancedData() {
-      var dateVal = document.getElementById("advDatePicker").value; var gradeVal = document.getElementById("advGrade").value; var roomVal = document.getElementById("advRoom").value;
-      document.getElementById("advSearchInput").value = "";
-      var targetDate = dateVal ? new Date(dateVal) : new Date();
-      var targetDayString = ("0" + targetDate.getDate()).slice(-2) + "/" + ("0" + (targetDate.getMonth() + 1)).slice(-2) + "/" + targetDate.getFullYear();
-
-      var latesMap = {}; var lateTodayMap = {}; var lateTimeMap = {};
-      localLogsDB.forEach(function(log) {
-        var logDateObj = new Date(log.time);
-        var logDayStr = ("0" + logDateObj.getDate()).slice(-2) + "/" + ("0" + (logDateObj.getMonth() + 1)).slice(-2) + "/" + logDateObj.getFullYear();
-        latesMap[log.id] = (latesMap[log.id] || 0) + 1;
-        if (logDayStr === targetDayString && !lateTodayMap[log.id]) { lateTodayMap[log.id] = true; lateTimeMap[log.id] = logDateObj; }
-      });
-
-      var filteredStudents = []; var dailyCount = 0; var seenIds = {};
-      for (var key in localStudentDB) {
-        var student = localStudentDB[key];
-        if (!student || seenIds[student.id]) continue;
-        seenIds[student.id] = true;
-        var id = student.id; var fullClassroom = student.grade + "/" + student.room;
-        if ((gradeVal === "ทั้งหมด" || student.grade === gradeVal) && (roomVal === "ทั้งหมด" || fullClassroom === roomVal)) {
-          var isLateToday = !!lateTodayMap[id]; var lateType = 0;
-          if (isLateToday) {
-            dailyCount++; var scanTime = lateTimeMap[id];
-            var timeInMin = scanTime.getHours() * 60 + scanTime.getMinutes();
-            lateType = (timeInMin <= 510) ? 1 : 2;
-          }
-          // ใช้ลิงก์จากคอลัมน์ F ในชีท Students เป็นหลัก (หากว่างจึงใช้ลิงก์สำรอง)
-          var finalProfileUrl = (student.qrUrl && student.qrUrl.toString().trim() !== "")
-            ? student.qrUrl.toString().trim()
-            : ("https://scs.wpt.ac.th/admin/students/qrcode.php?id=" + id);
-
-          filteredStudents.push({
-            id: id, number: student.number, name: student.name, grade: student.grade, room: student.room,
-            fullClassroom: fullClassroom, totalLates: latesMap[id] || 0,
-            lateToday: isLateToday, lateType: lateType, profileUrl: finalProfileUrl
-          });
-        }
-      }
-
-      document.getElementById("advDailyCount").innerText = dailyCount; document.getElementById("advDisplayDate").innerText = targetDayString;
-      advancedRawList = filteredStudents; advancedDefaultSortType = gradeVal === "ทั้งหมด" ? "all" : (roomVal === "ทั้งหมด" ? "grade" : "room"); advCurrentPage = 1;
-      applySortAndPagination();
-    }
-
-    function applySortAndPagination() {
-      var statusValue = document.getElementById("advFilterStatus").value; var sortValue = document.getElementById("advSort").value; var pageSize = parseInt(document.getElementById("advPageSize").value); var searchValue = document.getElementById("advSearchInput").value.trim();
-
-      var filteredList = advancedRawList.filter(function(student) {
-        var matchStatus = statusValue === "all" || (statusValue === "late" && student.lateToday) || (statusValue === "ontime" && !student.lateToday);
-        var matchSearch = searchValue === "" || student.id.toString().indexOf(searchValue) !== -1;
-        return matchStatus && matchSearch;
-      });
-
-      filteredList.sort(function(a, b) {
-        if (sortValue === "num_asc") return a.number - b.number;
-        if (sortValue === "num_desc") return b.number - a.number;
-        if (sortValue === "lates_desc") return (b.totalLates !== a.totalLates) ? (b.totalLates - a.totalLates) : (a.number - b.number);
-        if (advancedDefaultSortType === "all") { if (a.grade !== b.grade) return a.grade.localeCompare(b.grade, 'th'); if (a.room !== b.room) return a.room.localeCompare(b.room, 'th', { numeric: true }); return a.number - b.number; }
-        if (advancedDefaultSortType === "grade") { if (a.room !== b.room) return a.room.localeCompare(b.room, 'th', { numeric: true }); return a.number - b.number; }
-        return a.number - b.number;
-      });
-
-      var totalRows = filteredList.length; document.getElementById("totalRowsInfo").innerHTML = '<b style="color:#e65100;">ค้นพบทั้งหมด ' + totalRows + ' รายการ</b>';
-      var totalPages = Math.ceil(totalRows / pageSize) || 1; if (advCurrentPage > totalPages) advCurrentPage = totalPages; if (advCurrentPage < 1) advCurrentPage = 1;
-      document.getElementById("advPageInfo").innerText = "หน้า " + advCurrentPage + " / " + totalPages; document.getElementById("btnPrevPage").disabled = (advCurrentPage === 1); document.getElementById("btnNextPage").disabled = (advCurrentPage === totalPages);
-
-      var paginatedList = filteredList.slice((advCurrentPage - 1) * pageSize, advCurrentPage * pageSize);
-      var tbody = document.getElementById("advTableBody");
-      if (paginatedList.length === 0) { tbody.innerHTML = "<tr><td colspan='7' class='center-align grey-text' style='padding: 30px; font-size: 1.1rem;'>ไม่พบรายชื่อนักเรียนที่ตรงกับการค้นหา</td></tr>"; return; }
-
-      tbody.innerHTML = paginatedList.map(function(student) {
-        var totalBadge = student.totalLates >= 3 ? '<span style="font-weight:bold; font-size: 1.1rem; color: #c62828; background-color: #ffebee; padding: 3px 12px; border-radius: 12px; border: 1px solid #ef9a9a;">' + student.totalLates + '</span>' : '<span style="font-weight:bold; font-size: 1.1rem; color: #1565c0;">' + student.totalLates + '</span>';
-        var todayStatus = '<span style="color:#9e9e9e; font-weight:bold;">-</span>';
-        if (student.lateToday) { todayStatus = '<span style="color:#c62828; font-weight:bold; background-color: #ffebee; padding: 4px 10px; border-radius: 8px;">' + (student.lateType === 1 ? 'ไม่ทันเข้าแถว' : 'ไม่ทันเข้าเรียน') + '</span>'; }
-        return '<tr><td style="font-weight:bold;">' + (student.number || "-") + '</td><td class="grey-text">' + student.id + '</td><td style="font-weight: 500; text-align: left;">' + student.name + '</td><td>' + student.fullClassroom + '</td><td class="center-align">' + totalBadge + '</td><td class="center-align">' + todayStatus + '</td><td class="center-align"><a href="' + student.profileUrl + '" target="_blank" class="btn-small blue lighten-1 waves-effect" style="padding: 0 10px; border-radius: 50%;">🔍</a></td></tr>';
-      }).join("");
-    }
-
-    function changePage(direction) { advCurrentPage += direction; applySortAndPagination(); }
-
-    // -------------------------------------------------------------------------
-    // ⚙️ ระบบยืนยันสิทธิ์ Admin & หน้าตั้งค่า (ตรวจสอบสิทธิ์หลังบ้านทุกคำสั่ง)
-    // -------------------------------------------------------------------------
+    // =========================================================================
+    // 7. ระบบยืนยันสิทธิ์ Admin & การตั้งค่าระบบ (เรียงตามแท็บ 1 ถึง 8)
+    // =========================================================================
     function showAdminAuth() {
       document.getElementById("loginSection").classList.add("hidden");
       document.getElementById("adminAuthSection").classList.remove("hidden");
@@ -1480,19 +1971,6 @@
       if (panelId === "tabStudentsManage") setTimeout(function() { document.getElementById("regStuQrOrId").focus(); }, 100);
     }
 
-    var staffListCache = [];
-
-    // ป้องกันอักขระพิเศษทำให้ตาราง HTML เพี้ยน
-    function escapeHtml(str) {
-      if (str === null || str === undefined) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-    }
-
     async function loadSettingsInitData() {
       try {
         var res = await callGasApi({ action: "getSettingsInitData", adminPassword: currentAdminPassword });
@@ -1502,9 +1980,258 @@
           populateAdvisorSettingsUI();
         }
       } catch (e) {}
-      loadStaffList(); // โหลดตารางเจ้าหน้าที่เตรียมไว้ทันทีเมื่อเข้าหน้าตั้งค่า
+      loadStaffList();
     }
 
+    // -------------------------------------------------------------------------
+    // แท็บ 1-2: ภาคเรียน & ตาราง 20 สัปดาห์ (ยืนยันรหัส Admin ซ้ำก่อนบันทึก)
+    // -------------------------------------------------------------------------
+    function openSemesterConfirmModal() {
+      var sem = document.getElementById("setSemester").value;
+      var year = document.getElementById("setAcademicYear").value.trim();
+      var startDate = document.getElementById("setStartDate").value;
+      var resetChk = document.getElementById("chkResetCheckboxes").checked;
+      var resetLogs = document.getElementById("chkResetLogs").checked;
+      var msgDiv = document.getElementById("semStatusMsg");
+
+      if (!year) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "กรุณาระบุปีการศึกษา เช่น 2569";
+        return;
+      }
+
+      var summaryHtml = "กำลังจะบันทึก: <b>ภาคเรียนที่ " + escapeHtml(sem) + " ปีการศึกษา " + escapeHtml(year) + "</b>";
+      if (startDate) summaryHtml += "<br>วันเปิดภาคเรียน: <b>" + escapeHtml(startDate) + "</b>";
+      if (resetChk || resetLogs) {
+        summaryHtml += '<br><span style="color:#d32f2f; font-weight:700;">⚠️ คำเตือน: มีการเลือก "ล้างข้อมูลเดิม" ร่วมด้วย กรุณาตรวจสอบให้แน่ใจก่อนยืนยัน</span>';
+      }
+
+      document.getElementById("confirmSemSummary").innerHTML = summaryHtml;
+      document.getElementById("confirmSemAdminPass").value = "";
+      document.getElementById("confirmSemAuthMsg").innerText = "";
+
+      var modalEl = document.getElementById("confirmSemesterModal");
+      var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
+      instance.open();
+      setTimeout(function() { document.getElementById("confirmSemAdminPass").focus(); }, 200);
+    }
+
+    async function confirmAndSaveSemesterAndSchedule() {
+      var confirmPass = document.getElementById("confirmSemAdminPass").value.trim();
+      var modalMsg = document.getElementById("confirmSemAuthMsg");
+      var btn = document.getElementById("btnConfirmSaveSem");
+      var msgDiv = document.getElementById("semStatusMsg");
+
+      if (!confirmPass) {
+        modalMsg.innerText = "กรุณากรอกรหัสผ่านผู้ดูแลระบบเพื่อยืนยัน";
+        return;
+      }
+
+      var sem = document.getElementById("setSemester").value;
+      var year = document.getElementById("setAcademicYear").value.trim();
+      var startDate = document.getElementById("setStartDate").value;
+      var resetChk = document.getElementById("chkResetCheckboxes").checked;
+      var resetLogs = document.getElementById("chkResetLogs").checked;
+
+      btn.disabled = true;
+      modalMsg.className = "blue-text";
+      modalMsg.innerText = "⌛ กำลังตรวจสอบรหัสผ่านและบันทึกข้อมูล 84 ห้อง กรุณารอสักครู่...";
+
+      try {
+        var res = await callGasApi({
+          action: "saveSemesterAndSchedule",
+          adminPassword: confirmPass,
+          semester: sem,
+          academicYear: year,
+          startDate: startDate,
+          resetCheckboxes: resetChk,
+          resetLogs: resetLogs
+        });
+
+        btn.disabled = false;
+        if (res.authError) {
+          modalMsg.className = "red-text";
+          modalMsg.innerText = "❌ รหัสผ่านผู้ดูแลระบบไม่ถูกต้อง กรุณาลองใหม่";
+          return;
+        }
+
+        var modalEl = document.getElementById("confirmSemesterModal");
+        var instance = M.Modal.getInstance(modalEl);
+        if (instance) instance.close();
+
+        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
+        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
+        if (res.success) {
+          document.getElementById("chkResetCheckboxes").checked = false;
+          document.getElementById("chkResetLogs").checked = false;
+          isFrontendDataLoaded = false;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        modalMsg.className = "red-text";
+        modalMsg.innerText = "❌ เกิดข้อผิดพลาด: " + err.message;
+      }
+    }
+
+    async function doRestoreRow45Formulas() {
+      var msgDiv = document.getElementById("semStatusMsg");
+      var btn = document.getElementById("btnRestoreRow45");
+      if (btn) btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังซ่อมแซมแถวที่ 45 ในชีท 1/1 – 6/14...";
+      try {
+        var res = await callGasApi({ action: "restoreRow45SummaryFormulas", adminPassword: currentAdminPassword });
+        if (btn) btn.disabled = false;
+        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
+        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
+      } catch (err) {
+        if (btn) btn.disabled = false;
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // แท็บ 3: ปฏิทินกิจกรรม (+ Export / Import Excel)
+    // -------------------------------------------------------------------------
+    async function doSaveActivity() {
+      var actDate = document.getElementById("actDateInput").value;
+      var actName = document.getElementById("actNameInput").value.trim();
+      var msgDiv = document.getElementById("actStatusMsg");
+      if (!actDate || !actName) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "กรุณาเลือกวันเดือนปีและระบุชื่อกิจกรรมให้ครบถ้วน";
+        return;
+      }
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังบันทึกปฏิทินกิจกรรมและกระจายลงแถวที่ 46...";
+      try {
+        var res = await callGasApi({ action: "addActivityToCalendar", adminPassword: currentAdminPassword, dateStr: actDate, activityName: actName });
+        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
+        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
+        if (res.success) {
+          document.getElementById("actNameInput").value = "";
+          if (res.activities) { settingsDB.activities = res.activities; renderActivityTable(); }
+        }
+      } catch (err) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
+    }
+
+    function renderActivityTable() {
+      var tbody = document.getElementById("activityTableBody");
+      if (!settingsDB.activities || settingsDB.activities.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2" class="center-align grey-text">ยังไม่มีรายการกิจกรรม</td></tr>';
+        return;
+      }
+      tbody.innerHTML = settingsDB.activities.map(function(item) {
+        return '<tr><td style="font-weight: 600; color: #00695c;">' + escapeHtml(item.date) + '</td><td>' + escapeHtml(item.name) + '</td></tr>';
+      }).join("");
+    }
+
+    function exportActivitiesExcel() {
+      if (typeof XLSX === "undefined") {
+        M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
+        return;
+      }
+
+      var rows = [["วันเดือนปี (DD/MM/YYYY)", "ชื่อกิจกรรม"]];
+      if (settingsDB.activities && settingsDB.activities.length > 0) {
+        settingsDB.activities.forEach(function(item) {
+          rows.push([item.date || "", item.name || ""]);
+        });
+      } else {
+        var d = new Date();
+        var sampleDate = ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + (d.getFullYear() + 543);
+        rows.push([sampleDate, "ตัวอย่างกิจกรรม (สามารถลบแถวนี้แล้วกรอกใหม่ได้)"]);
+      }
+
+      var ws = XLSX.utils.aoa_to_sheet(rows);
+      ws["!cols"] = [{ wch: 24 }, { wch: 45 }];
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "ปฏิทินกิจกรรม");
+      XLSX.writeFile(wb, EXPORT_FILE_CONFIG.activityPrefix + getLocalTodayIso() + ".xlsx");
+      M.toast({ html: "✅ ดาวน์โหลดไฟล์ Excel ปฏิทินกิจกรรมสำเร็จ!", classes: "green darken-2 rounded" });
+    }
+
+    function handleImportActivitiesFile(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      var file = inputEl.files[0];
+      var msgDiv = document.getElementById("actStatusMsg");
+      var btn = document.getElementById("btnImportActivities");
+      var replaceAll = document.getElementById("chkReplaceActivitiesOnImport") ? document.getElementById("chkReplaceActivitiesOnImport").checked : false;
+
+      if (replaceAll && !confirm("⚠️ คุณเลือก 'ล้างปฏิทินกิจกรรมเดิมทั้งหมดก่อนนำเข้า'\nยืนยันดำเนินการใช่หรือไม่?")) {
+        inputEl.value = "";
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "📂 กำลังอ่านไฟล์ปฏิทินกิจกรรม...";
+
+      readUploadedSheetFile(file, async function(err, rows) {
+        inputEl.value = "";
+        if (err || !rows) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ อ่านไฟล์ไม่สำเร็จ: " + err;
+          return;
+        }
+
+        var itemsToSend = [];
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i];
+          if (!r || r.length < 2) continue;
+          var col0 = r[0];
+          var col1 = r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "";
+
+          if (typeof col0 === "string" && (col0.indexOf("วัน") !== -1 || col0.toLowerCase().indexOf("date") !== -1)) continue;
+          if (!col1) continue;
+
+          var dateIso = parseAnyExcelDateToIso(col0);
+          if (dateIso) itemsToSend.push({ dateIso: dateIso, name: col1 });
+        }
+
+        if (itemsToSend.length === 0) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "⚠️ ไม่พบข้อมูลวันที่และชื่อกิจกรรมที่ถูกต้องในไฟล์ (คอลัมน์ A=วันเดือนปี, คอลัมน์ B=ชื่อกิจกรรม)";
+          return;
+        }
+
+        msgDiv.innerText = "⌛ กำลังนำเข้าปฏิทินกิจกรรม " + itemsToSend.length + " รายการ และอัปเดตแถวที่ 46 ทุกห้องเรียน...";
+        try {
+          var res = await callGasApi({
+            action: "importActivitiesBatch",
+            adminPassword: currentAdminPassword,
+            items: itemsToSend,
+            replaceAll: replaceAll
+          });
+          btn.disabled = false;
+          if (res && res.success) {
+            msgDiv.className = "center-align green-text text-darken-2";
+            msgDiv.innerText = "✅ " + res.message;
+            if (res.activities) { settingsDB.activities = res.activities; renderActivityTable(); }
+            if (document.getElementById("chkReplaceActivitiesOnImport")) {
+              document.getElementById("chkReplaceActivitiesOnImport").checked = false;
+            }
+          } else {
+            msgDiv.className = "center-align red-text text-darken-2";
+            msgDiv.innerText = "❌ " + ((res && res.message) || "นำเข้าไม่สำเร็จ");
+          }
+        } catch (apiErr) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้: " + apiErr.message;
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // แท็บ 4: ระบบจัดการและลงทะเบียนเจ้าหน้าที่ (ดู / เพิ่ม / แก้ไข / ลบ)
+    // -------------------------------------------------------------------------
     async function loadStaffList() {
       var tbody = document.getElementById("staffTableBody");
       if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="center-align blue-text">⏳ กำลังโหลดข้อมูลเจ้าหน้าที่...</td></tr>';
@@ -1547,11 +2274,17 @@
       var user = document.getElementById("newStaffUsername").value.trim();
       var pass = document.getElementById("newStaffPassword").value.trim();
       var regMsg = document.getElementById("regMsg");
-      if (!name || !user || !pass) { regMsg.innerText = "กรุณากรอกข้อมูลเจ้าหน้าที่ให้ครบถ้วนทุกช่อง"; regMsg.className = "center-align orange-text text-darken-3"; return; }
-      regMsg.innerText = "กำลังบันทึกข้อมูลเจ้าหน้าที่..."; regMsg.className = "center-align blue-text";
+      if (!name || !user || !pass) {
+        regMsg.innerText = "กรุณากรอกข้อมูลเจ้าหน้าที่ให้ครบถ้วนทุกช่อง";
+        regMsg.className = "center-align orange-text text-darken-3";
+        return;
+      }
+      regMsg.innerText = "กำลังบันทึกข้อมูลเจ้าหน้าที่...";
+      regMsg.className = "center-align blue-text";
       try {
         var res = await callGasApi({ action: "registerStaff", adminPassword: currentAdminPassword, username: user, password: pass, name: name });
-        regMsg.innerText = res.message; regMsg.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
+        regMsg.innerText = res.message;
+        regMsg.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         if (res.success) {
           document.getElementById("newStaffName").value = "";
           document.getElementById("newStaffUsername").value = "";
@@ -1559,7 +2292,10 @@
           if (res.list) { staffListCache = res.list; renderStaffTable(); }
           else { loadStaffList(); }
         }
-      } catch (err) { regMsg.innerText = "❌ " + err.message; regMsg.className = "center-align red-text text-darken-2"; }
+      } catch (err) {
+        regMsg.innerText = "❌ " + err.message;
+        regMsg.className = "center-align red-text text-darken-2";
+      }
     }
 
     function openEditStaffModal(idx) {
@@ -1657,134 +2393,34 @@
       }
     }
 
-    // เปิดหน้าต่างถามรหัสผ่าน Admin ซ้ำก่อนบันทึกภาคเรียนและตาราง 20 สัปดาห์
-    function openSemesterConfirmModal() {
-      var sem = document.getElementById("setSemester").value;
-      var year = document.getElementById("setAcademicYear").value.trim();
-      var startDate = document.getElementById("setStartDate").value;
-      var resetChk = document.getElementById("chkResetCheckboxes").checked;
-      var resetLogs = document.getElementById("chkResetLogs").checked;
-      var msgDiv = document.getElementById("semStatusMsg");
-
-      if (!year) {
-        msgDiv.className = "center-align red-text text-darken-2";
-        msgDiv.innerText = "กรุณาระบุปีการศึกษา เช่น 2569";
-        return;
-      }
-
-      var summaryHtml = "กำลังจะบันทึก: <b>ภาคเรียนที่ " + sem + " ปีการศึกษา " + year + "</b>";
-      if (startDate) summaryHtml += "<br>วันเปิดภาคเรียน: <b>" + startDate + "</b>";
-      if (resetChk || resetLogs) {
-        summaryHtml += '<br><span style="color:#d32f2f; font-weight:700;">⚠️ คำเตือน: มีการเลือก "ล้างข้อมูลเดิม" ร่วมด้วย กรุณาตรวจสอบให้แน่ใจก่อนยืนยัน</span>';
-      }
-
-      document.getElementById("confirmSemSummary").innerHTML = summaryHtml;
-      document.getElementById("confirmSemAdminPass").value = "";
-      document.getElementById("confirmSemAuthMsg").innerText = "";
-
-      var modalEl = document.getElementById("confirmSemesterModal");
-      var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
-      instance.open();
-      setTimeout(function() { document.getElementById("confirmSemAdminPass").focus(); }, 200);
-    }
-
-    // ตรวจสอบรหัสผ่านที่กรอกใหม่กับหลังบ้าน แล้วจึงบันทึกภาคเรียน
-    async function confirmAndSaveSemesterAndSchedule() {
-      var confirmPass = document.getElementById("confirmSemAdminPass").value.trim();
-      var modalMsg = document.getElementById("confirmSemAuthMsg");
-      var btn = document.getElementById("btnConfirmSaveSem");
-      var msgDiv = document.getElementById("semStatusMsg");
-
-      if (!confirmPass) {
-        modalMsg.innerText = "กรุณากรอกรหัสผ่านผู้ดูแลระบบเพื่อยืนยัน";
-        return;
-      }
-
-      var sem = document.getElementById("setSemester").value;
-      var year = document.getElementById("setAcademicYear").value.trim();
-      var startDate = document.getElementById("setStartDate").value;
-      var resetChk = document.getElementById("chkResetCheckboxes").checked;
-      var resetLogs = document.getElementById("chkResetLogs").checked;
-
-      btn.disabled = true;
-      modalMsg.className = "blue-text";
-      modalMsg.innerText = "⌛ กำลังตรวจสอบรหัสผ่านและบันทึกข้อมูล 84 ห้อง กรุณารอสักครู่...";
-
-      try {
-        // ส่งรหัสผ่านที่เพิ่งกรอกใหม่ไปตรวจสอบจริงที่หลังบ้าน
-        var res = await callGasApi({
-          action: "saveSemesterAndSchedule",
-          adminPassword: confirmPass,
-          semester: sem,
-          academicYear: year,
-          startDate: startDate,
-          resetCheckboxes: resetChk,
-          resetLogs: resetLogs
-        });
-
-        btn.disabled = false;
-        if (res.authError) {
-          modalMsg.className = "red-text";
-          modalMsg.innerText = "❌ รหัสผ่านผู้ดูแลระบบไม่ถูกต้อง กรุณาลองใหม่";
-          return;
-        }
-
-        var modalEl = document.getElementById("confirmSemesterModal");
-        var instance = M.Modal.getInstance(modalEl);
-        if (instance) instance.close();
-
-        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
-        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-        if (res.success) {
-          document.getElementById("chkResetCheckboxes").checked = false;
-          document.getElementById("chkResetLogs").checked = false;
-          isFrontendDataLoaded = false;
-        }
-      } catch (err) {
-        btn.disabled = false;
-        modalMsg.className = "red-text";
-        modalMsg.innerText = "❌ เกิดข้อผิดพลาด: " + err.message;
-      }
-    }
-
-    async function doRestoreRow45Formulas() {
-      var msgDiv = document.getElementById("semStatusMsg"); var btn = document.getElementById("btnRestoreRow45");
-      if (btn) btn.disabled = true;
-      msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังซ่อมแซมแถวที่ 45 ในชีท 1/1 – 6/14...";
-      try {
-        var res = await callGasApi({ action: "restoreRow45SummaryFormulas", adminPassword: currentAdminPassword });
-        if (btn) btn.disabled = false;
-        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
-        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-      } catch (err) { if (btn) btn.disabled = false; msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
-    }
-
-    async function doSaveActivity() {
-      var actDate = document.getElementById("actDateInput").value; var actName = document.getElementById("actNameInput").value.trim(); var msgDiv = document.getElementById("actStatusMsg");
-      if (!actDate || !actName) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "กรุณาเลือกวันเดือนปีและระบุชื่อกิจกรรมให้ครบถ้วน"; return; }
-      msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังบันทึกปฏิทินกิจกรรมและกระจายลงแถวที่ 46...";
-      try {
-        var res = await callGasApi({ action: "addActivityToCalendar", adminPassword: currentAdminPassword, dateStr: actDate, activityName: actName });
-        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
-        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-        if (res.success) { document.getElementById("actNameInput").value = ""; if (res.activities) { settingsDB.activities = res.activities; renderActivityTable(); } }
-      } catch (err) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
-    }
-
-    function renderActivityTable() {
-      var tbody = document.getElementById("activityTableBody");
-      if (!settingsDB.activities || settingsDB.activities.length === 0) { tbody.innerHTML = '<tr><td colspan="2" class="center-align grey-text">ยังไม่มีรายการกิจกรรม</td></tr>'; return; }
-      tbody.innerHTML = settingsDB.activities.map(function(item) { return '<tr><td style="font-weight: 600; color: #00695c;">' + item.date + '</td><td>' + item.name + '</td></tr>'; }).join("");
-    }
-
+    // -------------------------------------------------------------------------
+    // แท็บ 5: ครูที่ปรึกษาประจำชั้น (+ Export / Import Excel)
+    // -------------------------------------------------------------------------
     function populateAdvisorSettingsUI() {
-      var roomSelect = document.getElementById("settingAdvRoom"); var currentSelectedRoom = roomSelect.value; roomSelect.innerHTML = "";
-      settingsDB.classrooms.forEach(function(room) { var opt = document.createElement("option"); opt.value = room; opt.textContent = room.indexOf("ม.") === 0 ? room : ("ห้อง " + room); roomSelect.appendChild(opt); });
+      var roomSelect = document.getElementById("settingAdvRoom");
+      var currentSelectedRoom = roomSelect.value;
+      roomSelect.innerHTML = "";
+      settingsDB.classrooms.forEach(function(room) {
+        var opt = document.createElement("option");
+        opt.value = room;
+        opt.textContent = room.indexOf("ม.") === 0 ? room : ("ห้อง " + room);
+        roomSelect.appendChild(opt);
+      });
       if (currentSelectedRoom && settingsDB.classrooms.indexOf(currentSelectedRoom) !== -1) roomSelect.value = currentSelectedRoom;
+
       [1, 2, 3].forEach(function(num) {
-        var sel = document.getElementById("settingAdv" + num); sel.innerHTML = '<option value="">-- ไม่ระบุ --</option>';
-        settingsDB.teachers.forEach(function(tName) { var opt = document.createElement("option"); opt.value = tName; opt.textContent = tName; sel.appendChild(opt); });
-        var customOpt = document.createElement("option"); customOpt.value = "__OTHER__"; customOpt.textContent = "➕ อื่นๆ (ระบุชื่อครูด้วยตนเอง...)"; sel.appendChild(customOpt);
+        var sel = document.getElementById("settingAdv" + num);
+        sel.innerHTML = '<option value="">-- ไม่ระบุ --</option>';
+        settingsDB.teachers.forEach(function(tName) {
+          var opt = document.createElement("option");
+          opt.value = tName;
+          opt.textContent = tName;
+          sel.appendChild(opt);
+        });
+        var customOpt = document.createElement("option");
+        customOpt.value = "__OTHER__";
+        customOpt.textContent = "➕ อื่นๆ (ระบุชื่อครูด้วยตนเอง...)";
+        sel.appendChild(customOpt);
       });
       onChangeSettingAdvisorRoom();
     }
@@ -1794,104 +2430,249 @@
       var advisors = (settingsDB.advisorMap && settingsDB.advisorMap[room]) ? settingsDB.advisorMap[room] : ["", "", ""];
       [1, 2, 3].forEach(function(num) {
         document.getElementById("settingAdv" + num).value = advisors[num - 1] || "";
-        var customInput = document.getElementById("settingAdvCustom" + num); customInput.classList.add("hidden"); customInput.value = "";
+        var customInput = document.getElementById("settingAdvCustom" + num);
+        customInput.classList.add("hidden");
+        customInput.value = "";
       });
       document.getElementById("advStatusMsg").innerText = "";
     }
 
     function toggleCustomAdvisorInput(num) {
-      var sel = document.getElementById("settingAdv" + num); var customInput = document.getElementById("settingAdvCustom" + num);
-      if (sel.value === "__OTHER__") { customInput.classList.remove("hidden"); customInput.focus(); } else { customInput.classList.add("hidden"); }
+      var sel = document.getElementById("settingAdv" + num);
+      var customInput = document.getElementById("settingAdvCustom" + num);
+      if (sel.value === "__OTHER__") {
+        customInput.classList.remove("hidden");
+        customInput.focus();
+      } else {
+        customInput.classList.add("hidden");
+      }
     }
 
     async function doSaveRoomAdvisors() {
-      var room = document.getElementById("settingAdvRoom").value; var msgDiv = document.getElementById("advStatusMsg");
-      var getAdv = function(n) { var v = document.getElementById("settingAdv" + n).value; return v === "__OTHER__" ? document.getElementById("settingAdvCustom" + n).value.trim() : v; };
-      msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังบันทึกข้อมูลครูที่ปรึกษา...";
+      var room = document.getElementById("settingAdvRoom").value;
+      var msgDiv = document.getElementById("advStatusMsg");
+      var getAdv = function(n) {
+        var v = document.getElementById("settingAdv" + n).value;
+        return v === "__OTHER__" ? document.getElementById("settingAdvCustom" + n).value.trim() : v;
+      };
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังบันทึกข้อมูลครูที่ปรึกษา...";
       try {
-        var res = await callGasApi({ action: "saveRoomAdvisorsData", adminPassword: currentAdminPassword, roomName: room, advisor1: getAdv(1), advisor2: getAdv(2), advisor3: getAdv(3) });
+        var res = await callGasApi({
+          action: "saveRoomAdvisorsData",
+          adminPassword: currentAdminPassword,
+          roomName: room,
+          advisor1: getAdv(1),
+          advisor2: getAdv(2),
+          advisor3: getAdv(3)
+        });
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
         if (res.success && res.initData && res.initData.success) {
-          settingsDB = res.initData; populateAdvisorSettingsUI(); document.getElementById("settingAdvRoom").value = room; onChangeSettingAdvisorRoom();
-          msgDiv.className = "center-align green-text text-darken-2"; msgDiv.innerText = "✅ " + res.message;
+          settingsDB = res.initData;
+          populateAdvisorSettingsUI();
+          document.getElementById("settingAdvRoom").value = room;
+          onChangeSettingAdvisorRoom();
+          msgDiv.className = "center-align green-text text-darken-2";
+          msgDiv.innerText = "✅ " + res.message;
         }
-      } catch (err) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
+      } catch (err) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
     }
 
-    function showPromoteConfirmBox() { document.getElementById("promoteStatusMsg").innerText = ""; document.getElementById("promoteStep1").classList.add("hidden"); document.getElementById("promoteConfirmBox").classList.remove("hidden"); }
-    function cancelPromoteConfirmBox() { document.getElementById("promoteConfirmBox").classList.add("hidden"); document.getElementById("promoteStep1").classList.remove("hidden"); }
+    function exportAdvisorsExcel() {
+      if (typeof XLSX === "undefined") {
+        M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
+        return;
+      }
+
+      var rows = [["ห้องเรียน", "ครูที่ปรึกษาคนที่ 1", "ครูที่ปรึกษาคนที่ 2", "ครูที่ปรึกษาคนที่ 3"]];
+      var rooms = (settingsDB.classrooms && settingsDB.classrooms.length > 0) ? settingsDB.classrooms : [];
+      if (rooms.length === 0) {
+        for (var g = 1; g <= 6; g++) {
+          for (var r = 1; r <= 14; r++) rooms.push(g + "/" + r);
+        }
+      }
+
+      rooms.forEach(function(roomKey) {
+        var adv = (settingsDB.advisorMap && settingsDB.advisorMap[roomKey]) ? settingsDB.advisorMap[roomKey] : ["", "", ""];
+        var safeRoomLabel = roomKey.indexOf("ม.") === 0 ? roomKey : ("ม." + roomKey);
+        rows.push([safeRoomLabel, adv[0] || "", adv[1] || "", adv[2] || ""]);
+      });
+
+      var ws = XLSX.utils.aoa_to_sheet(rows);
+      ws["!cols"] = [{ wch: 14 }, { wch: 28 }, { wch: 28 }, { wch: 28 }];
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Advisors");
+      XLSX.writeFile(wb, EXPORT_FILE_CONFIG.advisorPrefix + getLocalTodayIso() + ".xlsx");
+      M.toast({ html: "✅ ดาวน์โหลดไฟล์ Excel รายชื่อครูที่ปรึกษาสำเร็จ!", classes: "green darken-2 rounded" });
+    }
+
+    function handleImportAdvisorsFile(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      var file = inputEl.files[0];
+      var msgDiv = document.getElementById("advStatusMsg");
+      var btn = document.getElementById("btnImportAdvisors");
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "📂 กำลังอ่านไฟล์รายชื่อครูที่ปรึกษา...";
+
+      readUploadedSheetFile(file, async function(err, rows) {
+        inputEl.value = "";
+        if (err || !rows) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ อ่านไฟล์ไม่สำเร็จ: " + err;
+          return;
+        }
+
+        var itemsToSend = [];
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i];
+          if (!r || r.length === 0) continue;
+          var rawRoom = r[0] !== undefined && r[0] !== null ? String(r[0]).trim() : "";
+
+          if (!rawRoom || rawRoom.indexOf("ห้อง") !== -1 || rawRoom.toLowerCase().indexOf("room") !== -1) continue;
+          if (rawRoom.indexOf("/") === -1) continue;
+
+          itemsToSend.push({
+            room: rawRoom,
+            t1: r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "",
+            t2: r[2] !== undefined && r[2] !== null ? String(r[2]).trim() : "",
+            t3: r[3] !== undefined && r[3] !== null ? String(r[3]).trim() : ""
+          });
+        }
+
+        if (itemsToSend.length === 0) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "⚠️ ไม่พบข้อมูลห้องเรียนที่ถูกต้องในไฟล์ (คอลัมน์ A ต้องเป็นชื่อห้อง เช่น ม.1/1 หรือ 1/1)";
+          return;
+        }
+
+        msgDiv.innerText = "⌛ กำลังนำเข้าข้อมูลครูที่ปรึกษา " + itemsToSend.length + " ห้องเรียนลงชีท Advisors...";
+        try {
+          var res = await callGasApi({
+            action: "importAdvisorsBatch",
+            adminPassword: currentAdminPassword,
+            items: itemsToSend
+          });
+          btn.disabled = false;
+          if (res && res.success) {
+            if (res.initData && res.initData.success) {
+              var currentRoom = document.getElementById("settingAdvRoom").value;
+              settingsDB = res.initData;
+              populateAdvisorSettingsUI();
+              if (currentRoom && settingsDB.classrooms.indexOf(currentRoom) !== -1) {
+                document.getElementById("settingAdvRoom").value = currentRoom;
+                onChangeSettingAdvisorRoom();
+              }
+            }
+            msgDiv.className = "center-align green-text text-darken-2";
+            msgDiv.innerText = "✅ " + res.message;
+          } else {
+            msgDiv.className = "center-align red-text text-darken-2";
+            msgDiv.innerText = "❌ " + ((res && res.message) || "นำเข้าไม่สำเร็จ");
+          }
+        } catch (apiErr) {
+          btn.disabled = false;
+          msgDiv.className = "center-align red-text text-darken-2";
+          msgDiv.innerText = "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้: " + apiErr.message;
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // แท็บ 6: เลื่อนชั้นเรียน & ซิงค์ห้องเรียน
+    // -------------------------------------------------------------------------
+    function showPromoteConfirmBox() {
+      document.getElementById("promoteStatusMsg").innerText = "";
+      document.getElementById("promoteStep1").classList.add("hidden");
+      document.getElementById("promoteConfirmBox").classList.remove("hidden");
+    }
+
+    function cancelPromoteConfirmBox() {
+      document.getElementById("promoteConfirmBox").classList.add("hidden");
+      document.getElementById("promoteStep1").classList.remove("hidden");
+    }
 
     async function executePromoteStudents() {
-      var msgDiv = document.getElementById("promoteStatusMsg"); var btn = document.getElementById("btnPromoteGrade");
-      document.getElementById("promoteConfirmBox").classList.add("hidden"); document.getElementById("promoteStep1").classList.remove("hidden");
-      btn.disabled = true; msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังดำเนินการเลื่อนชั้นเรียนในชีท Students...";
+      var msgDiv = document.getElementById("promoteStatusMsg");
+      var btn = document.getElementById("btnPromoteGrade");
+      document.getElementById("promoteConfirmBox").classList.add("hidden");
+      document.getElementById("promoteStep1").classList.remove("hidden");
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังดำเนินการเลื่อนชั้นเรียนในชีท Students...";
       try {
         var res = await callGasApi({ action: "promoteStudentsGrade", adminPassword: currentAdminPassword });
         btn.disabled = false;
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
         if (res.success) { localStudentDB = {}; isFrontendDataLoaded = false; }
-      } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
     }
 
     async function doCreateNewGradeSlotsOnly() {
-      var msgDiv = document.getElementById("promoteStatusMsg"); var btn = document.getElementById("btnCreateSlotsOnly");
-      btn.disabled = true; msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังจัดระเบียบตารางตึง 3,360 แถว...";
+      var msgDiv = document.getElementById("promoteStatusMsg");
+      var btn = document.getElementById("btnCreateSlotsOnly");
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังจัดระเบียบตารางตึง 3,360 แถว...";
       try {
         var res = await callGasApi({ action: "createNewGradesTemplateSlots", adminPassword: currentAdminPassword });
         btn.disabled = false;
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-      } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
     }
 
     async function doSyncStudentsToClassrooms() {
-      var msgDiv = document.getElementById("syncRoomsStatusMsg"); var btn = document.getElementById("btnSyncAllRooms");
-      btn.disabled = true; msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังซิงค์รายชื่อเข้าชีทห้องเรียน 1/1 – 6/14 กรุณารอสักครู่...";
+      var msgDiv = document.getElementById("syncRoomsStatusMsg");
+      var btn = document.getElementById("btnSyncAllRooms");
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังซิงค์รายชื่อเข้าชีทห้องเรียน 1/1 – 6/14 กรุณารอสักครู่...";
       try {
         var res = await callGasApi({ action: "syncStudentsToClassrooms", adminPassword: currentAdminPassword, targetRoomFilter: "ALL" });
         btn.disabled = false;
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-      } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
-    }
-
-    // =========================================================================
-    // 👨‍🎓 ส่วนควบคุมแท็บที่ 7: สแกน QR (3 กรณี) + เพิ่ม/แก้ไข/ลบ นักเรียนแบบรักษา E:CZ
-    // =========================================================================
-    var qrFetchTimer = null;
-    var isFetchingQrUrl = false;
-    var roomStudentsCache = [];
-
-    function splitClientPrefixAndName(fullName) {
-      var text = fullName ? fullName.toString().trim() : "";
-      var prefixes = ["เด็กชาย", "เด็กหญิง", "นางสาว", "นาย"];
-      for (var i = 0; i < prefixes.length; i++) {
-        if (text.indexOf(prefixes[i]) === 0) {
-          return { prefix: prefixes[i], nameOnly: text.substring(prefixes[i].length).trim() };
-        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
       }
-      if (text.indexOf("ด.ช.") === 0) return { prefix: "เด็กชาย", nameOnly: text.substring(4).trim() };
-      if (text.indexOf("ด.ญ.") === 0) return { prefix: "เด็กหญิง", nameOnly: text.substring(4).trim() };
-      if (text.indexOf("น.ส.") === 0) return { prefix: "นางสาว", nameOnly: text.substring(4).trim() };
-      return { prefix: "เด็กชาย", nameOnly: text };
     }
 
+    // -------------------------------------------------------------------------
+    // แท็บ 7: ลงทะเบียนและจัดการนักเรียน (7.1 QR / 7.2 เพิ่ม / 7.3 แก้ไข-ลบ / 7.4 Excel)
+    // -------------------------------------------------------------------------
     function handleRegQrKeyPress(event) {
       if (event.key === "Enter") {
         event.preventDefault();
         if (qrFetchTimer) clearTimeout(qrFetchTimer);
-        processScannedQrInputNow();
+        processScannedQrInputNow(true);
       }
     }
 
     function extractStudentIdFromQrInput() {
       if (qrFetchTimer) clearTimeout(qrFetchTimer);
-      qrFetchTimer = setTimeout(processScannedQrInputNow, 450);
+      qrFetchTimer = setTimeout(function() { processScannedQrInputNow(false); }, 450);
     }
 
-    // 7.1 สแกน QR Code (URL) ตรวจสอบ 3 เงื่อนไขอัตโนมัติ (isManualClick = true เมื่อผู้ใช้กดปุ่มเอง)
+    // 7.1 สแกน QR Code (URL) ตรวจสอบ 3 เงื่อนไขอัตโนมัติ
     async function processScannedQrInputNow(isManualClick) {
       var inputEl = document.getElementById("regStuQrOrId");
       var msgDiv = document.getElementById("regStuSingleMsg");
@@ -1914,11 +2695,35 @@
         }
         return;
       }
-      // ... (โค้ดด้านล่างที่เหลือในฟังก์ชันนี้คงไว้เหมือนเดิมทุกบรรทัดครับ)
+
+      isFetchingQrUrl = true;
+      var btn = document.getElementById("btnScanSmartQr");
+      var existBox = document.getElementById("qrExistingInfoBox");
+      var newBox = document.getElementById("qrNewStudentConfirmBox");
+      if (existBox) existBox.classList.add("hidden");
+      if (newBox) newBox.classList.add("hidden");
+
+      btn.disabled = true;
+      msgDiv.className = "blue-text text-darken-2";
+      msgDiv.innerText = "🌐 กำลังดึงข้อมูลจากลิงก์ QR Code และตรวจสอบในชีท Students...";
+
+      try {
+        var res = await callGasApi({
+          action: "scanQrSmartCheckAndSave",
+          adminPassword: currentAdminPassword,
+          qrUrl: rawVal
+        });
+        isFetchingQrUrl = false;
+        btn.disabled = false;
+
+        if (!res || !res.success) {
+          msgDiv.className = "red-text text-darken-2";
+          msgDiv.innerText = "❌ " + ((res && res.message) || "ไม่สามารถดึงข้อมูลจากลิงก์นี้ได้");
+          return;
+        }
 
         var s = res.student;
         if (res.mode === "UPDATED_URL_ONLY" || res.mode === "UPDATED_URL_AND_NAME") {
-          // กรณีที่ 1 และ 2: พบข้อมูลในชีท Students -> บันทึกแล้ว แสดงข้อมูลจากชีท Students
           msgDiv.className = "green-text text-darken-2";
           msgDiv.innerText = "✅ " + res.message;
           document.getElementById("qrExistingInfoContent").innerHTML =
@@ -1933,7 +2738,6 @@
           localStudentDB = {};
           isFrontendDataLoaded = false;
         } else if (res.mode === "NEW_STUDENT_NEED_ROOM") {
-          // กรณีที่ 3: ไม่พบในชีท Students -> เปิดกล่องให้เลือกระดับชั้นและห้องก่อนแทรก
           msgDiv.className = "orange-text text-darken-3";
           msgDiv.innerText = "⚠️ " + res.message;
           var sp = splitClientPrefixAndName(s.name);
@@ -1959,7 +2763,6 @@
       document.getElementById("regStuQrOrId").focus();
     }
 
-    // ยืนยันแทรกนักเรียนใหม่จาก QR Code (ตรวจไม่เกิน 40 คน + แทรกตามเพศ/รหัส + เรียงเลขที่)
     async function confirmInsertStudentFromQr() {
       var sId = document.getElementById("qrNewId").value.trim();
       var prefix = document.getElementById("qrNewPrefix").value;
@@ -1994,7 +2797,6 @@
           document.getElementById("regStuQrOrId").focus();
           localStudentDB = {};
           isFrontendDataLoaded = false;
-          // อัปเดตตารางด้านล่างด้วยหากเปิดดูห้องเดียวกันอยู่
           if (document.getElementById("manageStuGrade").value === grade && document.getElementById("manageStuRoom").value === room) {
             roomStudentsCache = res.list || [];
             renderRoomStudentsTable(grade, room);
@@ -2011,7 +2813,7 @@
       }
     }
 
-    // 7.2 เพิ่มนักเรียนใหม่ด้วยตนเอง (เรียงเพศ + แทรกตามรหัส + ตรวจไม่เกิน 40 คน)
+    // 7.2 เพิ่มนักเรียนใหม่ด้วยตนเอง
     async function doAddNewStudentSorted() {
       var sId = document.getElementById("addStuId").value.trim();
       var prefix = document.getElementById("addStuPrefix").value;
@@ -2047,7 +2849,6 @@
           localStudentDB = {};
           isFrontendDataLoaded = false;
 
-          // อัปเดตตารางจัดการรายห้องด้านล่างอัตโนมัติ
           document.getElementById("manageStuGrade").value = grade;
           document.getElementById("manageStuRoom").value = room;
           roomStudentsCache = res.list || [];
@@ -2064,7 +2865,7 @@
       }
     }
 
-    // 7.3 โหลดและแสดงตารางจัดการรายชื่อนักเรียนรายห้อง (แก้ไข / ย้ายห้อง / ลบ)
+    // 7.3 จัดการรายชื่อนักเรียนรายห้อง (ดู / แก้ไข / ย้ายห้อง / ลบ)
     async function loadRoomStudentsManager() {
       var grade = document.getElementById("manageStuGrade").value;
       var room = document.getElementById("manageStuRoom").value;
@@ -2229,6 +3030,7 @@
       }
     }
 
+    // 7.4 อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (Excel โรงเรียน B,C,E,F,G + รักษาแท็บคอลัมน์ A)
     function toggleBulkFallbackOptions() {
       var mode = document.getElementById("bulkUploadMode").value;
       var box = document.getElementById("bulkFallbackOptions");
@@ -2237,7 +3039,6 @@
       else box.classList.add("hidden");
     }
 
-    // อ่านไฟล์ Excel โดยบังคับเริ่มนับจากคอลัมน์ A (index 0) และไม่ตัดแท็บ (\t) หน้าบรรทัดแรก
     function handleExcelOrCsvFileSelect(inputEl) {
       if (!inputEl.files || !inputEl.files[0]) return;
       var file = inputEl.files[0];
@@ -2254,7 +3055,7 @@
             var worksheet = workbook.Sheets[workbook.SheetNames[0]];
             var ref = worksheet["!ref"] || "A1";
             var range = XLSX.utils.decode_range(ref);
-            range.s.c = 0; // บังคับเริ่มจากคอลัมน์ A เสมอ แม้คอลัมน์ A ใน Excel จะว่างเปล่า
+            range.s.c = 0; // บังคับเริ่มจากคอลัมน์ A เสมอ
 
             var rows = XLSX.utils.sheet_to_json(worksheet, {
               header: 1,
@@ -2269,7 +3070,7 @@
               }).join("\t");
             });
 
-            // ตัดเฉพาะบรรทัดว่างหัว-ท้าย ห้ามใช้ .trim() เพราะจะลบ \t ของคอลัมน์ A แถวแรกทิ้ง
+            // ตัดเฉพาะบรรทัดว่างหัว-ท้าย ไม่ใช้ .trim() เพื่อรักษาแท็บ (\t) ของคอลัมน์ A แถวแรก
             document.getElementById("bulkStudentsInput").value = tsvLines.join("\n").replace(/^[\r\n]+|[\r\n]+$/g, "");
             msgDiv.className = "center-align green-text text-darken-2";
             msgDiv.innerText = "✅ อ่านไฟล์ Excel สำเร็จ (" + rows.length + " แถว)! กดปุ่ม 'อัปโหลดปรับปรุงรายชื่อ' ด้านล่างได้เลยครับ";
@@ -2292,7 +3093,6 @@
 
     async function doBulkUploadStudents() {
       var rawInputEl = document.getElementById("bulkStudentsInput");
-      // คงเครื่องหมายแท็บ (\t) หน้าบรรทัดแรกไว้ ตัดเฉพาะบรรทัดว่างหัว-ท้าย
       var rawText = rawInputEl.value.replace(/^[\r\n]+|[\r\n]+$/g, "");
       var uploadMode = document.getElementById("bulkUploadMode") ? document.getElementById("bulkUploadMode").value : "school_excel";
       var deleteScope = document.getElementById("bulkDeleteScope") ? document.getElementById("bulkDeleteScope").value : "uploaded_rooms";
@@ -2301,7 +3101,6 @@
       var msgDiv = document.getElementById("bulkUploadStatusMsg");
       var btn = document.getElementById("btnBulkUploadStu");
 
-      // ใช้ .trim() เฉพาะตอนตรวจว่ากล่องว่างหรือไม่เท่านั้น
       if (!rawText.trim()) {
         msgDiv.className = "center-align red-text text-darken-2";
         msgDiv.innerText = "⚠️ กรุณาเลือกไฟล์ Excel หรือวางข้อมูลก่อนครับ";
@@ -2340,10 +3139,7 @@
           document.getElementById("csvFileInput").value = "";
           localStudentDB = {};
           isFrontendDataLoaded = false;
-          // หากด้านบน (ส่วน 7.3) เปิดดูห้องเรียนอยู่ ให้รีเฟรชตารางทันทีเพื่อแสดงข้อมูลใหม่
-          if (roomStudentsCache.length > 0) {
-            loadRoomStudentsManager();
-          }
+          if (roomStudentsCache.length > 0) loadRoomStudentsManager();
         }
       } catch (err) {
         btn.disabled = false;
@@ -2352,63 +3148,9 @@
       }
     }
 
-    async function doBulkUploadStudents() {
-      var rawText = document.getElementById("bulkStudentsInput").value.trim();
-      var uploadMode = document.getElementById("bulkUploadMode") ? document.getElementById("bulkUploadMode").value : "school_excel";
-      var deleteScope = document.getElementById("bulkDeleteScope") ? document.getElementById("bulkDeleteScope").value : "uploaded_rooms";
-      var defaultGrade = document.getElementById("bulkDefaultGrade") ? document.getElementById("bulkDefaultGrade").value : "AUTO";
-      var defaultRoom = document.getElementById("bulkDefaultRoom") ? document.getElementById("bulkDefaultRoom").value : "AUTO";
-      var msgDiv = document.getElementById("bulkUploadStatusMsg");
-      var btn = document.getElementById("btnBulkUploadStu");
-
-      if (!rawText) {
-        msgDiv.className = "center-align red-text text-darken-2";
-        msgDiv.innerText = "⚠️ กรุณาเลือกไฟล์ Excel หรือวางข้อมูลก่อนครับ";
-        return;
-      }
-
-      // เตือนยืนยันก่อนดำเนินการ หากเลือกโหมด "ลบทั้งโรงเรียน"
-      if (deleteScope === "all_school") {
-        var confirmAll = confirm(
-          "⚠️ ยืนยันการลบรายชื่อที่ไม่มีในไฟล์ออกทั้งโรงเรียน?\n\n" +
-          "• นักเรียนในชีท Students ที่ไม่มีชื่อในไฟล์ Excel นี้ จะถูกลบข้อมูล (รหัส, ชื่อ และ URL คอลัมน์ F) ออกทั้งหมด\n" +
-          "• คอลัมน์ B (เลขที่), D (ระดับชั้น) และ E (ห้อง) จะยังคงถูกล็อกไว้ตามเดิม\n\n" +
-          "กรุณาตรวจสอบว่าเป็นไฟล์รายชื่อรวมทั้งโรงเรียนแล้วจึงกดตกลงครับ"
-        );
-        if (!confirmAll) return;
-      }
-
-      btn.disabled = true;
-      msgDiv.className = "center-align blue-text text-darken-2";
-      msgDiv.innerText = "⌛ กำลังจับคู่ ชั้น/ห้อง/เลขที่ ล้างรายชื่อที่ไม่มีในไฟล์ คง URL คอลัมน์ F และซิงค์ห้องเรียน...";
-
-      try {
-        var res = await callGasApi({
-          action: "bulkUploadStudentsData",
-          adminPassword: currentAdminPassword,
-          rawTextData: rawText,
-          defaultGrade: defaultGrade,
-          defaultRoom: defaultRoom,
-          uploadMode: uploadMode,
-          deleteMissingScope: deleteScope
-        });
-        btn.disabled = false;
-        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
-        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-        if (res.success) {
-          document.getElementById("bulkStudentsInput").value = "";
-          document.getElementById("csvFileInput").value = "";
-          localStudentDB = {};
-          isFrontendDataLoaded = false;
-        }
-      } catch (err) {
-        btn.disabled = false;
-        msgDiv.className = "center-align red-text text-darken-2";
-        msgDiv.innerText = "❌ " + err.message;
-      }
-    }
-    
-    // แท็บที่ 8: เปลี่ยนรหัสผ่าน Admin ที่หลังบ้าน
+    // -------------------------------------------------------------------------
+    // แท็บ 8: เปลี่ยนรหัสผ่านผู้ดูแลระบบ (Admin Password)
+    // -------------------------------------------------------------------------
     async function doChangeAdminPassword() {
       var p1 = document.getElementById("newAdminPass1").value.trim();
       var p2 = document.getElementById("newAdminPass2").value.trim();
@@ -2452,310 +3194,6 @@
         msgDiv.className = "center-align red-text";
         msgDiv.innerText = "❌ " + err.message;
       }
-    }
-
-    // =========================================================================
-    // 📂 ระบบ Export & Import: ปฏิทินกิจกรรม (แท็บ 3) และ รายชื่อครูที่ปรึกษา (แท็บ 5)
-    // =========================================================================
-
-    // พารามิเตอร์ตั้งชื่อไฟล์เริ่มต้นตอน Export (ปรับแก้คำนำหน้าได้ตรงนี้)
-    var EXPORT_FILE_CONFIG = {
-      activityPrefix: "ปฏิทินกิจกรรม_",
-      advisorPrefix: "รายชื่อครูที่ปรึกษา_"
-    };
-
-    // แปลงวันที่จาก Excel (Serial, พ.ศ., ค.ศ., ชื่อเดือนไทย) -> "YYYY-MM-DD" (ค.ศ.)
-    function parseAnyExcelDateToIso(rawVal) {
-      if (rawVal === null || rawVal === undefined || rawVal === "") return "";
-
-      if (typeof rawVal === "number" && typeof XLSX !== "undefined" && XLSX.SSF && XLSX.SSF.parse_date_code) {
-        var parsed = XLSX.SSF.parse_date_code(rawVal);
-        if (parsed && parsed.y && parsed.m && parsed.d) {
-          var py = parsed.y > 2400 ? parsed.y - 543 : parsed.y;
-          return py + "-" + ("0" + parsed.m).slice(-2) + "-" + ("0" + parsed.d).slice(-2);
-        }
-      }
-
-      var str = String(rawVal).trim();
-
-      var isoMatch = str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
-      if (isoMatch) {
-        var iy = parseInt(isoMatch[1], 10);
-        if (iy > 2400) iy -= 543;
-        return iy + "-" + ("0" + parseInt(isoMatch[2], 10)).slice(-2) + "-" + ("0" + parseInt(isoMatch[3], 10)).slice(-2);
-      }
-
-      var dmyMatch = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
-      if (dmyMatch) {
-        var dy = parseInt(dmyMatch[3], 10);
-        if (dy > 2400) dy -= 543;
-        var dm = parseInt(dmyMatch[2], 10);
-        var dd = parseInt(dmyMatch[1], 10);
-        if (dm >= 1 && dm <= 12 && dd >= 1 && dd <= 31) {
-          return dy + "-" + ("0" + dm).slice(-2) + "-" + ("0" + dd).slice(-2);
-        }
-      }
-
-      var thaiMonthsShort = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-      var thaiMonthsFull = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-      var thMatch = str.match(/^(\d{1,2})\s+([ก-๙\.]+)\s+(\d{4})/);
-      if (thMatch) {
-        var td = parseInt(thMatch[1], 10);
-        var tmText = thMatch[2].trim();
-        var ty = parseInt(thMatch[3], 10);
-        if (ty > 2400) ty -= 543;
-        var tmIdx = thaiMonthsShort.indexOf(tmText);
-        if (tmIdx === -1) tmIdx = thaiMonthsFull.indexOf(tmText);
-        if (tmIdx !== -1) {
-          return ty + "-" + ("0" + (tmIdx + 1)).slice(-2) + "-" + ("0" + td).slice(-2);
-        }
-      }
-
-      return "";
-    }
-
-    // อ่านไฟล์ Excel (.xlsx, .xls) หรือ CSV เป็นอาร์เรย์ 2 มิติ
-    function readUploadedSheetFile(file, callback) {
-      var fileName = file.name.toLowerCase();
-      if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          try {
-            var wb = XLSX.read(new Uint8Array(e.target.result), { type: "array" });
-            var ws = wb.Sheets[wb.SheetNames[0]];
-            var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", raw: true });
-            callback(null, rows);
-          } catch (err) {
-            callback(err, null);
-          }
-        };
-        reader.readAsArrayBuffer(file);
-      } else {
-        var textReader = new FileReader();
-        textReader.onload = function(e) {
-          try {
-            var lines = e.target.result.split(/\r?\n/);
-            var rows = lines.map(function(line) {
-              var sep = line.indexOf("\t") !== -1 ? "\t" : ",";
-              return line.split(sep).map(function(c) { return c.replace(/^["']|["']$/g, "").trim(); });
-            });
-            callback(null, rows);
-          } catch (err) {
-            callback(err, null);
-          }
-        };
-        textReader.readAsText(file, "UTF-8");
-      }
-    }
-
-    // 📌 3) Export & Import ปฏิทินกิจกรรม
-    function exportActivitiesExcel() {
-      if (typeof XLSX === "undefined") {
-        M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
-        return;
-      }
-
-      var rows = [["วันเดือนปี (DD/MM/YYYY)", "ชื่อกิจกรรม"]];
-      if (settingsDB.activities && settingsDB.activities.length > 0) {
-        settingsDB.activities.forEach(function(item) {
-          rows.push([item.date || "", item.name || ""]);
-        });
-      } else {
-        var d = new Date();
-        var sampleDate = ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + (d.getFullYear() + 543);
-        rows.push([sampleDate, "ตัวอย่างกิจกรรม (สามารถลบแถวนี้แล้วกรอกใหม่ได้)"]);
-      }
-
-      var ws = XLSX.utils.aoa_to_sheet(rows);
-      ws["!cols"] = [{ wch: 24 }, { wch: 45 }];
-      var wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "ปฏิทินกิจกรรม");
-      XLSX.writeFile(wb, EXPORT_FILE_CONFIG.activityPrefix + getLocalTodayIso() + ".xlsx");
-      M.toast({ html: "✅ ดาวน์โหลดไฟล์ Excel ปฏิทินกิจกรรมสำเร็จ!", classes: "green darken-2 rounded" });
-    }
-
-    function handleImportActivitiesFile(inputEl) {
-      if (!inputEl.files || !inputEl.files[0]) return;
-      var file = inputEl.files[0];
-      var msgDiv = document.getElementById("actStatusMsg");
-      var btn = document.getElementById("btnImportActivities");
-      var replaceAll = document.getElementById("chkReplaceActivitiesOnImport") ? document.getElementById("chkReplaceActivitiesOnImport").checked : false;
-
-      if (replaceAll && !confirm("⚠️ คุณเลือก 'ล้างปฏิทินกิจกรรมเดิมทั้งหมดก่อนนำเข้า'\nยืนยันดำเนินการใช่หรือไม่?")) {
-        inputEl.value = "";
-        return;
-      }
-
-      btn.disabled = true;
-      msgDiv.className = "center-align blue-text text-darken-2";
-      msgDiv.innerText = "📂 กำลังอ่านไฟล์ปฏิทินกิจกรรม...";
-
-      readUploadedSheetFile(file, async function(err, rows) {
-        inputEl.value = "";
-        if (err || !rows) {
-          btn.disabled = false;
-          msgDiv.className = "center-align red-text text-darken-2";
-          msgDiv.innerText = "❌ อ่านไฟล์ไม่สำเร็จ: " + err;
-          return;
-        }
-
-        var itemsToSend = [];
-        for (var i = 0; i < rows.length; i++) {
-          var r = rows[i];
-          if (!r || r.length < 2) continue;
-          var col0 = r[0];
-          var col1 = r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "";
-
-          if (typeof col0 === "string" && (col0.indexOf("วัน") !== -1 || col0.toLowerCase().indexOf("date") !== -1)) continue;
-          if (!col1) continue;
-
-          var dateIso = parseAnyExcelDateToIso(col0);
-          if (dateIso) {
-            itemsToSend.push({ dateIso: dateIso, name: col1 });
-          }
-        }
-
-        if (itemsToSend.length === 0) {
-          btn.disabled = false;
-          msgDiv.className = "center-align red-text text-darken-2";
-          msgDiv.innerText = "⚠️ ไม่พบข้อมูลวันที่และชื่อกิจกรรมที่ถูกต้องในไฟล์ (คอลัมน์ A=วันเดือนปี, คอลัมน์ B=ชื่อกิจกรรม)";
-          return;
-        }
-
-        msgDiv.innerText = "⌛ กำลังนำเข้าปฏิทินกิจกรรม " + itemsToSend.length + " รายการ และอัปเดตแถวที่ 46 ทุกห้องเรียน...";
-        try {
-          var res = await callGasApi({
-            action: "importActivitiesBatch",
-            adminPassword: currentAdminPassword,
-            items: itemsToSend,
-            replaceAll: replaceAll
-          });
-          btn.disabled = false;
-          if (res && res.success) {
-            msgDiv.className = "center-align green-text text-darken-2";
-            msgDiv.innerText = "✅ " + res.message;
-            if (res.activities) {
-              settingsDB.activities = res.activities;
-              renderActivityTable();
-            }
-            if (document.getElementById("chkReplaceActivitiesOnImport")) {
-              document.getElementById("chkReplaceActivitiesOnImport").checked = false;
-            }
-          } else {
-            msgDiv.className = "center-align red-text text-darken-2";
-            msgDiv.innerText = "❌ " + ((res && res.message) || "นำเข้าไม่สำเร็จ");
-          }
-        } catch (apiErr) {
-          btn.disabled = false;
-          msgDiv.className = "center-align red-text text-darken-2";
-          msgDiv.innerText = "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้: " + apiErr.message;
-        }
-      });
-    }
-
-    // 👩‍🏫 5) Export & Import รายชื่อครูที่ปรึกษา
-    function exportAdvisorsExcel() {
-      if (typeof XLSX === "undefined") {
-        M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
-        return;
-      }
-
-      var rows = [["ห้องเรียน", "ครูที่ปรึกษาคนที่ 1", "ครูที่ปรึกษาคนที่ 2", "ครูที่ปรึกษาคนที่ 3"]];
-      var rooms = (settingsDB.classrooms && settingsDB.classrooms.length > 0) ? settingsDB.classrooms : [];
-
-      if (rooms.length === 0) {
-        for (var g = 1; g <= 6; g++) {
-          for (var r = 1; r <= 14; r++) rooms.push(g + "/" + r);
-        }
-      }
-
-      rooms.forEach(function(roomKey) {
-        var adv = (settingsDB.advisorMap && settingsDB.advisorMap[roomKey]) ? settingsDB.advisorMap[roomKey] : ["", "", ""];
-        var safeRoomLabel = roomKey.indexOf("ม.") === 0 ? roomKey : ("ม." + roomKey);
-        rows.push([safeRoomLabel, adv[0] || "", adv[1] || "", adv[2] || ""]);
-      });
-
-      var ws = XLSX.utils.aoa_to_sheet(rows);
-      ws["!cols"] = [{ wch: 14 }, { wch: 28 }, { wch: 28 }, { wch: 28 }];
-      var wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Advisors");
-      XLSX.writeFile(wb, EXPORT_FILE_CONFIG.advisorPrefix + getLocalTodayIso() + ".xlsx");
-      M.toast({ html: "✅ ดาวน์โหลดไฟล์ Excel รายชื่อครูที่ปรึกษาสำเร็จ!", classes: "green darken-2 rounded" });
-    }
-
-    function handleImportAdvisorsFile(inputEl) {
-      if (!inputEl.files || !inputEl.files[0]) return;
-      var file = inputEl.files[0];
-      var msgDiv = document.getElementById("advStatusMsg");
-      var btn = document.getElementById("btnImportAdvisors");
-
-      btn.disabled = true;
-      msgDiv.className = "center-align blue-text text-darken-2";
-      msgDiv.innerText = "📂 กำลังอ่านไฟล์รายชื่อครูที่ปรึกษา...";
-
-      readUploadedSheetFile(file, async function(err, rows) {
-        inputEl.value = "";
-        if (err || !rows) {
-          btn.disabled = false;
-          msgDiv.className = "center-align red-text text-darken-2";
-          msgDiv.innerText = "❌ อ่านไฟล์ไม่สำเร็จ: " + err;
-          return;
-        }
-
-        var itemsToSend = [];
-        for (var i = 0; i < rows.length; i++) {
-          var r = rows[i];
-          if (!r || r.length === 0) continue;
-          var rawRoom = r[0] !== undefined && r[0] !== null ? String(r[0]).trim() : "";
-
-          if (!rawRoom || rawRoom.indexOf("ห้อง") !== -1 || rawRoom.toLowerCase().indexOf("room") !== -1) continue;
-          if (rawRoom.indexOf("/") === -1) continue;
-
-          itemsToSend.push({
-            room: rawRoom,
-            t1: r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "",
-            t2: r[2] !== undefined && r[2] !== null ? String(r[2]).trim() : "",
-            t3: r[3] !== undefined && r[3] !== null ? String(r[3]).trim() : ""
-          });
-        }
-
-        if (itemsToSend.length === 0) {
-          btn.disabled = false;
-          msgDiv.className = "center-align red-text text-darken-2";
-          msgDiv.innerText = "⚠️ ไม่พบข้อมูลห้องเรียนที่ถูกต้องในไฟล์ (คอลัมน์ A ต้องเป็นชื่อห้อง เช่น ม.1/1 หรือ 1/1)";
-          return;
-        }
-
-        msgDiv.innerText = "⌛ กำลังนำเข้าข้อมูลครูที่ปรึกษา " + itemsToSend.length + " ห้องเรียนลงชีท Advisors...";
-        try {
-          var res = await callGasApi({
-            action: "importAdvisorsBatch",
-            adminPassword: currentAdminPassword,
-            items: itemsToSend
-          });
-          btn.disabled = false;
-          if (res && res.success) {
-            if (res.initData && res.initData.success) {
-              var currentRoom = document.getElementById("settingAdvRoom").value;
-              settingsDB = res.initData;
-              populateAdvisorSettingsUI();
-              if (currentRoom && settingsDB.classrooms.indexOf(currentRoom) !== -1) {
-                document.getElementById("settingAdvRoom").value = currentRoom;
-                onChangeSettingAdvisorRoom();
-              }
-            }
-            msgDiv.className = "center-align green-text text-darken-2";
-            msgDiv.innerText = "✅ " + res.message;
-          } else {
-            msgDiv.className = "center-align red-text text-darken-2";
-            msgDiv.innerText = "❌ " + ((res && res.message) || "นำเข้าไม่สำเร็จ");
-          }
-        } catch (apiErr) {
-          btn.disabled = false;
-          msgDiv.className = "center-align red-text text-darken-2";
-          msgDiv.innerText = "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้: " + apiErr.message;
-        }
-      });
     }
   </script>
 </body>
