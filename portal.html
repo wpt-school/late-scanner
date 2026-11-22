@@ -545,6 +545,15 @@
               </select>
             </div>
 
+            <div class="col s12" style="margin-bottom: 14px;">
+              <label class="black-text" style="font-weight: 700; font-size: 1rem;">🗑️ การจัดการรายชื่อเดิมที่ไม่มีอยู่ในไฟล์ Excel (รวม URL คอลัมน์ F):</label>
+              <select id="bulkDeleteScope" class="custom-select" style="margin-top: 5px;">
+                <option value="uploaded_rooms" selected>🧹 ลบรายชื่อที่ไม่มีในไฟล์ เฉพาะห้องที่มีในไฟล์ (ปลอดภัยสุด — แนะนำ)</option>
+                <option value="all_school">⚠️ ลบรายชื่อที่ไม่มีในไฟล์ ออกทั้งโรงเรียน (ใช้เมื่ออัปโหลดไฟล์รวม ม.1 – ม.6)</option>
+                <option value="none">➕ ไม่ลบรายชื่อเดิม (อัปเดตเฉพาะแถวที่มีในไฟล์)</option>
+              </select>
+            </div>
+
             <div id="bulkFallbackOptions" class="hidden">
               <div class="col s12 m6" style="margin-bottom: 12px;">
                 <label class="black-text" style="font-weight: 700;">ระบุระดับชั้น (เฉพาะโหมดอิสระ)</label>
@@ -2259,6 +2268,7 @@
     async function doBulkUploadStudents() {
       var rawText = document.getElementById("bulkStudentsInput").value.trim();
       var uploadMode = document.getElementById("bulkUploadMode") ? document.getElementById("bulkUploadMode").value : "school_excel";
+      var deleteScope = document.getElementById("bulkDeleteScope") ? document.getElementById("bulkDeleteScope").value : "uploaded_rooms";
       var defaultGrade = document.getElementById("bulkDefaultGrade") ? document.getElementById("bulkDefaultGrade").value : "AUTO";
       var defaultRoom = document.getElementById("bulkDefaultRoom") ? document.getElementById("bulkDefaultRoom").value : "AUTO";
       var msgDiv = document.getElementById("bulkUploadStatusMsg");
@@ -2270,9 +2280,20 @@
         return;
       }
 
+      // เตือนยืนยันก่อนดำเนินการ หากเลือกโหมด "ลบทั้งโรงเรียน"
+      if (deleteScope === "all_school") {
+        var confirmAll = confirm(
+          "⚠️ ยืนยันการลบรายชื่อที่ไม่มีในไฟล์ออกทั้งโรงเรียน?\n\n" +
+          "• นักเรียนในชีท Students ที่ไม่มีชื่อในไฟล์ Excel นี้ จะถูกลบข้อมูล (รหัส, ชื่อ และ URL คอลัมน์ F) ออกทั้งหมด\n" +
+          "• คอลัมน์ B (เลขที่), D (ระดับชั้น) และ E (ห้อง) จะยังคงถูกล็อกไว้ตามเดิม\n\n" +
+          "กรุณาตรวจสอบว่าเป็นไฟล์รายชื่อรวมทั้งโรงเรียนแล้วจึงกดตกลงครับ"
+        );
+        if (!confirmAll) return;
+      }
+
       btn.disabled = true;
       msgDiv.className = "center-align blue-text text-darken-2";
-      msgDiv.innerText = "⌛ กำลังจับคู่ ชั้น/ห้อง/เลขที่ อัปเดตคอลัมน์ A, C, F และซิงค์เข้าชีทห้องเรียน...";
+      msgDiv.innerText = "⌛ กำลังจับคู่ ชั้น/ห้อง/เลขที่ ล้างรายชื่อที่ไม่มีในไฟล์ คง URL คอลัมน์ F และซิงค์ห้องเรียน...";
 
       try {
         var res = await callGasApi({
@@ -2281,7 +2302,8 @@
           rawTextData: rawText,
           defaultGrade: defaultGrade,
           defaultRoom: defaultRoom,
-          uploadMode: uploadMode
+          uploadMode: uploadMode,
+          deleteMissingScope: deleteScope
         });
         btn.disabled = false;
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
