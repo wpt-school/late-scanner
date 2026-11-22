@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>สแกนมาสาย (โหมดกล้องมือถือ HD)</title>
+  <title>ระบบเช็คชื่อมาสาย (สำหรับโทรศัพท์มือถือ)</title>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
   <style>
     * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; }
     body { margin: 0; padding: 14px; background: #f0f4f8; color: #222; }
     .card { max-width: 480px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-    h2 { margin: 0 0 12px 0; text-align: center; color: #1565c0; font-size: 1.45rem; }
+    .login-title { margin: 0 0 16px 0; text-align: center; color: #1565c0; font-size: 1.45rem; line-height: 1.45; }
+    .login-subtitle { display: block; font-size: 1.05rem; color: #546e7a; font-weight: 600; margin-top: 2px; }
     .hidden { display: none !important; }
     .logo-img { display: block; width: 90px; height: auto; margin: 0 auto 10px auto; }
     .input-group { margin-bottom: 14px; }
@@ -21,18 +22,23 @@
     input:focus { border-color: #1565c0; box-shadow: 0 0 0 2px rgba(21,101,192,0.15); }
     .btn {
       width: 100%; padding: 12px; border: none; border-radius: 10px; font-size: 1.02rem;
-      font-weight: 700; color: #fff; cursor: pointer; margin-top: 6px; transition: opacity 0.2s;
+      font-weight: 700; color: #fff; cursor: pointer; margin-top: 6px; transition: all 0.2s;
     }
     .btn:active { opacity: 0.85; }
     .btn-green { background: #2e7d32; }
     .btn-blue { background: #1565c0; }
     .btn-red { background: #c62828; }
     .btn-amber { background: #ef6c00; }
+    .btn-force-active { background: #e65100; box-shadow: 0 3px 10px rgba(230, 81, 0, 0.3); }
+    .btn-force-idle { background: #b0bec5; color: #455a64; }
     .btn-gray { background: #607d8b; padding: 7px 14px; width: auto; font-size: 0.9rem; margin-top: 0; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eceff1; padding-bottom: 10px; }
-    .status-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .btn:disabled { opacity: 0.65; cursor: not-allowed; box-shadow: none; }
+    .top-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid #eceff1; padding-bottom: 10px; }
+    .scan-title { font-weight: 700; color: #c62828; font-size: 1.08rem; line-height: 1.35; }
+    .scan-subtitle { display: block; font-size: 0.88rem; color: #546e7a; font-weight: 600; }
+    .status-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
     .status-badge { font-size: 0.85rem; padding: 5px 10px; border-radius: 12px; background: #e3f2fd; color: #1565c0; font-weight: 600; }
+    .sync-bar { margin-bottom: 12px; }
     .manual-panel { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
     .manual-row { display: flex; gap: 8px; }
     .manual-row input { font-size: 1.25rem; font-weight: 700; text-align: center; letter-spacing: 2px; }
@@ -57,7 +63,10 @@
   <!-- หน้าเข้าสู่ระบบเจ้าหน้าที่ -->
   <div id="loginView" class="card">
     <img src="https://i.ibb.co/FqhdPDpB/logo.png" alt="ตราโรงเรียน" class="logo-img">
-    <h2>📱 ระบบเช็คชื่อมาสาย (มือถือ)</h2>
+    <h2 class="login-title">
+      ระบบเช็คชื่อมาสาย<br>
+      <span class="login-subtitle">(สำหรับโทรศัพท์มือถือ)</span>
+    </h2>
     <div class="input-group">
       <label>ชื่อผู้ใช้งาน (Username)</label>
       <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้งาน">
@@ -74,15 +83,25 @@
   <div id="scanView" class="card hidden">
     <div class="top-bar">
       <div>
-        <div style="font-weight: 700; color: #c62828; font-size: 1.05rem;">🔴 เช็คชื่อนักเรียนมาสาย</div>
-        <div style="font-size: 0.88rem; color: #555;">ผู้บันทึก: <b id="staffLabel"></b></div>
+        <div class="scan-title">
+          🔴 ระบบเช็คชื่อมาสาย<br>
+          <span class="scan-subtitle">(สำหรับโทรศัพท์มือถือ)</span>
+        </div>
+        <div style="font-size: 0.88rem; color: #555; margin-top: 4px;">ผู้บันทึก: <b id="staffLabel"></b></div>
       </div>
       <button class="btn btn-gray" onclick="handleLogout()">ออกจากระบบ</button>
     </div>
 
     <div class="status-row">
-      <span id="queueBadge" class="status-badge">✅ ส่งข้อมูลครบแล้ว</span>
+      <span id="queueBadge" class="status-badge">✅ ส่งข้อมูลเข้าชีทครบแล้ว</span>
       <span id="countTodayBadge" class="status-badge" style="background: #f3e5f5; color: #6a1b9a;">รอบนี้: 0 คน</span>
+    </div>
+
+    <!-- ปุ่มส่งข้อมูลทันที (Force Sync) สำหรับกรณีเจ้าหน้าที่รีบปิดเครื่อง -->
+    <div class="sync-bar">
+      <button id="btnForceSync" class="btn btn-force-idle" style="padding: 9px 12px; font-size: 0.95rem; margin-top: 0;" onclick="forceSyncNow()" disabled>
+        ⚡ ส่งข้อมูลทันที (ไม่มีข้อมูลค้าง)
+      </button>
     </div>
 
     <!-- ช่องป้อนเลขประจำตัว 5 หลักแบบรวดเร็ว -->
@@ -105,12 +124,11 @@
 
     <div id="cameraBox" class="hidden">
       <div id="qr-reader"></div>
-      <!-- แถบปรับซูมสำหรับ QR Code ขนาดเล็ก (แสดงอัตโนมัติถ้ามือถือรองรับ) -->
       <div id="zoomControlBox" class="cam-controls hidden">
         <div class="zoom-row">
           <span>🔍 ซูม:</span>
-          <input type="range" id="zoomSlider" min="1" max="3" step="0.1" value="1.5" oninput="applyCameraZoom(this.value)">
-          <b id="zoomValueLabel" style="min-width: 36px; text-align: right;">1.5x</b>
+          <input type="range" id="zoomSlider" min="1" max="3" step="0.1" value="1.6" oninput="applyCameraZoom(this.value)">
+          <b id="zoomValueLabel" style="min-width: 36px; text-align: right;">1.6x</b>
         </div>
         <div style="font-size: 0.8rem; color: #bdbdbd; text-align: center;">
           ถือมือถือห่างบัตร ~15-20 ซม. แล้วปรับซูมจะโฟกัส QR เล็กๆ ได้คมชัดที่สุด
@@ -140,27 +158,26 @@
     // =========================================================================
     var GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAi6qtV1dklnPLaW-l-vV6Tnm_oPsKuMnFpRx-QpPqxIyjTAT-W3NFNOkk6bHszscJIw/exec";
 
-    // พารามิเตอร์กล้องสำหรับ QR Code ขนาดเล็ก (ปรับแต่งได้ตามหน้างาน)
+    // พารามิเตอร์กล้อง (ปรับแต่งได้ตามความเหมาะสมของหน้างาน)
     var CAMERA_CONFIG = {
-      fps: 12,                   // ความเร็วจับภาพ (10-15 เฟรม/วินาที)
-      qrboxRatio: 0.68,          // ขนาดกรอบเล็งกลางหน้าจอ (68% ของด้านแคบ)
-      idealWidth: 1280,          // ความละเอียดภาพ HD (ช่วยให้เห็นจุด QR ขนาดเล็กคมชัด)
+      fps: 12,                   // ความเร็วการจับภาพ (8 - 15)
+      qrboxRatio: 0.68,          // ขนาดกรอบเล็งกลางหน้าจอ
+      idealWidth: 1280,          // ความละเอียด HD สำหรับ QR ขนาดเล็ก
       idealHeight: 720,
-      defaultZoom: 1.6,          // ซูมเริ่มต้นอัตโนมัติ (1.5 - 2.0 เหมาะกับ QR บนบัตรนักเรียน)
-      sameCodeCooldownMs: 2500,  // ห้ามสแกนบัตรใบเดิมซ้ำภายใน 2.5 วินาที
+      defaultZoom: 1.6,          // ระดับซูมเริ่มต้น (1.5 - 2.0)
+      sameCodeCooldownMs: 2500,  // ห้ามสแกนบัตรใบเดิมซ้ำใน 2.5 วินาที
       nextStudentDelayMs: 900    // เว้นจังหวะ 0.9 วินาทีก่อนรับบัตรคนถัดไป
     };
 
-    // พารามิเตอร์ระบบส่งข้อมูลเป็นชุด (Batch Sync) - ปรับแต่งได้ตามหน้างาน
+    // พารามิเตอร์ระบบส่งข้อมูลเป็นชุด (Batch Sync)
     var QUEUE_CONFIG = {
-      batchTriggerSize: 10,      // สแกนครบ 10 คน -> ส่งเป็นชุดทันทีโดยไม่ต้องรอ
-      maxBatchSize: 15,          // ส่งสูงสุดครั้งละ 15 คนต่อรอบ (ป้องกันข้อมูลใหญ่เกินไป)
-      batchWaitMs: 2500,         // หากยังไม่ครบ 10 คน ให้รอ 2.5 วินาทีแล้วส่งชุดที่มีอยู่ทันที
+      batchTriggerSize: 10,      // สแกนครบ 10 คน -> ส่งเป็นชุดทันที
+      maxBatchSize: 15,          // ส่งสูงสุดครั้งละ 15 คนต่อชุด
+      batchWaitMs: 2500,         // รอรวมชุด 2.5 วินาทีเมื่อสแกนยังไม่ครบ 10 คน
       busyRetryMinMs: 1500,      // สุ่มรอ 1.5 - 2.8 วินาทีเมื่อคิวหลังบ้านแน่น
       busyRetryMaxMs: 2800,
-      networkRetryMs: 3000       // รอ 3 วินาทีเมื่อเน็ตหลุด
+      networkRetryMs: 3000       // รอ 3 วินาทีเมื่ออินเทอร์เน็ตหลุด
     };
-    var batchSyncTimer = null;   // ตัวจับเวลาสำหรับรวมชุดข้อมูล
 
     var staffName = "";
     var studentDB = {};
@@ -170,12 +187,22 @@
     var sessionScanCount = 0;
     var scanQueue = [];
     var isUploading = false;
+    var isForceFlushing = false; // ธงควบคุมโหมด "ส่งข้อมูลทันที" ให้ส่งรวดเดียวจนหมดคิว
+    var batchSyncTimer = null;
     var html5QrCode = null;
     var isCameraRunning = false;
     var isTorchOn = false;
     var lastCode = "";
     var lastScanMs = 0;
     var audioCtx = null;
+
+    // เตือนป้องกันเจ้าหน้าที่เผลอปิดแท็บเบราว์เซอร์ขณะยังมีข้อมูลรอส่ง
+    window.addEventListener("beforeunload", function(e) {
+      if (scanQueue.length > 0) {
+        e.preventDefault();
+        e.returnValue = "ยังมีข้อมูลนักเรียนรอส่งเข้า Google Sheets กรุณากดปุ่ม 'ส่งข้อมูลทันที' ก่อนปิดหน้านี้";
+      }
+    });
 
     async function callGasApi(payloadObj) {
       var res = await fetch(GAS_WEB_APP_URL, {
@@ -251,7 +278,7 @@
         document.getElementById("loginView").classList.add("hidden");
         document.getElementById("scanView").classList.remove("hidden");
         btn.disabled = false;
-        syncQueue();
+        if (scanQueue.length > 0) syncQueue();
       } catch (err) {
         msg.style.color = "#c62828";
         msg.innerText = "เชื่อมต่อระบบไม่ได้ กรุณาเช็กอินเทอร์เน็ตหรือลิงก์ /exec";
@@ -260,7 +287,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 📷 ระบบกล้อง HD + ล็อก QR_CODE + ซูมอัตโนมัติ + ไฟฉาย
+    // 📷 ระบบกล้อง HD + ซูมอัตโนมัติ + ไฟฉาย
     // -------------------------------------------------------------------------
     function toggleCamera() {
       if (isCameraRunning) stopCamera();
@@ -304,7 +331,6 @@
       html5QrCode.start({ facingMode: "environment" }, hdConfig, onScanDecoded, function() {})
         .then(onCameraStarted)
         .catch(function() {
-          // แผนสำรองหากมือถือรุ่นเก่าไม่รองรับ HD videoConstraints
           html5QrCode.start({ facingMode: "environment" }, fallbackConfig, onScanDecoded, function() {})
             .then(onCameraStarted)
             .catch(function(err) {
@@ -323,8 +349,6 @@
       btn.disabled = false;
       btn.className = "btn btn-red";
       btn.innerText = "⏹️ ปิดกล้องสแกน";
-
-      // รอให้กล้องตั้งตัว 400ms แล้วเปิดแถบซูมและปุ่มไฟฉายอัตโนมัติ (ถ้าเครื่องรองรับ)
       setTimeout(setupCameraEnhancements, 400);
     }
 
@@ -479,7 +503,6 @@
       playFeedback("ok");
       showResult("bg-ok", "✅ บันทึกสำเร็จ<br>" + stu.name + " (" + room + ")");
 
-      // แนบเวลาสแกนจริง (scannedAt) ไปด้วย เพื่อให้เวลาในชีท Logs ตรงตามจริง 100%
       scanQueue.push({
         student: stu,
         staffName: staffName,
@@ -487,7 +510,7 @@
       });
       saveQueueToStorage();
       updateQueueBadge(false);
-      scheduleBatchSync(); // 👈 เปลี่ยนจาก syncQueue() เป็น scheduleBatchSync()
+      scheduleBatchSync();
     }
 
     function showResult(cssClass, htmlText) {
@@ -509,7 +532,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 🔄 ระบบคิวส่งซ้ำอัตโนมัติ (Smart Retry + ป้องกันข้อมูลหายใน localStorage)
+    // 🔄 ระบบคิวส่งเป็นชุด (Batch Sync) + ปุ่มส่งข้อมูลทันที (Force Sync)
     // -------------------------------------------------------------------------
     function saveQueueToStorage() {
       try { localStorage.setItem("late_scan_queue", JSON.stringify(scanQueue)); } catch (e) {}
@@ -525,22 +548,66 @@
 
     function updateQueueBadge(isRetrying) {
       var badge = document.getElementById("queueBadge");
+      var btnForce = document.getElementById("btnForceSync");
+
       if (scanQueue.length === 0) {
         badge.innerText = "✅ ส่งข้อมูลเข้าชีทครบแล้ว";
         badge.style.background = "#e8f5e9";
         badge.style.color = "#2e7d32";
+
+        if (btnForce) {
+          btnForce.disabled = true;
+          btnForce.className = "btn btn-force-idle";
+          btnForce.innerText = "⚡ ส่งข้อมูลทันที (ไม่มีข้อมูลค้าง)";
+        }
       } else if (isRetrying) {
-        badge.innerText = "🔄 คิวหนาแน่น กำลังส่งซ้ำ (" + scanQueue.length + " รายการ)";
+        badge.innerText = "🔄 กำลังลองส่งซ้ำ (" + scanQueue.length + " รายการ)";
         badge.style.background = "#ffebee";
         badge.style.color = "#c62828";
+
+        if (btnForce) {
+          btnForce.disabled = isUploading;
+          btnForce.className = "btn btn-force-active";
+          btnForce.innerText = isUploading
+            ? "⏳ กำลังส่งข้อมูลเข้าชีท (" + scanQueue.length + " รายการ)..."
+            : "⚡ ส่งข้อมูลทันที (" + scanQueue.length + " รายการ)";
+        }
       } else {
-        badge.innerText = "⏳ กำลังส่งข้อมูล (" + scanQueue.length + " รายการ)";
+        badge.innerText = "⏳ รอส่งข้อมูล (" + scanQueue.length + " รายการ)";
         badge.style.background = "#fff3e0";
         badge.style.color = "#e65100";
+
+        if (btnForce) {
+          btnForce.disabled = isUploading;
+          btnForce.className = "btn btn-force-active";
+          btnForce.innerText = isUploading
+            ? "⏳ กำลังส่งข้อมูลเข้าชีท (" + scanQueue.length + " รายการ)..."
+            : "⚡ ส่งข้อมูลทันที (" + scanQueue.length + " รายการ)";
+        }
       }
     }
 
-    // ตัวจัดจังหวะรวมชุดข้อมูล (Hybrid: ครบจำนวนส่งทันที / ไม่ครบจำนวนรอ 2.5 วินาทีแล้วส่ง)
+    // ฟังก์ชันสำหรับปุ่ม "⚡ ส่งข้อมูลทันที" — ยกเลิกเวลารอแล้วส่งทุกชุดต่อเนื่องจนหมดคิว
+    function forceSyncNow() {
+      if (scanQueue.length === 0) {
+        showResult("bg-ok", "✅ ไม่มีข้อมูลค้าง ส่งเข้า Google Sheets ครบทั้งหมดแล้ว");
+        return;
+      }
+
+      isForceFlushing = true; // บังคับให้ส่งชุดถัดไปต่อเนื่องทันทีโดยไม่รอ 2.5 วินาที
+
+      if (batchSyncTimer) {
+        clearTimeout(batchSyncTimer);
+        batchSyncTimer = null;
+      }
+
+      updateQueueBadge(false);
+
+      if (!isUploading) {
+        syncQueue();
+      }
+    }
+
     function scheduleBatchSync() {
       if (batchSyncTimer) {
         clearTimeout(batchSyncTimer);
@@ -548,20 +615,17 @@
       }
       if (scanQueue.length === 0) return;
 
-      // ถ้าสะสมครบตามเกณฑ์ (10 คน) ให้สั่งส่งทันที
-      if (scanQueue.length >= QUEUE_CONFIG.batchTriggerSize) {
+      if (isForceFlushing || scanQueue.length >= QUEUE_CONFIG.batchTriggerSize) {
         syncQueue();
         return;
       }
 
-      // ถ้ายังไม่ครบ ให้ตั้งเวลารอสั้นๆ เพื่อรวมคนถัดไปที่อาจเดินตามมาติดๆ
       batchSyncTimer = setTimeout(function() {
         batchSyncTimer = null;
         syncQueue();
       }, QUEUE_CONFIG.batchWaitMs);
     }
 
-    // ฟังก์ชันส่งชุดข้อมูล (Batch) เข้า Google Apps Script
     async function syncQueue() {
       if (isUploading || scanQueue.length === 0) return;
       if (batchSyncTimer) {
@@ -570,7 +634,6 @@
       }
 
       isUploading = true;
-      // ดึงข้อมูลจากหัวคิวออกมาเป็นชุด (สูงสุดไม่เกิน 15 คน) โดยยังไม่ลบออกจากคิวจนกว่าจะส่งสำเร็จ
       var batchItems = scanQueue.slice(0, QUEUE_CONFIG.maxBatchSize);
       updateQueueBadge(false);
 
@@ -580,7 +643,6 @@
           items: batchItems
         });
 
-        // กรณีคิวหลังบ้านแน่น -> ห้ามลบข้อมูลออกจากคิว สุ่มรอแล้วส่งชุดนี้ซ้ำ
         if (res && res.isBusy) {
           updateQueueBadge(true);
           var waitMs = Math.floor(
@@ -594,18 +656,26 @@
           return;
         }
 
-        // ส่งชุดนี้สำเร็จ -> ลบเฉพาะจำนวนที่ส่งออกไป (ข้อมูลใหม่ที่เพิ่งสแกนระหว่างรอจะยังอยู่ครบ)
+        // ส่งชุดนี้สำเร็จ -> ลบเฉพาะรายการที่ส่งออกไปแล้ว
         scanQueue.splice(0, batchItems.length);
         saveQueueToStorage();
-        updateQueueBadge(false);
         isUploading = false;
 
-        // หากยังมีรายการค้างอยู่ในคิว ให้ส่งชุดถัดไปต่อทันที
         if (scanQueue.length > 0) {
-          scheduleBatchSync();
+          updateQueueBadge(false);
+          if (isForceFlushing) {
+            syncQueue(); // ส่งชุดถัดไปทันทีโดยไม่ต้องรอเวลา
+          } else {
+            scheduleBatchSync();
+          }
+        } else {
+          if (isForceFlushing) {
+            isForceFlushing = false;
+            showResult("bg-ok", "✅ ส่งข้อมูลทั้งหมดเข้า Google Sheets เรียบร้อยแล้ว สามารถปิดเครื่องได้ทันที");
+          }
+          updateQueueBadge(false);
         }
       } catch (err) {
-        // กรณีเน็ตหลุด -> เก็บคิวไว้ครบทุกแถวแล้วลองส่งซ้ำทุก 3 วินาที
         updateQueueBadge(true);
         setTimeout(function() {
           isUploading = false;
@@ -616,11 +686,12 @@
 
     function handleLogout() {
       if (scanQueue.length > 0) {
-        var ok = confirm("ยังมีข้อมูลรอส่งอยู่ " + scanQueue.length + " รายการ ต้องการออกจากระบบจริงหรือไม่? (ข้อมูลจะยังถูกเก็บไว้ในเครื่องเพื่อส่งรอบหน้า)");
+        var ok = confirm("ยังมีข้อมูลรอส่งอยู่ " + scanQueue.length + " รายการ แนะนำให้กดปุ่ม 'ส่งข้อมูลทันที' ก่อนครับ\nต้องการออกจากระบบเลยหรือไม่?");
         if (!ok) return;
       }
       stopCamera();
       staffName = "";
+      isForceFlushing = false;
       document.getElementById("scanView").classList.add("hidden");
       document.getElementById("loginView").classList.remove("hidden");
     }
