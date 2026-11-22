@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>สแกนมาสาย (โหมดกล้องมือถือ)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; }
+    body { margin: 0; padding: 16px; background: #f0f4f8; color: #222; }
+    .card { max-width: 480px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    h2, h3 { margin: 0 0 12px 0; text-align: center; color: #1565c0; }
+    .hidden { display: none !important; }
+    .input-group { margin-bottom: 14px; }
+    label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.95rem; }
+    input[type="text"], input[type="password"] {
+      width: 100%; padding: 12px; border: 1.5px solid #cfd8dc; border-radius: 10px; font-size: 1rem; outline: none;
+    }
+    input:focus { border-color: #1565c0; }
+    .btn {
+      width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 1.05rem;
+      font-weight: 700; color: #fff; cursor: pointer; margin-top: 6px;
+    }
+    .btn-green { background: #2e7d32; }
+    .btn-blue { background: #1565c0; }
+    .btn-red { background: #c62828; }
+    .btn-gray { background: #607d8b; padding: 8px 14px; width: auto; font-size: 0.9rem; }
+    .btn:disabled { opacity: 0.6; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #eceff1; padding-bottom: 10px; }
+    .status-badge { font-size: 0.85rem; padding: 4px 10px; border-radius: 12px; background: #e3f2fd; color: #1565c0; font-weight: 600; }
+    #cameraBox { background: #000; border-radius: 12px; overflow: hidden; margin-top: 12px; }
+    #qr-reader { width: 100%; }
+    #resultBox { margin-top: 14px; padding: 14px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 1.05rem; }
+    .bg-ok { background: #e8f5e9; color: #1b5e20; border: 2px solid #a5d6a7; }
+    .bg-warn { background: #fff3e0; color: #e65100; border: 2px solid #ffcc80; }
+    .bg-err { background: #ffebee; color: #c62828; border: 2px solid #ef9a9a; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 0.92rem; }
+    th, td { padding: 8px 6px; border-bottom: 1px solid #eee; text-align: left; }
+    th { color: #555; background: #fafafa; }
+    .msg { text-align: center; margin-top: 10px; font-weight: 600; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+  <!-- หน้าเข้าสู่ระบบเจ้าหน้าที่ -->
+  <div id="loginView" class="card">
+    <h2>📱 ระบบสแกนมาสาย (มือถือ)</h2>
+    <div class="input-group">
+      <label>ชื่อผู้ใช้งาน (Username)</label>
+      <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้งาน">
+    </div>
+    <div class="input-group">
+      <label>รหัสผ่าน (Password)</label>
+      <input type="password" id="password" placeholder="กรอกรหัสผ่าน">
+    </div>
+    <button id="btnLogin" class="btn btn-green" onclick="handleLogin()">เข้าสู่ระบบ</button>
+    <div id="loginMsg" class="msg" style="color: #c62828;"></div>
+  </div>
+
+  <!-- หน้าสแกนกล้องสด -->
+  <div id="scanView" class="card hidden">
+    <div class="top-bar">
+      <div>
+        <div style="font-weight: 700; color: #c62828;">🔴 สแกนนักเรียนมาสาย</div>
+        <div style="font-size: 0.88rem; color: #555;">เจ้าหน้าที่: <b id="staffLabel"></b></div>
+      </div>
+      <button class="btn btn-gray" onclick="handleLogout()">ออก</button>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <span id="queueBadge" class="status-badge">✅ ส่งข้อมูลครบแล้ว</span>
+      <span id="dbBadge" class="status-badge" style="background: #e8f5e9; color: #2e7d32;">พร้อมใช้งาน</span>
+    </div>
+
+    <button id="btnCamera" class="btn btn-blue" onclick="toggleCamera()">📷 เปิดกล้องหลังสแกน</button>
+
+    <div id="cameraBox" class="hidden">
+      <div id="qr-reader"></div>
+    </div>
+
+    <!-- ช่องกรอกรหัสสำรองเผื่อบัตรชำรุด -->
+    <div style="display: flex; gap: 8px; margin-top: 12px;">
+      <input type="text" id="manualInput" placeholder="พิมพ์รหัสนักเรียน (กรณีบัตรชำรุด)">
+      <button class="btn btn-green" style="width: 90px; margin-top: 0;" onclick="handleManualSubmit()">บันทึก</button>
+    </div>
+
+    <div id="resultBox" class="hidden"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 24%;">เวลา</th>
+          <th style="width: 56%;">ชื่อ-สกุล</th>
+          <th style="width: 20%;">ห้อง</th>
+        </tr>
+      </thead>
+      <tbody id="recentBody">
+        <tr><td colspan="3" style="text-align: center; color: #888;">ยังไม่มีรายการสแกน</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // =========================================================================
+    // ⚙️ ตั้งค่าหลัก: วางลิงก์ Web App (/exec) ของ Google Apps Script ที่นี่
+    // =========================================================================
+    var GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAi6qtV1dklnPLaW-l-vV6Tnm_oPsKuMnFpRx-QpPqxIyjTAT-W3NFNOkk6bHszscJIw/exec";
+
+    // พารามิเตอร์กล้องที่ปรับแต่งได้ตามต้องการ
+    var CAMERA_CONFIG = {
+      fps: 10,                   // ความเร็วการจับภาพ (6 - 15)
+      qrboxRatio: 0.72,          // ขนาดกรอบเล็งกลางหน้าจอ
+      sameCodeCooldownMs: 2500,  // ห้ามสแกนบัตรใบเดิมซ้ำภายใน 2.5 วินาที
+      nextStudentDelayMs: 900    // เว้นจังหวะ 0.9 วินาทีก่อนรับบัตรคนถัดไป
+    };
+
+    var staffName = "";
+    var studentDB = {};
+    var scannedToday = {};
+    var recentScans = [];
+    var scanQueue = [];
+    var isUploading = false;
+    var html5QrCode = null;
+    var isCameraRunning = false;
+    var lastCode = "";
+    var lastScanMs = 0;
+    var audioCtx = null;
+
+    // ฟังก์ชันส่งคำสั่งไปยัง Google Apps Script แบบไม่ติด CORS Preflight
+    async function callGasApi(payloadObj) {
+      var res = await fetch(GAS_WEB_APP_URL, {
+        method: "POST",
+        redirect: "follow",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payloadObj)
+      });
+      return await res.json();
+    }
+
+    function playBeep() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch (e) {}
+    }
+
+    async function handleLogin() {
+      var user = document.getElementById("username").value.trim();
+      var pass = document.getElementById("password").value.trim();
+      var msg = document.getElementById("loginMsg");
+      var btn = document.getElementById("btnLogin");
+
+      if (GAS_WEB_APP_URL.indexOf("https://script.google.com") !== 0) {
+        msg.innerText = "⚠️ กรุณาใส่ลิงก์ Web App (/exec) ในตัวแปร GAS_WEB_APP_URL ก่อนครับ";
+        return;
+      }
+      if (!user || !pass) {
+        msg.innerText = "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ";
+        return;
+      }
+
+      btn.disabled = true;
+      msg.style.color = "#1565c0";
+      msg.innerText = "กำลังตรวจสอบสิทธิ์...";
+
+      try {
+        var authRes = await callGasApi({ action: "login", username: user, password: pass });
+        if (!authRes.success) {
+          msg.style.color = "#c62828";
+          msg.innerText = authRes.message || "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+          btn.disabled = false;
+          return;
+        }
+
+        staffName = authRes.name;
+        msg.innerText = "กำลังโหลดฐานข้อมูลนักเรียน...";
+        var dbRes = await callGasApi({ action: "getStudents" });
+        if (!dbRes.success) {
+          msg.style.color = "#c62828";
+          msg.innerText = "โหลดฐานข้อมูลนักเรียนไม่สำเร็จ: " + dbRes.message;
+          btn.disabled = false;
+          return;
+        }
+
+        studentDB = JSON.parse(dbRes.dbString);
+        restoreQueueFromStorage();
+
+        document.getElementById("staffLabel").innerText = staffName;
+        document.getElementById("loginView").classList.add("hidden");
+        document.getElementById("scanView").classList.remove("hidden");
+        btn.disabled = false;
+        syncQueue();
+      } catch (err) {
+        msg.style.color = "#c62828";
+        msg.innerText = "เชื่อมต่อระบบไม่ได้ กรุณาเช็กอินเทอร์เน็ตหรือลิงก์ /exec";
+        btn.disabled = false;
+      }
+    }
+
+    function toggleCamera() {
+      if (isCameraRunning) {
+        stopCamera();
+      } else {
+        startCamera();
+      }
+    }
+
+    function startCamera() {
+      var btn = document.getElementById("btnCamera");
+      var box = document.getElementById("cameraBox");
+      box.classList.remove("hidden");
+      btn.disabled = true;
+
+      if (!html5QrCode) html5QrCode = new Html5Qrcode("qr-reader");
+
+      var config = {
+        fps: CAMERA_CONFIG.fps,
+        qrbox: function(w, h) {
+          var size = Math.max(120, Math.floor(Math.min(w, h) * CAMERA_CONFIG.qrboxRatio));
+          return { width: size, height: size };
+        }
+      };
+
+      html5QrCode.start({ facingMode: "environment" }, config, onScanDecoded, function() {})
+        .then(function() {
+          isCameraRunning = true;
+          btn.disabled = false;
+          btn.className = "btn btn-red";
+          btn.innerText = "⏹️ ปิดกล้องสแกน";
+        })
+        .catch(function(err) {
+          isCameraRunning = false;
+          btn.disabled = false;
+          box.classList.add("hidden");
+          showResult("bg-err", "⚠️ เปิดกล้องไม่สำเร็จ: " + err);
+        });
+    }
+
+    function stopCamera() {
+      var btn = document.getElementById("btnCamera");
+      var box = document.getElementById("cameraBox");
+      if (html5QrCode && isCameraRunning) {
+        html5QrCode.stop().then(function() {
+          isCameraRunning = false;
+          box.classList.add("hidden");
+          btn.className = "btn btn-blue";
+          btn.innerText = "📷 เปิดกล้องหลังสแกน";
+        }).catch(function() {
+          isCameraRunning = false;
+          box.classList.add("hidden");
+        });
+      }
+    }
+
+    function onScanDecoded(decodedText) {
+      var now = Date.now();
+      var code = decodedText ? decodedText.trim() : "";
+      if (!code) return;
+      if (code === lastCode && (now - lastScanMs < CAMERA_CONFIG.sameCodeCooldownMs)) return;
+      if (now - lastScanMs < CAMERA_CONFIG.nextStudentDelayMs) return;
+
+      lastCode = code;
+      lastScanMs = now;
+      playBeep();
+      processStudentCode(code);
+    }
+
+    function handleManualSubmit() {
+      var input = document.getElementById("manualInput");
+      var val = input.value.trim();
+      if (!val) return;
+      input.value = "";
+      processStudentCode(val);
+    }
+
+    function processStudentCode(rawCode) {
+      var code = rawCode.trim();
+      if (code.indexOf("id=") !== -1) {
+        try { code = new URL(code).searchParams.get("id") || code; }
+        catch (e) { code = code.split("id=")[1].split("&")[0]; }
+      }
+
+      var stu = studentDB[code];
+      if (!stu) {
+        showResult("bg-err", "❌ ไม่พบรหัสนักเรียน: " + code);
+        return;
+      }
+
+      if (scannedToday[stu.id]) {
+        showResult("bg-warn", "⚠️ " + stu.name + " สแกนไปแล้ววันนี้");
+        return;
+      }
+
+      scannedToday[stu.id] = true;
+      var room = stu.grade + "/" + stu.room;
+      var now = new Date();
+      var timeStr = ("0" + now.getHours()).slice(-2) + ":" + ("0" + now.getMinutes()).slice(-2) + ":" + ("0" + now.getSeconds()).slice(-2);
+
+      recentScans.unshift({ time: timeStr, name: stu.name, room: room });
+      if (recentScans.length > 5) recentScans.pop();
+      renderRecent();
+
+      showResult("bg-ok", "✅ บันทึกสำเร็จ<br>" + stu.name + " (" + room + ")");
+
+      scanQueue.push({ student: stu, staffName: staffName });
+      saveQueueToStorage();
+      updateQueueBadge();
+      syncQueue();
+    }
+
+    function showResult(cssClass, htmlText) {
+      var box = document.getElementById("resultBox");
+      box.className = cssClass;
+      box.innerHTML = htmlText;
+      box.classList.remove("hidden");
+    }
+
+    function renderRecent() {
+      var tbody = document.getElementById("recentBody");
+      tbody.innerHTML = recentScans.map(function(item) {
+        return "<tr><td><b>" + item.time + "</b></td><td>" + item.name + "</td><td>" + item.room + "</td></tr>";
+      }).join("");
+    }
+
+    // บันทึกคิวลงเครื่องมือถือ ป้องกันข้อมูลหายแม้เน็ตหลุดหรือเผลอปิดแท็บ
+    function saveQueueToStorage() {
+      try { localStorage.setItem("late_scan_queue", JSON.stringify(scanQueue)); } catch (e) {}
+    }
+
+    function restoreQueueFromStorage() {
+      try {
+        var saved = localStorage.getItem("late_scan_queue");
+        if (saved) scanQueue = JSON.parse(saved) || [];
+      } catch (e) { scanQueue = []; }
+      updateQueueBadge();
+    }
+
+    function updateQueueBadge() {
+      var badge = document.getElementById("queueBadge");
+      if (scanQueue.length === 0) {
+        badge.innerText = "✅ ส่งข้อมูลครบแล้ว";
+        badge.style.background = "#e8f5e9";
+        badge.style.color = "#2e7d32";
+      } else {
+        badge.innerText = "⏳ รอส่งข้อมูล " + scanQueue.length + " รายการ";
+        badge.style.background = "#fff3e0";
+        badge.style.color = "#e65100";
+      }
+    }
+
+    async function syncQueue() {
+      if (isUploading || scanQueue.length === 0) return;
+      isUploading = true;
+      var item = scanQueue[0];
+
+      try {
+        var res = await callGasApi({
+          action: "record",
+          student: item.student,
+          staffName: item.staffName
+        });
+        scanQueue.shift();
+        saveQueueToStorage();
+        updateQueueBadge();
+        isUploading = false;
+        if (scanQueue.length > 0) syncQueue();
+      } catch (err) {
+        // หากเน็ตหลุด จะลองส่งใหม่ให้อัตโนมัติทุก 3 วินาที
+        setTimeout(function() {
+          isUploading = false;
+          syncQueue();
+        }, 3000);
+      }
+    }
+
+    function handleLogout() {
+      stopCamera();
+      staffName = "";
+      document.getElementById("scanView").classList.add("hidden");
+      document.getElementById("loginView").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
