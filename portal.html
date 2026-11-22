@@ -635,9 +635,18 @@
     updateClock();
     setInterval(updateClock, 1000);
 
+    // แปลงวันที่ปัจจุบันเป็น YYYY-MM-DD ตามเวลาท้องถิ่น (ไม่เพี้ยนช่วง 00:00 - 06:59 น.)
+    function getLocalTodayIso() {
+      var d = new Date();
+      var y = d.getFullYear();
+      var m = ("0" + (d.getMonth() + 1)).slice(-2);
+      var day = ("0" + d.getDate()).slice(-2);
+      return y + "-" + m + "-" + day;
+    }
+
     function initAppPage() {
       try {
-        var today = new Date().toISOString().split('T')[0];
+        var today = getLocalTodayIso();
         if (document.getElementById("advDatePicker")) document.getElementById("advDatePicker").value = today;
         if (document.getElementById("datePicker")) document.getElementById("datePicker").value = today;
         if (document.getElementById("adminPassword")) {
@@ -647,7 +656,6 @@
         updateModalRoomDropdown();
       } catch (err) {}
     }
-    initAppPage();
     window.addEventListener("load", initAppPage);
 
     function openClassroomModal() {
@@ -690,7 +698,11 @@
     }
 
     function goHome() {
-      currentAdminPassword = ""; // ล้างสิทธิ์ Admin ออกจากหน่วยความจำทันทีเมื่อออกจากหน้าตั้งค่า
+      currentAdminPassword = ""; // ล้างสิทธิ์ Admin ออกจากหน่วยความจำ
+      staffListCache = [];       // ล้างข้อมูลและรหัสผ่านเจ้าหน้าที่ออกจากหน่วยความจำ
+      var staffTbody = document.getElementById("staffTableBody");
+      if (staffTbody) staffTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text">กำลังโหลดรายชื่อเจ้าหน้าที่...</td></tr>';
+
       document.getElementById("scanSection").classList.add("hidden");
       document.getElementById("dashboardSection").classList.add("hidden");
       document.getElementById("advancedSection").classList.add("hidden");
@@ -896,16 +908,33 @@
 
       try {
         var response = await callGasApi({ action: "recordBatch", items: batchItems });
+
+        // กรณีคิวหลังบ้านหนาแน่น -> สุ่มรอแล้วส่งซ้ำโดยไม่ลบคิว
         if (response && response.isBusy) {
           updateDesktopQueueUI(true);
           var jitter = 1500 + Math.floor(Math.random() * 1200);
           setTimeout(function() { isUploading = false; syncQueueWithServer(); }, jitter);
           return;
         }
+
+        // กรณีเซิร์ฟเวอร์ตอบกลับว่าไม่สำเร็จ (เช่น ยังไม่ได้ Deploy recordBatch) -> ห้ามลบคิวและแจ้งเตือนทันที
+        if (!response || !response.success) {
+          updateDesktopQueueUI(true);
+          isUploading = false;
+          isForceFlushing = false;
+          M.toast({
+            html: '❌ ส่งข้อมูลไม่สำเร็จ: ' + ((response && response.message) || 'กรุณาตรวจสอบการ Deploy หลังบ้าน'),
+            classes: 'red darken-2 rounded',
+            displayLength: 5000
+          });
+          return;
+        }
+
+        // บันทึกสำเร็จจริง -> ลบเฉพาะชุดที่ส่งออกไปแล้ว
         scanQueue.splice(0, batchItems.length);
         saveDesktopQueue();
         isUploading = false;
-        isFrontendDataLoaded = false; // เพื่อให้เปิด Dashboard รอบหน้าได้ข้อมูลล่าสุด
+        isFrontendDataLoaded = false;
 
         if (scanQueue.length > 0) {
           updateDesktopQueueUI(false);
