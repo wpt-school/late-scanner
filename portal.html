@@ -757,40 +757,77 @@
 
           <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
 
-          <!-- 7.2 เพิ่มรายชื่อนักเรียนใหม่ด้วยตนเอง -->
+          <!-- 7.2 เพิ่มรายชื่อนักเรียนใหม่ด้วยตนเอง (จัดแถวใหม่ด้วย CSS Grid) -->
           <h5 style="margin-top: 0; color: #1565c0; font-weight: 700;">7.2) เพิ่มรายชื่อนักเรียนใหม่ (แทรกตามเพศ & เลขประจำตัวอัตโนมัติ)</h5>
-          <p class="grey-text text-darken-2" style="margin-top: 4px;">ระบบจะจำแนกเพศจากคำนำหน้า (ชายก่อนหญิง) แทรกระหว่างเลขประจำตัว เรียงเลขที่ใหม่ และรักษาข้อมูลเช็คชื่อ (E–CZ) ครบทั้งห้อง (จำกัดไม่เกิน 40 คน/ห้อง)</p>
+          <p class="grey-text text-darken-2" style="margin-top: 4px;">
+            ระบบจะจำแนกเพศจากคำนำหน้า (ชายก่อนหญิง) แทรกระหว่างเลขประจำตัว เรียงเลขที่ใหม่ และรักษาข้อมูลเช็คชื่อ (E–CZ) ครบทั้งห้อง (จำกัดไม่เกิน 40 คน/ห้อง)
+          </p>
 
-          <div class="row" style="background: #e3f2fd; padding: 18px; border-radius: 10px; border: 1px solid #90caf9; margin-top: 12px;">
-            <div class="col s12 m3" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">เลขประจำตัวนักเรียน</label>
-              <input id="addStuId" type="text" class="browser-default custom-input-box" placeholder="เช่น 39820">
+          <div class="add-stu-box">
+            <div class="add-stu-grid">
+              <!-- แถวที่ 1: เลขประจำตัว (3) + คำนำหน้า (3) + ชื่อ-นามสกุล (6) -->
+              <div class="add-stu-field grid-col-3">
+                <label for="addStuId">เลขประจำตัวนักเรียน</label>
+                <input id="addStuId" type="text" class="browser-default add-stu-control" placeholder="เช่น 39820">
+              </div>
+
+              <div class="add-stu-field grid-col-3">
+                <label for="addStuPrefix">คำนำหน้า (จำแนกเพศ)</label>
+                <select id="addStuPrefix" class="browser-default add-stu-control">
+                  <option value="เด็กชาย">เด็กชาย (ชาย)</option>
+                  <option value="นาย">นาย (ชาย)</option>
+                  <option value="เด็กหญิง">เด็กหญิง (หญิง)</option>
+                  <option value="นางสาว">นางสาว (หญิง)</option>
+                </select>
+              </div>
+
+              <div class="add-stu-field grid-col-6 grid-tablet-12">
+                <label for="addStuName">ชื่อ - นามสกุล (ไม่ต้องใส่คำนำหน้า)</label>
+                <input id="addStuName" type="text" class="browser-default add-stu-control" placeholder="เช่น สมชาย ใจดี">
+              </div>
+
+              <!-- แถวที่ 2: ระดับชั้น (3) + ห้องเรียน (3) + ปุ่มบันทึก (6) -->
+              <div class="add-stu-field grid-col-3 grid-mobile-6">
+                <label for="addStuGrade">ระดับชั้น</label>
+                <select id="addStuGrade" class="browser-default add-stu-control">
+                  <option value="ม.1">ม.1</option>
+                  <option value="ม.2">ม.2</option>
+                  <option value="ม.3">ม.3</option>
+                  <option value="ม.4">ม.4</option>
+                  <option value="ม.5">ม.5</option>
+                  <option value="ม.6">ม.6</option>
+                </select>
+              </div>
+
+              <div class="add-stu-field grid-col-3 grid-mobile-6">
+                <label for="addStuRoom">ห้องเรียน</label>
+                <select id="addStuRoom" class="browser-default add-stu-control">
+                  <option value="1">ห้อง 1</option>
+                  <option value="2">ห้อง 2</option>
+                  <option value="3">ห้อง 3</option>
+                  <option value="4">ห้อง 4</option>
+                  <option value="5">ห้อง 5</option>
+                  <option value="6">ห้อง 6</option>
+                  <option value="7">ห้อง 7</option>
+                  <option value="8">ห้อง 8</option>
+                  <option value="9">ห้อง 9</option>
+                  <option value="10">ห้อง 10</option>
+                  <option value="11">ห้อง 11</option>
+                  <option value="12">ห้อง 12</option>
+                  <option value="13">ห้อง 13</option>
+                  <option value="14">ห้อง 14</option>
+                </select>
+              </div>
+
+              <div class="add-stu-field grid-col-6 grid-tablet-12">
+                <button type="button" id="btnAddNewStu" class="btn waves-effect waves-light blue darken-3 add-stu-submit-btn" onclick="doAddNewStudentSorted()">
+                  ➕ เพิ่มรายชื่อนักเรียน (แทรก & เรียงเลขที่)
+                </button>
+              </div>
             </div>
-            <div class="col s12 m3" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">คำนำหน้า (จำแนกเพศ)</label>
-              <select id="addStuPrefix" class="custom-select" style="margin-top: 5px;">
-                <option value="เด็กชาย">เด็กชาย (ชาย)</option>
-                <option value="นาย">นาย (ชาย)</option>
-                <option value="เด็กหญิง">เด็กหญิง (หญิง)</option>
-                <option value="นางสาว">นางสาว (หญิง)</option>
-              </select>
-            </div>
-            <div class="col s12 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">ชื่อ - นามสกุล (ไม่ต้องใส่คำนำหน้า)</label>
-              <input id="addStuName" type="text" class="browser-default custom-input-box" placeholder="เช่น สมชาย ใจดี">
-            </div>
-            <div class="col s6 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">ระดับชั้น</label>
-              <select id="addStuGrade" class="custom-select" style="margin-top: 5px;"><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
-            </div>
-            <div class="col s6 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">ห้องเรียน</label>
-              <select id="addStuRoom" class="custom-select" style="margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
-            </div>
-            <div class="col s12 center-align" style="margin-top: 8px;">
-              <div id="addStuMsg" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 10px;"></div>
-              <button type="button" id="btnAddNewStu" class="btn-large waves-effect waves-light blue darken-3" onclick="doAddNewStudentSorted()">➕ เพิ่มรายชื่อนักเรียน (แทรกและเรียงเลขที่อัตโนมัติ)</button>
-            </div>
+
+            <!-- แสดงผลลัพธ์การบันทึกแยกด้านล่าง เพื่อไม่ให้ดันปุ่มขยับ -->
+            <div id="addStuMsg" class="add-stu-msg"></div>
           </div>
 
           <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
