@@ -401,33 +401,141 @@
           <div class="center-align"><button type="button" id="btnSyncAllRooms" class="btn-large waves-effect waves-light blue darken-3" onclick="doSyncStudentsToClassrooms()">🔄 อัปเดตรายชื่อนักเรียนเข้าชีทห้องเรียนทั้งหมดทันที</button></div>
         </div>
 
-        <!-- ส่วนที่ 7 -->
+        <!-- ส่วนที่ 7: สแกน QR (3 เงื่อนไข) + เพิ่มนักเรียนแบบเรียงเพศ/รหัส + จัดการแก้ไข/ลบรายห้อง + อัปโหลดกลุ่ม -->
         <div id="tabStudentsManage" class="settings-panel hidden">
-          <h5 style="margin-top: 0; color: #2e7d32; font-weight: 700;">7.1) สแกน QR Code (URL) เพื่อดึงข้อมูลลงชีท Students อัตโนมัติ</h5>
-          <div class="row" style="margin-top: 15px; background: #e8f5e9; padding: 20px; border-radius: 10px; border: 1px solid #a5d6a7;">
-            <div class="col s12" style="margin-bottom: 15px;">
-              <label class="black-text" style="font-weight: 700; font-size: 1.05rem;">📷 ช่องสแกน QR Code นักเรียน</label>
-              <input id="regStuQrOrId" type="text" class="browser-default custom-input-box" style="font-size: 1.15rem !important; border: 2px solid #2e7d32 !important;" placeholder="สแกน QR Code ที่นี่ เช่น https://scs.wpt.ac.th/public/student.php?token=..." oninput="extractStudentIdFromQrInput()" onkeypress="handleRegQrKeyPress(event)">
+
+          <!-- 7.1 สแกน QR Code (URL) อัจฉริยะ 3 กรณี -->
+          <h5 style="margin-top: 0; color: #2e7d32; font-weight: 700;">7.1) สแกน QR Code (URL) เพื่ออัปเดตหรือลงทะเบียนอัตโนมัติ</h5>
+          <p class="grey-text text-darken-2" style="margin-top: 4px;">
+            • <b>มีข้อมูลใน Students แล้ว:</b> บันทึกเฉพาะ URL (คอลัมน์ F)<br>
+            • <b>มีเฉพาะเลขประจำตัว:</b> บันทึก URL (คอลัมน์ F) + ชื่อ-สกุล (คอลัมน์ C)<br>
+            • <b>ยังไม่มีในระบบ:</b> ดึงข้อมูลมาแสดงเพื่อให้เลือกระดับชั้น/ห้อง แล้วแทรกตามเพศและรหัสประจำตัวอัตโนมัติ
+          </p>
+
+          <div class="row" style="margin-top: 12px; background: #e8f5e9; padding: 18px; border-radius: 10px; border: 1px solid #a5d6a7;">
+            <div class="col s12" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 700; font-size: 1.05rem;">📷 ช่องสแกน QR Code นักเรียน (วางเคอร์เซอร์ที่นี่แล้วยิงสแกนได้เลย)</label>
+              <input id="regStuQrOrId" type="text" class="browser-default custom-input-box" style="font-size: 1.1rem !important; border: 2px solid #2e7d32 !important;" placeholder="สแกนลิงก์ https://scs.wpt.ac.th/public/student.php?token=..." oninput="extractStudentIdFromQrInput()" onkeypress="handleRegQrKeyPress(event)">
             </div>
-            <div class="col s12 m3" style="margin-bottom: 12px;"><label class="black-text" style="font-weight: 600;">เลขประจำตัว</label><input id="regStuId" type="text" class="browser-default custom-input-box" placeholder="เช่น 39429"></div>
-            <div class="col s12 m3" style="margin-bottom: 12px;"><label class="black-text" style="font-weight: 600;">เลขที่</label><input id="regStuNumber" type="number" class="browser-default custom-input-box" placeholder="เช่น 27" min="1" max="60"></div>
-            <div class="col s12 m6" style="margin-bottom: 12px;"><label class="black-text" style="font-weight: 600;">ชื่อ - นามสกุล</label><input id="regStuName" type="text" class="browser-default custom-input-box" placeholder="ชื่อ-นามสกุลนักเรียน"></div>
-            <div class="col s6 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">ระดับชั้น</label>
-              <select id="regStuGrade" class="custom-select" style="margin-top: 5px;"><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+            <div class="col s12 center-align">
+              <div id="regStuSingleMsg" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 10px;"></div>
+              <button type="button" id="btnScanSmartQr" class="btn waves-effect waves-light green darken-3" onclick="processScannedQrInputNow()">🔍 ตรวจสอบ / บันทึกจากลิงก์ QR Code</button>
             </div>
-            <div class="col s6 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 600;">ห้อง</label>
-              <select id="regStuRoom" class="custom-select" style="margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+
+            <!-- กล่องแสดงข้อมูลเดิม (กรณีพบข้อมูลใน Students แล้ว) -->
+            <div id="qrExistingInfoBox" class="col s12 hidden" style="margin-top: 14px; background: #fff; padding: 14px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+              <div id="qrExistingInfoContent" style="font-size: 1.02rem; line-height: 1.7;"></div>
             </div>
-            <div class="col s12 center-align" style="margin-top: 10px;">
-              <div id="regStuSingleMsg" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 12px;"></div>
-              <button type="button" id="btnSaveSingleStu" class="btn-large waves-effect waves-light green darken-3" onclick="doRegisterSingleStudent()">💾 ดึงข้อมูล / บันทึกลงชีท Students ทันที</button>
+
+            <!-- กล่องยืนยันเพิ่มนักเรียนใหม่ (กรณีสแกนแล้วไม่พบในชีท Students) -->
+            <div id="qrNewStudentConfirmBox" class="col s12 hidden" style="margin-top: 14px; background: #fff8e1; padding: 16px; border-radius: 8px; border: 2px solid #ffb300;">
+              <h6 style="margin-top: 0; color: #e65100; font-weight: 700;">🆕 ไม่พบรหัสนี้ในชีท Students — กรุณาเลือกระดับชั้นและห้องเพื่อแทรกข้อมูล</h6>
+              <input type="hidden" id="qrNewUrl">
+              <div class="row" style="margin-bottom: 0;">
+                <div class="col s12 m3" style="margin-bottom: 10px;"><label class="black-text" style="font-weight: 600;">เลขประจำตัว (A)</label><input id="qrNewId" type="text" class="browser-default custom-input-box"></div>
+                <div class="col s12 m3" style="margin-bottom: 10px;">
+                  <label class="black-text" style="font-weight: 600;">คำนำหน้า (แยกเพศ)</label>
+                  <select id="qrNewPrefix" class="custom-select" style="margin-top: 5px;"><option value="เด็กชาย">เด็กชาย</option><option value="นาย">นาย</option><option value="เด็กหญิง">เด็กหญิง</option><option value="นางสาว">นางสาว</option></select>
+                </div>
+                <div class="col s12 m6" style="margin-bottom: 10px;"><label class="black-text" style="font-weight: 600;">ชื่อ - นามสกุล (C)</label><input id="qrNewNameOnly" type="text" class="browser-default custom-input-box"></div>
+                <div class="col s6 m6" style="margin-bottom: 10px;">
+                  <label class="black-text" style="font-weight: 600;">เลือกระดับชั้น (D)</label>
+                  <select id="qrNewGrade" class="custom-select" style="margin-top: 5px;"><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+                </div>
+                <div class="col s6 m6" style="margin-bottom: 10px;">
+                  <label class="black-text" style="font-weight: 600;">เลือกห้องเรียน (E)</label>
+                  <select id="qrNewRoom" class="custom-select" style="margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+                </div>
+                <div class="col s12 center-align" style="margin-top: 8px;">
+                  <button type="button" id="btnConfirmQrNewStu" class="btn waves-effect waves-light deep-orange darken-2" onclick="confirmInsertStudentFromQr()" style="margin-right: 8px;">✅ ยืนยันแทรกข้อมูลและเรียงเลขที่ใหม่</button>
+                  <button type="button" class="btn waves-effect waves-light grey" onclick="cancelQrNewStudentBox()">ยกเลิก</button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <hr style="margin: 35px 0; border: 0; border-top: 2px dashed #ccc;">
-          <h5 style="margin-top: 0; color: #00695c; font-weight: 700;">7.2) อัปโหลดรายชื่อนักเรียน (Excel / CSV / วางข้อความ / ลิงก์ QR หลายคน)</h5>
+          <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
+
+          <!-- 7.2 เพิ่มรายชื่อนักเรียนใหม่ด้วยตนเอง (เรียงเพศ + แทรกตามรหัส + ล็อกไม่เกิน 40 คน) -->
+          <h5 style="margin-top: 0; color: #1565c0; font-weight: 700;">7.2) เพิ่มรายชื่อนักเรียนใหม่ (แทรกตามเพศ & เลขประจำตัวอัตโนมัติ)</h5>
+          <p class="grey-text text-darken-2" style="margin-top: 4px;">ระบบจะจำแนกเพศจากคำนำหน้า (ชายก่อนหญิง) แทรกระหว่างเลขประจำตัว เรียงเลขที่ใหม่ และรักษาข้อมูลเช็คชื่อ (E–CZ) ครบทั้งห้อง (จำกัดไม่เกิน 40 คน/ห้อง)</p>
+
+          <div class="row" style="background: #e3f2fd; padding: 18px; border-radius: 10px; border: 1px solid #90caf9; margin-top: 12px;">
+            <div class="col s12 m3" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">เลขประจำตัวนักเรียน</label>
+              <input id="addStuId" type="text" class="browser-default custom-input-box" placeholder="เช่น 39820">
+            </div>
+            <div class="col s12 m3" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">คำนำหน้า (จำแนกเพศ)</label>
+              <select id="addStuPrefix" class="custom-select" style="margin-top: 5px;">
+                <option value="เด็กชาย">เด็กชาย (ชาย)</option>
+                <option value="นาย">นาย (ชาย)</option>
+                <option value="เด็กหญิง">เด็กหญิง (หญิง)</option>
+                <option value="นางสาว">นางสาว (หญิง)</option>
+              </select>
+            </div>
+            <div class="col s12 m6" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">ชื่อ - นามสกุล (ไม่ต้องใส่คำนำหน้า)</label>
+              <input id="addStuName" type="text" class="browser-default custom-input-box" placeholder="เช่น สมชาย ใจดี">
+            </div>
+            <div class="col s6 m6" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">ระดับชั้น</label>
+              <select id="addStuGrade" class="custom-select" style="margin-top: 5px;"><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+            </div>
+            <div class="col s6 m6" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">ห้องเรียน</label>
+              <select id="addStuRoom" class="custom-select" style="margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+            </div>
+            <div class="col s12 center-align" style="margin-top: 8px;">
+              <div id="addStuMsg" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 10px;"></div>
+              <button type="button" id="btnAddNewStu" class="btn-large waves-effect waves-light blue darken-3" onclick="doAddNewStudentSorted()">➕ เพิ่มรายชื่อนักเรียน (แทรกและเรียงเลขที่อัตโนมัติ)</button>
+            </div>
+          </div>
+
+          <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
+
+          <!-- 7.3 จัดการรายชื่อนักเรียนรายห้อง (แก้ไขชื่อ / ย้ายห้อง / ลบ -> รักษา E:CZ) -->
+          <h5 style="margin-top: 0; color: #4527a0; font-weight: 700;">7.3) จัดการรายชื่อนักเรียนรายห้อง (แก้ไขชื่อ / ย้ายห้อง / ลบ & เรียงเลขที่ใหม่)</h5>
+          <div class="row" style="background: #f3e5f5; padding: 15px; border-radius: 10px; border: 1px solid #ce93d8; margin-top: 12px; display: flex; align-items: flex-end; flex-wrap: wrap;">
+            <div class="col s5 m4" style="margin-bottom: 8px;">
+              <label class="black-text" style="font-weight: 600;">เลือกระดับชั้น</label>
+              <select id="manageStuGrade" class="custom-select" style="margin-top: 5px;"><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+            </div>
+            <div class="col s5 m4" style="margin-bottom: 8px;">
+              <label class="black-text" style="font-weight: 600;">เลือกห้องเรียน</label>
+              <select id="manageStuRoom" class="custom-select" style="margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+            </div>
+            <div class="col s12 m4" style="margin-bottom: 8px;">
+              <button type="button" class="btn waves-effect waves-light deep-purple darken-2" onclick="loadRoomStudentsManager()" style="width: 100%; height: 42px;">🔍 แสดงรายชื่อห้องนี้</button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin: 12px 0;">
+            <span id="roomCapacityBadge" class="queue-pill" style="background: #e8eaf6; color: #283593;">กรุณากดปุ่ม 'แสดงรายชื่อห้องนี้'</span>
+            <span id="manageRoomStatusMsg" style="font-weight: 600;"></span>
+          </div>
+
+          <div style="max-height: 360px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff;">
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th style="width: 10%; text-align: center;">เลขที่</th>
+                  <th style="width: 16%;">รหัส</th>
+                  <th style="width: 40%;">ชื่อ-นามสกุล</th>
+                  <th style="width: 12%; text-align: center;">URL</th>
+                  <th style="width: 22%; text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="manageRoomTableBody">
+                <tr><td colspan="5" class="center-align grey-text" style="padding: 20px;">เลือกชั้นและห้องด้านบน แล้วกดปุ่มแสดงรายชื่อครับ</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
+
+          <!-- 7.4 อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (คงฟีเจอร์เดิมไว้ครบ) -->
+          <h5 style="margin-top: 0; color: #00695c; font-weight: 700;">7.4) อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (Excel / CSV / วางข้อความ)</h5>
           <div class="row" style="background: #e0f2f1; padding: 18px; border-radius: 10px; border: 1px solid #80cbc4; margin-top: 15px;">
             <div class="col s12 m6" style="margin-bottom: 12px;">
               <label class="black-text" style="font-weight: 700;">ระบุระดับชั้น (กรณีวางเฉพาะ รหัส/ชื่อ)</label>
@@ -547,6 +655,50 @@
         <div class="modal-footer" style="text-align: center; padding-bottom: 20px;">
           <button type="button" class="btn grey darken-1 waves-effect modal-close" style="margin-right: 10px;">ยกเลิก</button>
           <button type="button" id="btnSaveEditStaff" class="btn blue darken-3 waves-effect" onclick="doSaveEditStaff()">💾 บันทึกการแก้ไข</button>
+        </div>
+      </div>
+
+      <!-- Modal แก้ไขข้อมูลนักเรียน (เปลี่ยนชื่อ / ย้ายห้อง โดยรักษาประวัติเช็คชื่อ E:CZ) -->
+      <div id="editStudentModal" class="modal" style="border-radius: 12px; max-width: 500px;">
+        <div class="modal-content">
+          <h5 class="center-align" style="color: #4527a0; font-weight: 700; margin-bottom: 18px;">✏️ แก้ไขข้อมูลนักเรียน</h5>
+          <input type="hidden" id="editStuOldId">
+          <div class="row" style="margin-bottom: 0;">
+            <div class="col s12 m5" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">เลขประจำตัว</label>
+              <input id="editStuNewId" type="text" class="browser-default custom-input-box">
+            </div>
+            <div class="col s12 m7" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">คำนำหน้า (แยกเพศ)</label>
+              <select id="editStuPrefix" class="custom-select" style="margin-top: 5px;">
+                <option value="เด็กชาย">เด็กชาย</option>
+                <option value="นาย">นาย</option>
+                <option value="เด็กหญิง">เด็กหญิง</option>
+                <option value="นางสาว">นางสาว</option>
+              </select>
+            </div>
+            <div class="col s12" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">ชื่อ - นามสกุล (ไม่ต้องใส่คำนำหน้า)</label>
+              <input id="editStuNameOnly" type="text" class="browser-default custom-input-box">
+            </div>
+            <div class="col s6" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">ระดับชั้น</label>
+              <select id="editStuGrade" class="custom-select" style="margin-top: 5px;"><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+            </div>
+            <div class="col s6" style="margin-bottom: 12px;">
+              <label class="black-text" style="font-weight: 600;">ห้องเรียน</label>
+              <select id="editStuRoom" class="custom-select" style="margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+            </div>
+            <div class="col s12" style="margin-bottom: 8px;">
+              <label class="black-text" style="font-weight: 600;">URL ข้อมูลนักเรียน (คอลัมน์ F)</label>
+              <input id="editStuQrUrl" type="text" class="browser-default custom-input-box" placeholder="เว้นว่างได้หากไม่มีลิงก์">
+            </div>
+          </div>
+          <div id="editStuMsg" class="center-align red-text" style="font-weight: 600; min-height: 24px; margin-top: 8px;"></div>
+        </div>
+        <div class="modal-footer" style="text-align: center; padding-bottom: 20px;">
+          <button type="button" class="btn grey darken-1 waves-effect modal-close" style="margin-right: 10px;">ยกเลิก</button>
+          <button type="button" id="btnSaveEditStu" class="btn deep-purple darken-3 waves-effect" onclick="doSaveEditStudent()">💾 บันทึกการแก้ไข</button>
         </div>
       </div>
 
@@ -1649,57 +1801,388 @@
       } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
     }
 
-    var qrFetchTimer = null; var isFetchingQrUrl = false;
-    function handleRegQrKeyPress(event) { if (event.key === "Enter") { event.preventDefault(); if (qrFetchTimer) clearTimeout(qrFetchTimer); processScannedQrInputNow(); } }
-    function extractStudentIdFromQrInput() { if (qrFetchTimer) clearTimeout(qrFetchTimer); qrFetchTimer = setTimeout(processScannedQrInputNow, 400); }
+    // =========================================================================
+    // 👨‍🎓 ส่วนควบคุมแท็บที่ 7: สแกน QR (3 กรณี) + เพิ่ม/แก้ไข/ลบ นักเรียนแบบรักษา E:CZ
+    // =========================================================================
+    var qrFetchTimer = null;
+    var isFetchingQrUrl = false;
+    var roomStudentsCache = [];
 
-    function processScannedQrInputNow() {
-      var inputEl = document.getElementById("regStuQrOrId"); if (!inputEl) return;
-      var rawVal = fixThaiKeyboard(inputEl.value.trim()); if (!rawVal) return;
-      if (rawVal !== inputEl.value.trim()) inputEl.value = rawVal;
-      if (rawVal.indexOf("http") === 0 && rawVal.indexOf("token=") !== -1) { fetchAndProcessScannedUrl(rawVal); return; }
-      if (rawVal.indexOf("id=") !== -1) { var extractedId = rawVal.split("id=")[1].split("&")[0].trim(); if (extractedId) document.getElementById("regStuId").value = extractedId; }
-      else if (/^\d{4,7}$/.test(rawVal)) { document.getElementById("regStuId").value = rawVal; }
-    }
-
-    async function fetchAndProcessScannedUrl(scannedUrl) {
-      if (!scannedUrl || isFetchingQrUrl) return;
-      isFetchingQrUrl = true;
-      var msgDiv = document.getElementById("regStuSingleMsg"); var btn = document.getElementById("btnSaveSingleStu");
-      btn.disabled = true; msgDiv.className = "blue-text text-darken-2"; msgDiv.innerText = "🌐 กำลังดึงข้อมูลนักเรียนจากลิงก์ QR Code...";
-      try {
-        var res = await callGasApi({ action: "scanUrlAndAutoRegisterStudent", adminPassword: currentAdminPassword, qrUrl: scannedUrl, autoSave: true });
-        isFetchingQrUrl = false; btn.disabled = false;
-        if (res.success && res.student) {
-          var s = res.student;
-          document.getElementById("regStuId").value = s.studentId || ""; document.getElementById("regStuNumber").value = s.number || ""; document.getElementById("regStuName").value = s.name || "";
-          if (s.grade) document.getElementById("regStuGrade").value = s.grade; if (s.room) document.getElementById("regStuRoom").value = s.room;
-          msgDiv.className = "green-text text-darken-2"; msgDiv.innerText = "✅ " + res.message;
-          var inputEl = document.getElementById("regStuQrOrId"); inputEl.value = ""; inputEl.focus();
-          localStudentDB = {}; isFrontendDataLoaded = false;
-        } else { msgDiv.className = "red-text text-darken-2"; msgDiv.innerText = "❌ " + (res.message || "ไม่สามารถดึงข้อมูลได้"); }
-      } catch (err) { isFetchingQrUrl = false; btn.disabled = false; msgDiv.className = "red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
-    }
-
-    async function doRegisterSingleStudent() {
-      var qrOrId = fixThaiKeyboard(document.getElementById("regStuQrOrId").value.trim());
-      var sId = document.getElementById("regStuId").value.trim(); var sName = document.getElementById("regStuName").value.trim();
-      var sGrade = document.getElementById("regStuGrade").value; var sRoom = document.getElementById("regStuRoom").value; var sNum = document.getElementById("regStuNumber").value.trim();
-      var msgDiv = document.getElementById("regStuSingleMsg"); var btn = document.getElementById("btnSaveSingleStu");
-      if (qrOrId.indexOf("http") === 0 && (!sId || !sName || !sNum)) { fetchAndProcessScannedUrl(qrOrId); return; }
-      if ((!qrOrId && !sId) || !sName || !sNum) { msgDiv.className = "red-text text-darken-2"; msgDiv.innerText = "⚠️ กรุณากรอกข้อมูลให้ครบถ้วนครับ"; return; }
-
-      btn.disabled = true; msgDiv.className = "blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังบันทึกข้อมูลและซิงค์เข้าชีทห้องเรียน...";
-      try {
-        var res = await callGasApi({ action: "registerSingleStudentAndSync", adminPassword: currentAdminPassword, studentObj: { idOrQr: qrOrId, studentId: sId, name: sName, grade: sGrade, room: sRoom, number: sNum } });
-        btn.disabled = false;
-        msgDiv.className = res.success ? "green-text text-darken-2" : "red-text text-darken-2";
-        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-        if (res.success) {
-          document.getElementById("regStuQrOrId").value = ""; document.getElementById("regStuId").value = ""; document.getElementById("regStuName").value = ""; document.getElementById("regStuNumber").value = "";
-          document.getElementById("regStuQrOrId").focus(); localStudentDB = {}; isFrontendDataLoaded = false;
+    function splitClientPrefixAndName(fullName) {
+      var text = fullName ? fullName.toString().trim() : "";
+      var prefixes = ["เด็กชาย", "เด็กหญิง", "นางสาว", "นาย"];
+      for (var i = 0; i < prefixes.length; i++) {
+        if (text.indexOf(prefixes[i]) === 0) {
+          return { prefix: prefixes[i], nameOnly: text.substring(prefixes[i].length).trim() };
         }
-      } catch (err) { btn.disabled = false; msgDiv.className = "red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
+      }
+      if (text.indexOf("ด.ช.") === 0) return { prefix: "เด็กชาย", nameOnly: text.substring(4).trim() };
+      if (text.indexOf("ด.ญ.") === 0) return { prefix: "เด็กหญิง", nameOnly: text.substring(4).trim() };
+      if (text.indexOf("น.ส.") === 0) return { prefix: "นางสาว", nameOnly: text.substring(4).trim() };
+      return { prefix: "เด็กชาย", nameOnly: text };
+    }
+
+    function handleRegQrKeyPress(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        if (qrFetchTimer) clearTimeout(qrFetchTimer);
+        processScannedQrInputNow();
+      }
+    }
+
+    function extractStudentIdFromQrInput() {
+      if (qrFetchTimer) clearTimeout(qrFetchTimer);
+      qrFetchTimer = setTimeout(processScannedQrInputNow, 450);
+    }
+
+    // 7.1 สแกน QR Code (URL) ตรวจสอบ 3 เงื่อนไขอัตโนมัติ
+    async function processScannedQrInputNow() {
+      var inputEl = document.getElementById("regStuQrOrId");
+      if (!inputEl || isFetchingQrUrl) return;
+      var rawVal = fixThaiKeyboard(inputEl.value.trim());
+      if (!rawVal) return;
+      if (rawVal !== inputEl.value.trim()) inputEl.value = rawVal;
+
+      if (rawVal.indexOf("http") !== 0) return;
+
+      isFetchingQrUrl = true;
+      var msgDiv = document.getElementById("regStuSingleMsg");
+      var btn = document.getElementById("btnScanSmartQr");
+      var existBox = document.getElementById("qrExistingInfoBox");
+      var newBox = document.getElementById("qrNewStudentConfirmBox");
+      if (existBox) existBox.classList.add("hidden");
+      if (newBox) newBox.classList.add("hidden");
+
+      btn.disabled = true;
+      msgDiv.className = "blue-text text-darken-2";
+      msgDiv.innerText = "🌐 กำลังดึงข้อมูลจากลิงก์ QR Code และตรวจสอบในชีท Students...";
+
+      try {
+        var res = await callGasApi({
+          action: "scanQrSmartCheckAndSave",
+          adminPassword: currentAdminPassword,
+          qrUrl: rawVal
+        });
+        isFetchingQrUrl = false;
+        btn.disabled = false;
+
+        if (!res || !res.success) {
+          msgDiv.className = "red-text text-darken-2";
+          msgDiv.innerText = "❌ " + ((res && res.message) || "ไม่สามารถดึงข้อมูลจากลิงก์นี้ได้");
+          return;
+        }
+
+        var s = res.student;
+        if (res.mode === "UPDATED_URL_ONLY" || res.mode === "UPDATED_URL_AND_NAME") {
+          // กรณีที่ 1 และ 2: พบข้อมูลในชีท Students -> บันทึกแล้ว แสดงข้อมูลจากชีท Students
+          msgDiv.className = "green-text text-darken-2";
+          msgDiv.innerText = "✅ " + res.message;
+          document.getElementById("qrExistingInfoContent").innerHTML =
+            "<b>เลขประจำตัว:</b> " + escapeHtml(s.studentId) +
+            " | <b>เลขที่:</b> " + escapeHtml(s.number) + "<br>" +
+            "<b>ชื่อ-นามสกุล:</b> " + escapeHtml(s.name) + "<br>" +
+            "<b>ชั้น/ห้อง:</b> " + escapeHtml(s.grade) + "/" + escapeHtml(s.room) + "<br>" +
+            "<b>URL (คอลัมน์ F):</b> <span class='green-text'>บันทึกเรียบร้อยแล้ว</span>";
+          existBox.classList.remove("hidden");
+          inputEl.value = "";
+          inputEl.focus();
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+        } else if (res.mode === "NEW_STUDENT_NEED_ROOM") {
+          // กรณีที่ 3: ไม่พบในชีท Students -> เปิดกล่องให้เลือกระดับชั้นและห้องก่อนแทรก
+          msgDiv.className = "orange-text text-darken-3";
+          msgDiv.innerText = "⚠️ " + res.message;
+          var sp = splitClientPrefixAndName(s.name);
+          document.getElementById("qrNewUrl").value = s.qrUrl || rawVal;
+          document.getElementById("qrNewId").value = s.studentId || "";
+          document.getElementById("qrNewPrefix").value = sp.prefix;
+          document.getElementById("qrNewNameOnly").value = sp.nameOnly;
+          if (s.grade) document.getElementById("qrNewGrade").value = s.grade;
+          if (s.room) document.getElementById("qrNewRoom").value = s.room;
+          newBox.classList.remove("hidden");
+        }
+      } catch (err) {
+        isFetchingQrUrl = false;
+        btn.disabled = false;
+        msgDiv.className = "red-text text-darken-2";
+        msgDiv.innerText = "❌ เชื่อมต่อไม่ได้: " + err.message;
+      }
+    }
+
+    function cancelQrNewStudentBox() {
+      document.getElementById("qrNewStudentConfirmBox").classList.add("hidden");
+      document.getElementById("regStuQrOrId").value = "";
+      document.getElementById("regStuQrOrId").focus();
+    }
+
+    // ยืนยันแทรกนักเรียนใหม่จาก QR Code (ตรวจไม่เกิน 40 คน + แทรกตามเพศ/รหัส + เรียงเลขที่)
+    async function confirmInsertStudentFromQr() {
+      var sId = document.getElementById("qrNewId").value.trim();
+      var prefix = document.getElementById("qrNewPrefix").value;
+      var nameOnly = document.getElementById("qrNewNameOnly").value.trim();
+      var grade = document.getElementById("qrNewGrade").value;
+      var room = document.getElementById("qrNewRoom").value;
+      var qrUrl = document.getElementById("qrNewUrl").value.trim();
+      var msgDiv = document.getElementById("regStuSingleMsg");
+      var btn = document.getElementById("btnConfirmQrNewStu");
+
+      if (!sId || !nameOnly) {
+        alert("กรุณากรอกเลขประจำตัวและชื่อ-นามสกุลให้ครบครับ");
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังตรวจสอบโควตา 40 คน แทรกตามเพศ/เลขประจำตัว และซิงค์ห้องเรียน...";
+
+      try {
+        var res = await callGasApi({
+          action: "addNewStudentSorted",
+          adminPassword: currentAdminPassword,
+          studentObj: { studentId: sId, prefix: prefix, nameOnly: nameOnly, grade: grade, room: room, qrUrl: qrUrl }
+        });
+        btn.disabled = false;
+        if (res.success) {
+          msgDiv.className = "green-text text-darken-2";
+          msgDiv.innerText = "✅ " + res.message;
+          document.getElementById("qrNewStudentConfirmBox").classList.add("hidden");
+          document.getElementById("regStuQrOrId").value = "";
+          document.getElementById("regStuQrOrId").focus();
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+          // อัปเดตตารางด้านล่างด้วยหากเปิดดูห้องเดียวกันอยู่
+          if (document.getElementById("manageStuGrade").value === grade && document.getElementById("manageStuRoom").value === room) {
+            roomStudentsCache = res.list || [];
+            renderRoomStudentsTable(grade, room);
+          }
+        } else {
+          if (res.isFull) alert(res.message);
+          msgDiv.className = "red-text text-darken-2";
+          msgDiv.innerText = res.message;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
+    }
+
+    // 7.2 เพิ่มนักเรียนใหม่ด้วยตนเอง (เรียงเพศ + แทรกตามรหัส + ตรวจไม่เกิน 40 คน)
+    async function doAddNewStudentSorted() {
+      var sId = document.getElementById("addStuId").value.trim();
+      var prefix = document.getElementById("addStuPrefix").value;
+      var nameOnly = document.getElementById("addStuName").value.trim();
+      var grade = document.getElementById("addStuGrade").value;
+      var room = document.getElementById("addStuRoom").value;
+      var msgDiv = document.getElementById("addStuMsg");
+      var btn = document.getElementById("btnAddNewStu");
+
+      if (!sId || !nameOnly) {
+        msgDiv.className = "red-text text-darken-2";
+        msgDiv.innerText = "⚠️ กรุณากรอกเลขประจำตัวและชื่อ-นามสกุลให้ครบถ้วนครับ";
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังตรวจสอบจำนวนนักเรียน แทรกตามเพศ/เลขประจำตัว และซิงค์ชีทห้องเรียน...";
+
+      try {
+        var res = await callGasApi({
+          action: "addNewStudentSorted",
+          adminPassword: currentAdminPassword,
+          studentObj: { studentId: sId, prefix: prefix, nameOnly: nameOnly, grade: grade, room: room, qrUrl: "" }
+        });
+        btn.disabled = false;
+        if (res.success) {
+          msgDiv.className = "green-text text-darken-2";
+          msgDiv.innerText = "✅ " + res.message;
+          document.getElementById("addStuId").value = "";
+          document.getElementById("addStuName").value = "";
+          document.getElementById("addStuId").focus();
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+
+          // อัปเดตตารางจัดการรายห้องด้านล่างอัตโนมัติ
+          document.getElementById("manageStuGrade").value = grade;
+          document.getElementById("manageStuRoom").value = room;
+          roomStudentsCache = res.list || [];
+          renderRoomStudentsTable(grade, room);
+        } else {
+          if (res.isFull) alert(res.message);
+          msgDiv.className = "red-text text-darken-2";
+          msgDiv.innerText = res.message;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
+    }
+
+    // 7.3 โหลดและแสดงตารางจัดการรายชื่อนักเรียนรายห้อง (แก้ไข / ย้ายห้อง / ลบ)
+    async function loadRoomStudentsManager() {
+      var grade = document.getElementById("manageStuGrade").value;
+      var room = document.getElementById("manageStuRoom").value;
+      var tbody = document.getElementById("manageRoomTableBody");
+      var statusEl = document.getElementById("manageRoomStatusMsg");
+      statusEl.innerText = "";
+      tbody.innerHTML = '<tr><td colspan="5" class="center-align blue-text" style="padding: 20px;">⏳ กำลังโหลดรายชื่อห้อง ' + escapeHtml(grade + "/" + room) + '...</td></tr>';
+
+      try {
+        var res = await callGasApi({
+          action: "getRoomStudentsList",
+          adminPassword: currentAdminPassword,
+          grade: grade,
+          room: room
+        });
+        if (res && res.success) {
+          roomStudentsCache = res.list || [];
+          renderRoomStudentsTable(grade, room);
+        } else {
+          tbody.innerHTML = '<tr><td colspan="5" class="center-align red-text" style="padding: 20px;">❌ ' + escapeHtml((res && res.message) || "โหลดไม่สำเร็จ") + '</td></tr>';
+        }
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" class="center-align red-text" style="padding: 20px;">❌ ' + escapeHtml(err.message) + '</td></tr>';
+      }
+    }
+
+    function renderRoomStudentsTable(grade, room) {
+      var tbody = document.getElementById("manageRoomTableBody");
+      var capBadge = document.getElementById("roomCapacityBadge");
+      var count = roomStudentsCache.length;
+
+      capBadge.innerText = "ห้อง " + grade + "/" + room + " : ปัจจุบัน " + count + " / 40 คน" + (count >= 40 ? " (เต็มแล้ว)" : "");
+      capBadge.style.background = count >= 40 ? "#ffebee" : "#e8f5e9";
+      capBadge.style.color = count >= 40 ? "#c62828" : "#2e7d32";
+
+      if (count === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text" style="padding: 20px;">ยังไม่มีรายชื่อนักเรียนในห้อง ' + escapeHtml(grade + "/" + room) + '</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = roomStudentsCache.map(function(stu, idx) {
+        var urlBadge = stu.qr
+          ? '<a href="' + escapeHtml(stu.qr) + '" target="_blank" style="color:#2e7d32; font-weight:700;">✅ มีลิงก์</a>'
+          : '<span class="grey-text">-</span>';
+        return '<tr>' +
+          '<td class="center-align"><b>' + escapeHtml(stu.number) + '</b></td>' +
+          '<td style="color:#1565c0; font-weight:600;">' + escapeHtml(stu.id) + '</td>' +
+          '<td style="font-weight:500;">' + escapeHtml(stu.name) + '</td>' +
+          '<td class="center-align">' + urlBadge + '</td>' +
+          '<td class="center-align" style="white-space: nowrap;">' +
+            '<button type="button" class="btn-small amber darken-3 waves-effect" onclick="openEditStudentModal(' + idx + ')" style="margin-right: 5px; padding: 0 9px;">✏️ แก้ไข</button>' +
+            '<button type="button" class="btn-small red darken-2 waves-effect" onclick="doDeleteStudent(' + idx + ')" style="padding: 0 9px;">🗑️ ลบ</button>' +
+          '</td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    function openEditStudentModal(idx) {
+      var stu = roomStudentsCache[idx];
+      if (!stu) return;
+      var sp = splitClientPrefixAndName(stu.name);
+      document.getElementById("editStuOldId").value = stu.id;
+      document.getElementById("editStuNewId").value = stu.id;
+      document.getElementById("editStuPrefix").value = sp.prefix;
+      document.getElementById("editStuNameOnly").value = sp.nameOnly;
+      document.getElementById("editStuGrade").value = stu.grade;
+      document.getElementById("editStuRoom").value = stu.room;
+      document.getElementById("editStuQrUrl").value = stu.qr || "";
+      document.getElementById("editStuMsg").innerText = "";
+
+      var modalEl = document.getElementById("editStudentModal");
+      var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
+      instance.open();
+    }
+
+    async function doSaveEditStudent() {
+      var oldId = document.getElementById("editStuOldId").value.trim();
+      var newId = document.getElementById("editStuNewId").value.trim();
+      var prefix = document.getElementById("editStuPrefix").value;
+      var nameOnly = document.getElementById("editStuNameOnly").value.trim();
+      var newGrade = document.getElementById("editStuGrade").value;
+      var newRoom = document.getElementById("editStuRoom").value;
+      var qrUrl = document.getElementById("editStuQrUrl").value.trim();
+      var msgDiv = document.getElementById("editStuMsg");
+      var btn = document.getElementById("btnSaveEditStu");
+
+      if (!newId || !nameOnly) {
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "กรุณากรอกเลขประจำตัวและชื่อ-นามสกุลให้ครบครับ";
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text";
+      msgDiv.innerText = "⌛ กำลังบันทึกและรักษาข้อมูลเช็คชื่อ E:CZ...";
+
+      try {
+        var res = await callGasApi({
+          action: "updateStudentInfo",
+          adminPassword: currentAdminPassword,
+          studentObj: { oldStudentId: oldId, newStudentId: newId, prefix: prefix, nameOnly: nameOnly, newGrade: newGrade, newRoom: newRoom, qrUrl: qrUrl }
+        });
+        btn.disabled = false;
+        if (res.success) {
+          var modalEl = document.getElementById("editStudentModal");
+          var instance = M.Modal.getInstance(modalEl);
+          if (instance) instance.close();
+
+          var curGrade = document.getElementById("manageStuGrade").value;
+          var curRoom = document.getElementById("manageStuRoom").value;
+          roomStudentsCache = res.list || [];
+          renderRoomStudentsTable(curGrade, curRoom);
+          var statusEl = document.getElementById("manageRoomStatusMsg");
+          statusEl.className = "green-text text-darken-2";
+          statusEl.innerText = "✅ " + res.message;
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+        } else {
+          if (res.isFull) alert(res.message);
+          msgDiv.className = "center-align red-text";
+          msgDiv.innerText = res.message;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "❌ " + err.message;
+      }
+    }
+
+    async function doDeleteStudent(idx) {
+      var stu = roomStudentsCache[idx];
+      if (!stu) return;
+      var ok = confirm("ยืนยันการลบนักเรียน:\n" + stu.name + " (รหัส " + stu.id + ")\n\nระบบจะเรียงเลขที่เพื่อนในห้องใหม่และรักษาประวัติเช็คชื่อ E:CZ ของทุกคนไว้ครับ");
+      if (!ok) return;
+
+      var statusEl = document.getElementById("manageRoomStatusMsg");
+      statusEl.className = "blue-text";
+      statusEl.innerText = "⌛ กำลังลบและปรับเรียงเลขที่ใหม่พร้อมรักษาข้อมูล E:CZ...";
+
+      try {
+        var res = await callGasApi({
+          action: "deleteStudentAndReorder",
+          adminPassword: currentAdminPassword,
+          studentId: stu.id
+        });
+        if (res.success) {
+          var curGrade = document.getElementById("manageStuGrade").value;
+          var curRoom = document.getElementById("manageStuRoom").value;
+          roomStudentsCache = res.list || [];
+          renderRoomStudentsTable(curGrade, curRoom);
+          statusEl.className = "green-text text-darken-2";
+          statusEl.innerText = "✅ " + res.message;
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+        } else {
+          statusEl.className = "red-text";
+          statusEl.innerText = "❌ " + res.message;
+        }
+      } catch (err) {
+        statusEl.className = "red-text";
+        statusEl.innerText = "❌ " + err.message;
+      }
     }
 
     function handleExcelOrCsvFileSelect(inputEl) {
