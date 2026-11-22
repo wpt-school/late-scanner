@@ -151,12 +151,16 @@
       nextStudentDelayMs: 900    // เว้นจังหวะ 0.9 วินาทีก่อนรับบัตรคนถัดไป
     };
 
-    // พารามิเตอร์ระบบคิวส่งข้อมูลซ้ำอัตโนมัติ (ป้องกันข้อมูลหลุดเมื่อสแกนพร้อมกันหลายคน)
+    // พารามิเตอร์ระบบส่งข้อมูลเป็นชุด (Batch Sync) - ปรับแต่งได้ตามหน้างาน
     var QUEUE_CONFIG = {
-      busyRetryMinMs: 1500,      // สุ่มรอ 1.5 - 2.8 วินาทีเมื่อคิวหลังบ้านแน่น เพื่อไม่ให้ 6 เครื่องชนกันซ้ำ
+      batchTriggerSize: 10,      // สแกนครบ 10 คน -> ส่งเป็นชุดทันทีโดยไม่ต้องรอ
+      maxBatchSize: 15,          // ส่งสูงสุดครั้งละ 15 คนต่อรอบ (ป้องกันข้อมูลใหญ่เกินไป)
+      batchWaitMs: 2500,         // หากยังไม่ครบ 10 คน ให้รอ 2.5 วินาทีแล้วส่งชุดที่มีอยู่ทันที
+      busyRetryMinMs: 1500,      // สุ่มรอ 1.5 - 2.8 วินาทีเมื่อคิวหลังบ้านแน่น
       busyRetryMaxMs: 2800,
-      networkRetryMs: 3000       // รอ 3 วินาทีเมื่ออินเทอร์เน็ตหลุด
+      networkRetryMs: 3000       // รอ 3 วินาทีเมื่อเน็ตหลุด
     };
+    var batchSyncTimer = null;   // ตัวจับเวลาสำหรับรวมชุดข้อมูล
 
     var staffName = "";
     var studentDB = {};
@@ -475,10 +479,15 @@
       playFeedback("ok");
       showResult("bg-ok", "✅ บันทึกสำเร็จ<br>" + stu.name + " (" + room + ")");
 
-      scanQueue.push({ student: stu, staffName: staffName });
+      // แนบเวลาสแกนจริง (scannedAt) ไปด้วย เพื่อให้เวลาในชีท Logs ตรงตามจริง 100%
+      scanQueue.push({
+        student: stu,
+        staffName: staffName,
+        scannedAt: Date.now()
+      });
       saveQueueToStorage();
       updateQueueBadge(false);
-      syncQueue();
+      scheduleBatchSync(); // 👈 เปลี่ยนจาก syncQueue() เป็น scheduleBatchSync()
     }
 
     function showResult(cssClass, htmlText) {
@@ -531,19 +540,47 @@
       }
     }
 
+    // ตัวจัดจังหวะรวมชุดข้อมูล (Hybrid: ครบจำนวนส่งทันที / ไม่ครบจำนวนรอ 2.5 วินาทีแล้วส่ง)
+    function scheduleBatchSync() {
+      if (batchSyncTimer) {
+        clearTimeout(batchSyncTimer);
+        batchSyncTimer = null;
+      }
+      if (scanQueue.length === 0) return;
+
+      // ถ้าสะสมครบตามเกณฑ์ (10 คน) ให้สั่งส่งทันที
+      if (scanQueue.length >= QUEUE_CONFIG.batchTriggerSize) {
+        syncQueue();
+        return;
+      }
+
+      // ถ้ายังไม่ครบ ให้ตั้งเวลารอสั้นๆ เพื่อรวมคนถัดไปที่อาจเดินตามมาติดๆ
+      batchSyncTimer = setTimeout(function() {
+        batchSyncTimer = null;
+        syncQueue();
+      }, QUEUE_CONFIG.batchWaitMs);
+    }
+
+    // ฟังก์ชันส่งชุดข้อมูล (Batch) เข้า Google Apps Script
     async function syncQueue() {
       if (isUploading || scanQueue.length === 0) return;
+      if (batchSyncTimer) {
+        clearTimeout(batchSyncTimer);
+        batchSyncTimer = null;
+      }
+
       isUploading = true;
-      var item = scanQueue[0];
+      // ดึงข้อมูลจากหัวคิวออกมาเป็นชุด (สูงสุดไม่เกิน 15 คน) โดยยังไม่ลบออกจากคิวจนกว่าจะส่งสำเร็จ
+      var batchItems = scanQueue.slice(0, QUEUE_CONFIG.maxBatchSize);
+      updateQueueBadge(false);
 
       try {
         var res = await callGasApi({
-          action: "record",
-          student: item.student,
-          staffName: item.staffName
+          action: "recordBatch",
+          items: batchItems
         });
 
-        // กรณีคิวหลังบ้านเต็ม (isBusy) -> ห้ามลบออกจากคิว ให้สุ่มหน่วงเวลาแล้วส่งซ้ำทันที
+        // กรณีคิวหลังบ้านแน่น -> ห้ามลบข้อมูลออกจากคิว สุ่มรอแล้วส่งชุดนี้ซ้ำ
         if (res && res.isBusy) {
           updateQueueBadge(true);
           var waitMs = Math.floor(
@@ -557,14 +594,18 @@
           return;
         }
 
-        // บันทึกสำเร็จ หรือเป็นรายการซ้ำ หรือไม่พบนักเรียน -> เอาออกจากคิวได้
-        scanQueue.shift();
+        // ส่งชุดนี้สำเร็จ -> ลบเฉพาะจำนวนที่ส่งออกไป (ข้อมูลใหม่ที่เพิ่งสแกนระหว่างรอจะยังอยู่ครบ)
+        scanQueue.splice(0, batchItems.length);
         saveQueueToStorage();
         updateQueueBadge(false);
         isUploading = false;
-        if (scanQueue.length > 0) syncQueue();
+
+        // หากยังมีรายการค้างอยู่ในคิว ให้ส่งชุดถัดไปต่อทันที
+        if (scanQueue.length > 0) {
+          scheduleBatchSync();
+        }
       } catch (err) {
-        // เน็ตหลุดหรือเซิร์ฟเวอร์ไม่ตอบสนอง -> คงข้อมูลไว้ในคิวแล้วส่งซ้ำทุก 3 วินาที
+        // กรณีเน็ตหลุด -> เก็บคิวไว้ครบทุกแถวแล้วลองส่งซ้ำทุก 3 วินาที
         updateQueueBadge(true);
         setTimeout(function() {
           isUploading = false;
