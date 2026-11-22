@@ -534,28 +534,39 @@
 
           <hr style="margin: 32px 0; border: 0; border-top: 2px dashed #ccc;">
 
-          <!-- 7.4 อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (คงฟีเจอร์เดิมไว้ครบ) -->
+          <!-- 7.4 อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (รองรับ Excel โรงเรียน B,C,E,F,G) -->
           <h5 style="margin-top: 0; color: #00695c; font-weight: 700;">7.4) อัปโหลดรายชื่อนักเรียนแบบกลุ่ม (Excel / CSV / วางข้อความ)</h5>
           <div class="row" style="background: #e0f2f1; padding: 18px; border-radius: 10px; border: 1px solid #80cbc4; margin-top: 15px;">
-            <div class="col s12 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 700;">ระบุระดับชั้น (กรณีวางเฉพาะ รหัส/ชื่อ)</label>
-              <select id="bulkDefaultGrade" class="custom-select" style="margin-top: 5px;"><option value="AUTO" selected>-- อ่านจากไฟล์อัตโนมัติ --</option><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+            <div class="col s12" style="margin-bottom: 14px;">
+              <label class="black-text" style="font-weight: 700; font-size: 1rem;">📑 รูปแบบคอลัมน์ในไฟล์ที่อัปโหลด:</label>
+              <select id="bulkUploadMode" class="custom-select" style="margin-top: 5px;" onchange="toggleBulkFallbackOptions()">
+                <option value="school_excel" selected>📌 ไฟล์ Excel โรงเรียน (B=รหัส, C=ชื่อ-สกุล, E=ชั้น, F=ห้อง, G=เลขที่) — ล็อก B,D,E & ตาม URL อัตโนมัติ</option>
+                <option value="auto">📋 รูปแบบอิสระ / ลิงก์ QR Code หลายบรรทัด (แบบเดิม)</option>
+              </select>
             </div>
-            <div class="col s12 m6" style="margin-bottom: 12px;">
-              <label class="black-text" style="font-weight: 700;">ระบุห้องเรียน (กรณีวางทีละห้อง)</label>
-              <select id="bulkDefaultRoom" class="custom-select" style="margin-top: 5px;"><option value="AUTO" selected>-- อ่านจากไฟล์อัตโนมัติ --</option><option value="1">ห้อง 1</option><option value="2">ห้อง 2</option><option value="3">ห้อง 3</option><option value="4">ห้อง 4</option><option value="5">ห้อง 5</option><option value="6">ห้อง 6</option><option value="7">ห้อง 7</option><option value="8">ห้อง 8</option><option value="9">ห้อง 9</option><option value="10">ห้อง 10</option><option value="11">ห้อง 11</option><option value="12">ห้อง 12</option><option value="13">ห้อง 13</option><option value="14">ห้อง 14</option></select>
+
+            <div id="bulkFallbackOptions" class="hidden">
+              <div class="col s12 m6" style="margin-bottom: 12px;">
+                <label class="black-text" style="font-weight: 700;">ระบุระดับชั้น (เฉพาะโหมดอิสระ)</label>
+                <select id="bulkDefaultGrade" class="custom-select" style="margin-top: 5px;"><option value="AUTO" selected>-- อ่านจากไฟล์อัตโนมัติ --</option><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select>
+              </div>
+              <div class="col s12 m6" style="margin-bottom: 12px;">
+                <label class="black-text" style="font-weight: 700;">ระบุห้องเรียน (เฉพาะโหมดอิสระ)</label>
+                <select id="bulkDefaultRoom" class="custom-select" style="margin-top: 5px;"><option value="AUTO" selected>-- อ่านจากไฟล์อัตโนมัติ --</option><option value="1">ห้อง 1</option><option value="2">ห้อง 2</option><option value="3">ห้อง 3</option><option value="4">ห้อง 4</option><option value="5">ห้อง 5</option><option value="6">ห้อง 6</option><option value="7">ห้อง 7</option><option value="8">ห้อง 8</option><option value="9">ห้อง 9</option><option value="10">ห้อง 10</option><option value="11">ห้อง 11</option><option value="12">ห้อง 12</option><option value="13">ห้อง 13</option><option value="14">ห้อง 14</option></select>
+              </div>
             </div>
+
             <div class="col s12" style="margin-top: 5px; margin-bottom: 12px; background: #fff; padding: 12px; border-radius: 8px; border: 1px dashed #00897b;">
               <label class="black-text" style="font-weight: 700;">📂 เลือกไฟล์ Excel (.xlsx, .xls) หรือ CSV:</label><br>
               <input type="file" id="csvFileInput" accept=".xlsx,.xls,.csv,.txt" onchange="handleExcelOrCsvFileSelect(this)" style="margin-top: 8px;">
             </div>
             <div class="col s12">
-              <label class="black-text" style="font-weight: 700;">📋 หรือวางข้อมูลจาก Excel / ลิงก์ QR Code ที่นี่:</label>
-              <textarea id="bulkStudentsInput" class="custom-textarea" placeholder="วางรายชื่อนักเรียน หรือลิงก์ QR Code บรรทัดละ 1 คน..."></textarea>
+              <label class="black-text" style="font-weight: 700;">📋 ตัวอย่างข้อมูลที่จะอัปโหลด (หรือวางข้อมูลจาก Excel ที่นี่):</label>
+              <textarea id="bulkStudentsInput" class="custom-textarea" placeholder="เลือกไฟล์ Excel ด้านบน หรือวางข้อมูลจาก Excel (คอลัมน์ B=รหัส, C=ชื่อ-สกุล, E=ชั้น, F=ห้อง, G=เลขที่)..."></textarea>
             </div>
           </div>
           <div id="bulkUploadStatusMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 15px;"></div>
-          <div class="center-align"><button type="button" id="btnBulkUploadStu" class="btn-large waves-effect waves-light teal darken-3" onclick="doBulkUploadStudents()">📤 อัปโหลดรายชื่อเข้าชีท Students & ซิงค์เข้าห้องเรียนทันที</button></div>
+          <div class="center-align"><button type="button" id="btnBulkUploadStu" class="btn-large waves-effect waves-light teal darken-3" onclick="doBulkUploadStudents()">📤 อัปโหลดปรับปรุงรายชื่อ & ติดตาม URL คอลัมน์ F ทันที</button></div>
         </div>
 
         <!-- ส่วนที่ 8 (ใหม่): เปลี่ยนรหัสผ่านผู้ดูแลระบบที่หลังบ้าน -->
@@ -2185,42 +2196,107 @@
       }
     }
 
+    function toggleBulkFallbackOptions() {
+      var mode = document.getElementById("bulkUploadMode").value;
+      var box = document.getElementById("bulkFallbackOptions");
+      if (!box) return;
+      if (mode === "auto") box.classList.remove("hidden");
+      else box.classList.add("hidden");
+    }
+
+    // อ่านไฟล์ Excel โดยบังคับเริ่มนับจากคอลัมน์ A (index 0) เสมอ เพื่อไม่ให้คอลัมน์ B, C, E, F, G เลื่อนตำแหน่ง
     function handleExcelOrCsvFileSelect(inputEl) {
       if (!inputEl.files || !inputEl.files[0]) return;
-      var file = inputEl.files[0]; var fileName = file.name.toLowerCase(); var msgDiv = document.getElementById("bulkUploadStatusMsg");
+      var file = inputEl.files[0];
+      var fileName = file.name.toLowerCase();
+      var msgDiv = document.getElementById("bulkUploadStatusMsg");
+
       if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-        msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "📂 กำลังอ่านข้อมูลจากไฟล์ Excel...";
+        msgDiv.className = "center-align blue-text text-darken-2";
+        msgDiv.innerText = "📂 กำลังอ่านไฟล์ Excel และจัดตำแหน่งคอลัมน์ A - G ให้ตรงเป๊ะ...";
         var reader = new FileReader();
         reader.onload = function(e) {
           try {
             var workbook = XLSX.read(new Uint8Array(e.target.result), { type: "array" });
-            var tsvText = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames[0]], { FS: "\t" });
-            document.getElementById("bulkStudentsInput").value = tsvText.trim();
-            msgDiv.className = "center-align green-text text-darken-2"; msgDiv.innerText = "✅ อ่านไฟล์ Excel สำเร็จ! กดปุ่มอัปโหลดด้านล่างได้เลย";
-          } catch (err) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ อ่านไฟล์ไม่ได้: " + err; }
+            var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            var ref = worksheet["!ref"] || "A1";
+            var range = XLSX.utils.decode_range(ref);
+            range.s.c = 0; // บังคับเริ่มจากคอลัมน์ A เสมอ แม้คอลัมน์ A ใน Excel จะว่างเปล่า
+
+            var rows = XLSX.utils.sheet_to_json(worksheet, {
+              header: 1,
+              range: range,
+              defval: "",
+              raw: false
+            });
+
+            var tsvLines = rows.map(function(rowArr) {
+              return rowArr.map(function(cell) {
+                return cell === null || cell === undefined ? "" : String(cell).replace(/[\r\n\t]+/g, " ").trim();
+              }).join("\t");
+            });
+
+            document.getElementById("bulkStudentsInput").value = tsvLines.join("\n").trim();
+            msgDiv.className = "center-align green-text text-darken-2";
+            msgDiv.innerText = "✅ อ่านไฟล์ Excel สำเร็จ (" + rows.length + " แถว)! กดปุ่ม 'อัปโหลดปรับปรุงรายชื่อ' ด้านล่างได้เลยครับ";
+          } catch (err) {
+            msgDiv.className = "center-align red-text text-darken-2";
+            msgDiv.innerText = "❌ อ่านไฟล์ Excel ไม่ได้: " + err;
+          }
         };
         reader.readAsArrayBuffer(file);
       } else {
         var textReader = new FileReader();
-        textReader.onload = function(e) { document.getElementById("bulkStudentsInput").value = e.target.result; msgDiv.className = "center-align green-text text-darken-2"; msgDiv.innerText = "✅ อ่านไฟล์สำเร็จ!"; };
+        textReader.onload = function(e) {
+          document.getElementById("bulkStudentsInput").value = e.target.result;
+          msgDiv.className = "center-align green-text text-darken-2";
+          msgDiv.innerText = "✅ อ่านไฟล์สำเร็จ!";
+        };
         textReader.readAsText(file, "UTF-8");
       }
     }
 
     async function doBulkUploadStudents() {
       var rawText = document.getElementById("bulkStudentsInput").value.trim();
-      var defaultGrade = document.getElementById("bulkDefaultGrade").value;
-      var defaultRoom = document.getElementById("bulkDefaultRoom").value;
-      var msgDiv = document.getElementById("bulkUploadStatusMsg"); var btn = document.getElementById("btnBulkUploadStu");
-      if (!rawText) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "⚠️ กรุณาเลือกไฟล์ Excel หรือวางข้อมูลก่อนครับ"; return; }
-      btn.disabled = true; msgDiv.className = "center-align blue-text text-darken-2"; msgDiv.innerText = "⌛ กำลังนำเข้าข้อมูลและซิงค์เข้าชีทห้องเรียน...";
+      var uploadMode = document.getElementById("bulkUploadMode") ? document.getElementById("bulkUploadMode").value : "school_excel";
+      var defaultGrade = document.getElementById("bulkDefaultGrade") ? document.getElementById("bulkDefaultGrade").value : "AUTO";
+      var defaultRoom = document.getElementById("bulkDefaultRoom") ? document.getElementById("bulkDefaultRoom").value : "AUTO";
+      var msgDiv = document.getElementById("bulkUploadStatusMsg");
+      var btn = document.getElementById("btnBulkUploadStu");
+
+      if (!rawText) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "⚠️ กรุณาเลือกไฟล์ Excel หรือวางข้อมูลก่อนครับ";
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังจับคู่ ชั้น/ห้อง/เลขที่ อัปเดตคอลัมน์ A, C, F และซิงค์เข้าชีทห้องเรียน...";
+
       try {
-        var res = await callGasApi({ action: "bulkUploadStudentsData", adminPassword: currentAdminPassword, rawTextData: rawText, defaultGrade: defaultGrade, defaultRoom: defaultRoom });
+        var res = await callGasApi({
+          action: "bulkUploadStudentsData",
+          adminPassword: currentAdminPassword,
+          rawTextData: rawText,
+          defaultGrade: defaultGrade,
+          defaultRoom: defaultRoom,
+          uploadMode: uploadMode
+        });
         btn.disabled = false;
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-        if (res.success) { document.getElementById("bulkStudentsInput").value = ""; document.getElementById("csvFileInput").value = ""; localStudentDB = {}; isFrontendDataLoaded = false; }
-      } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ " + err.message; }
+        if (res.success) {
+          document.getElementById("bulkStudentsInput").value = "";
+          document.getElementById("csvFileInput").value = "";
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
+      }
     }
 
     // แท็บที่ 8: เปลี่ยนรหัสผ่าน Admin ที่หลังบ้าน
