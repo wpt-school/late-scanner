@@ -2407,7 +2407,7 @@
         msgDiv.innerText = "❌ " + err.message;
       }
     }
-
+    
     // แท็บที่ 8: เปลี่ยนรหัสผ่าน Admin ที่หลังบ้าน
     async function doChangeAdminPassword() {
       var p1 = document.getElementById("newAdminPass1").value.trim();
@@ -2415,37 +2415,59 @@
       var msgDiv = document.getElementById("adminPassChangeMsg");
       var btn = document.getElementById("btnChangeAdminPass");
 
-      if (p1.length < 6) { msgDiv.className = "center-align red-text"; msgDiv.innerText = "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษรครับ"; return; }
-      if (p1 !== p2) { msgDiv.className = "center-align red-text"; msgDiv.innerText = "รหัสผ่านใหม่ทั้ง 2 ช่องไม่ตรงกัน"; return; }
+      if (p1.length < 6) {
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษรครับ";
+        return;
+      }
+      if (p1 !== p2) {
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "รหัสผ่านใหม่ทั้ง 2 ช่องไม่ตรงกัน";
+        return;
+      }
 
-      btn.disabled = true; msgDiv.className = "center-align blue-text"; msgDiv.innerText = "⌛ กำลังบันทึกรหัสผ่านใหม่ไปยังเซิร์ฟเวอร์...";
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text";
+      msgDiv.innerText = "⌛ กำลังบันทึกรหัสผ่านใหม่ไปยังเซิร์ฟเวอร์...";
+
       try {
-        var res = await callGasApi({ action: "changeAdminPassword", adminPassword: currentAdminPassword, newPassword: p1 });
+        var res = await callGasApi({
+          action: "changeAdminPassword",
+          adminPassword: currentAdminPassword,
+          newPassword: p1
+        });
         btn.disabled = false;
         if (res.success) {
           currentAdminPassword = p1;
-          document.getElementById("newAdminPass1").value = ""; document.getElementById("newAdminPass2").value = "";
-          msgDiv.className = "center-align green-text text-darken-2"; msgDiv.innerText = "✅ " + res.message;
+          document.getElementById("newAdminPass1").value = "";
+          document.getElementById("newAdminPass2").value = "";
+          msgDiv.className = "center-align green-text text-darken-2";
+          msgDiv.innerText = "✅ " + res.message;
         } else {
-          msgDiv.className = "center-align red-text"; msgDiv.innerText = "❌ " + res.message;
+          msgDiv.className = "center-align red-text";
+          msgDiv.innerText = "❌ " + res.message;
         }
-      } catch (err) { btn.disabled = false; msgDiv.className = "center-align red-text"; msgDiv.innerText = "❌ " + err.message; }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "❌ " + err.message;
+      }
     }
+
     // =========================================================================
     // 📂 ระบบ Export & Import: ปฏิทินกิจกรรม (แท็บ 3) และ รายชื่อครูที่ปรึกษา (แท็บ 5)
     // =========================================================================
 
-    // ชื่อไฟล์เริ่มต้นสำหรับ Export (ปรับแต่งได้ตามต้องการ)
+    // พารามิเตอร์ตั้งชื่อไฟล์เริ่มต้นตอน Export (ปรับแก้คำนำหน้าได้ตรงนี้)
     var EXPORT_FILE_CONFIG = {
       activityPrefix: "ปฏิทินกิจกรรม_",
       advisorPrefix: "รายชื่อครูที่ปรึกษา_"
     };
 
-    // ฟังก์ชันช่วยแปลงวันที่หลากหลายรูปแบบ (Excel Serial, พ.ศ., ค.ศ.) -> "YYYY-MM-DD" (ค.ศ.)
+    // แปลงวันที่จาก Excel (Serial, พ.ศ., ค.ศ., ชื่อเดือนไทย) -> "YYYY-MM-DD" (ค.ศ.)
     function parseAnyExcelDateToIso(rawVal) {
       if (rawVal === null || rawVal === undefined || rawVal === "") return "";
 
-      // กรณีเป็นตัวเลข Serial Date ของ Excel (ใช้ตัวแปลงของ SheetJS เพื่อไม่ให้เพี้ยน Timezone)
       if (typeof rawVal === "number" && typeof XLSX !== "undefined" && XLSX.SSF && XLSX.SSF.parse_date_code) {
         var parsed = XLSX.SSF.parse_date_code(rawVal);
         if (parsed && parsed.y && parsed.m && parsed.d) {
@@ -2456,7 +2478,6 @@
 
       var str = String(rawVal).trim();
 
-      // กรณีรูปแบบ YYYY-MM-DD หรือ YYYY/MM/DD
       var isoMatch = str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
       if (isoMatch) {
         var iy = parseInt(isoMatch[1], 10);
@@ -2464,7 +2485,6 @@
         return iy + "-" + ("0" + parseInt(isoMatch[2], 10)).slice(-2) + "-" + ("0" + parseInt(isoMatch[3], 10)).slice(-2);
       }
 
-      // กรณีรูปแบบ DD/MM/YYYY หรือ DD-MM-YYYY (รองรับทั้ง พ.ศ. และ ค.ศ.)
       var dmyMatch = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
       if (dmyMatch) {
         var dy = parseInt(dmyMatch[3], 10);
@@ -2476,7 +2496,6 @@
         }
       }
 
-      // กรณีรูปแบบวันที่ภาษาไทย เช่น "15 พ.ค. 2569" หรือ "15 พฤษภาคม 2569"
       var thaiMonthsShort = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
       var thaiMonthsFull = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
       var thMatch = str.match(/^(\d{1,2})\s+([ก-๙\.]+)\s+(\d{4})/);
@@ -2495,7 +2514,7 @@
       return "";
     }
 
-    // ฟังก์ชันช่วยอ่านไฟล์ Excel (.xlsx, .xls) หรือ CSV เป็นอาร์เรย์ 2 มิติ
+    // อ่านไฟล์ Excel (.xlsx, .xls) หรือ CSV เป็นอาร์เรย์ 2 มิติ
     function readUploadedSheetFile(file, callback) {
       var fileName = file.name.toLowerCase();
       if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
@@ -2529,9 +2548,7 @@
       }
     }
 
-    // -------------------------------------------------------------------------
     // 📌 3) Export & Import ปฏิทินกิจกรรม
-    // -------------------------------------------------------------------------
     function exportActivitiesExcel() {
       if (typeof XLSX === "undefined") {
         M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
@@ -2544,7 +2561,6 @@
           rows.push([item.date || "", item.name || ""]);
         });
       } else {
-        // หากยังไม่มีข้อมูล ให้ใส่แถวตัวอย่างเพื่อใช้เป็นไฟล์ต้นแบบ
         var d = new Date();
         var sampleDate = ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + (d.getFullYear() + 543);
         rows.push([sampleDate, "ตัวอย่างกิจกรรม (สามารถลบแถวนี้แล้วกรอกใหม่ได้)"]);
@@ -2590,7 +2606,6 @@
           var col0 = r[0];
           var col1 = r[1] !== undefined && r[1] !== null ? String(r[1]).trim() : "";
 
-          // ข้ามแถวหัวตาราง
           if (typeof col0 === "string" && (col0.indexOf("วัน") !== -1 || col0.toLowerCase().indexOf("date") !== -1)) continue;
           if (!col1) continue;
 
@@ -2638,9 +2653,7 @@
       });
     }
 
-    // -------------------------------------------------------------------------
     // 👩‍🏫 5) Export & Import รายชื่อครูที่ปรึกษา
-    // -------------------------------------------------------------------------
     function exportAdvisorsExcel() {
       if (typeof XLSX === "undefined") {
         M.toast({ html: "❌ ไม่พบไลบรารี Excel กรุณารีเฟรชหน้าเว็บ", classes: "red darken-2 rounded" });
@@ -2658,7 +2671,6 @@
 
       rooms.forEach(function(roomKey) {
         var adv = (settingsDB.advisorMap && settingsDB.advisorMap[roomKey]) ? settingsDB.advisorMap[roomKey] : ["", "", ""];
-        // เติม "ม." นำหน้าชื่อห้องเพื่อป้องกันโปรแกรม Excel แปลงเลขห้อง (เช่น 1/1) เป็นวันที่
         var safeRoomLabel = roomKey.indexOf("ม.") === 0 ? roomKey : ("ม." + roomKey);
         rows.push([safeRoomLabel, adv[0] || "", adv[1] || "", adv[2] || ""]);
       });
@@ -2696,7 +2708,6 @@
           if (!r || r.length === 0) continue;
           var rawRoom = r[0] !== undefined && r[0] !== null ? String(r[0]).trim() : "";
 
-          // ข้ามแถวว่างและแถวหัวตาราง
           if (!rawRoom || rawRoom.indexOf("ห้อง") !== -1 || rawRoom.toLowerCase().indexOf("room") !== -1) continue;
           if (rawRoom.indexOf("/") === -1) continue;
 
