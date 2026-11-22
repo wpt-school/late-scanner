@@ -297,7 +297,7 @@
 
           <div id="semStatusMsg" class="center-align" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 15px;"></div>
           <div class="center-align">
-            <button type="button" class="btn-large waves-effect waves-light deep-purple darken-3" onclick="doSaveSemesterAndSchedule()" style="margin: 5px;">💾 บันทึกภาคเรียนและตาราง 20 สัปดาห์</button>
+            <button type="button" class="btn-large waves-effect waves-light deep-purple darken-3" onclick="openSemesterConfirmModal()" style="margin: 5px;">💾 บันทึกภาคเรียนและตาราง 20 สัปดาห์</button>
             <button type="button" id="btnRestoreRow45" class="btn-large waves-effect waves-light orange darken-3" onclick="doRestoreRow45Formulas()" style="margin: 5px;">🔢 ซ่อมแถวที่ 45 ให้แสดงจำนวนมาสาย</button>
           </div>
         </div>
@@ -322,14 +322,41 @@
         </div>
 
         <!-- ส่วนที่ 4 -->
+        <!-- ส่วนที่ 4: ลงทะเบียน + แสดง/แก้ไข/ลบ รายชื่อเจ้าหน้าที่ -->
         <div id="tabStaff" class="settings-panel hidden">
-          <h5 style="margin-top: 0; color: #4527a0; font-weight: 700;">4) แบบระบบลงทะเบียนเจ้าหน้าที่ใหม่</h5>
-          <div class="center-box" style="margin-top: 25px; margin-bottom: 15px;">
+          <h5 style="margin-top: 0; color: #4527a0; font-weight: 700;">4) ระบบจัดการและลงทะเบียนเจ้าหน้าที่</h5>
+          <div class="center-box" style="margin-top: 20px; margin-bottom: 15px;">
             <div class="input-field col s12"><input id="newStaffName" type="text"><label class="active" for="newStaffName">ชื่อ-นามสกุล ของเจ้าหน้าที่</label></div>
-            <div class="input-field col s12" style="margin-top: 20px;"><input id="newStaffUsername" type="text"><label class="active" for="newStaffUsername">ชื่อผู้ใช้งาน (Username)</label></div>
-            <div class="input-field col s12" style="margin-top: 20px;"><input id="newStaffPassword" type="password"><label class="active" for="newStaffPassword">รหัสเข้าใช้งาน (Password)</label></div>
-            <div id="regMsg" class="center-align" style="margin-top: 20px; font-weight: 600; font-size: 1.1rem; min-height: 30px;"></div>
-            <div class="center-align" style="margin-top: 20px;"><button type="button" class="btn-large waves-effect waves-light deep-purple darken-3" onclick="doRegisterStaff()" style="width: 100%; max-width: 350px; border-radius: 30px;">💾 บันทึกข้อมูลเจ้าหน้าที่</button></div>
+            <div class="input-field col s12" style="margin-top: 18px;"><input id="newStaffUsername" type="text"><label class="active" for="newStaffUsername">ชื่อผู้ใช้งาน (Username)</label></div>
+            <div class="input-field col s12" style="margin-top: 18px;"><input id="newStaffPassword" type="password"><label class="active" for="newStaffPassword">รหัสเข้าใช้งาน (Password)</label></div>
+            <div id="regMsg" class="center-align" style="margin-top: 15px; font-weight: 600; font-size: 1.05rem; min-height: 26px;"></div>
+            <div class="center-align" style="margin-top: 15px;">
+              <button type="button" class="btn-large waves-effect waves-light deep-purple darken-3" onclick="doRegisterStaff()" style="width: 100%; max-width: 350px; border-radius: 30px;">💾 บันทึกข้อมูลเจ้าหน้าที่ใหม่</button>
+            </div>
+          </div>
+
+          <hr style="margin: 30px 0; border: 0; border-top: 2px dashed #ccc;">
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <h6 style="font-weight: 700; color: #333; margin: 0;">👥 รายชื่อเจ้าหน้าที่และรหัสผ่านในระบบปัจจุบัน</h6>
+            <button type="button" class="btn-small blue darken-2 waves-effect" onclick="loadStaffList()">🔄 รีเฟรชรายชื่อ</button>
+          </div>
+          <div id="staffTableStatus" class="center-align" style="font-weight: 600; margin-bottom: 10px;"></div>
+          <div style="overflow-x: auto;">
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th style="width: 8%;">ที่</th>
+                  <th style="width: 30%;">ชื่อ-นามสกุล</th>
+                  <th style="width: 22%;">ชื่อผู้ใช้งาน (Username)</th>
+                  <th style="width: 20%;">รหัสผ่าน (Password)</th>
+                  <th style="width: 20%; text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="staffTableBody">
+                <tr><td colspan="5" class="center-align grey-text">กำลังโหลดรายชื่อเจ้าหน้าที่...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -478,6 +505,48 @@
         <div class="modal-footer" style="text-align: center; padding-bottom: 20px;">
           <button type="button" class="btn grey darken-1 waves-effect modal-close" style="margin-right: 10px; border-radius: 6px;">ปิดหน้าต่าง</button>
           <button type="button" class="btn teal darken-3 waves-effect" onclick="redirectToClassroomSheet()" style="border-radius: 6px;">เปิด Google Sheet 🔗</button>
+        </div>
+      </div>
+
+      <!-- Modal ยืนยันรหัส Admin ซ้ำก่อนบันทึกภาคเรียน & ตาราง 20 สัปดาห์ (ข้อ 3) -->
+      <div id="confirmSemesterModal" class="modal" style="border-radius: 12px; max-width: 460px;">
+        <div class="modal-content center-align">
+          <h5 style="color: #4527a0; font-weight: 700;">🔒 ยืนยันรหัสผ่านผู้ดูแลระบบอีกครั้ง</h5>
+          <p id="confirmSemSummary" class="grey-text text-darken-2" style="font-size: 1rem; line-height: 1.6;"></p>
+          <div class="input-field" style="margin-top: 20px;">
+            <input id="confirmSemAdminPass" type="password" style="text-align: center; font-size: 1.3rem;" onkeypress="if(event.key==='Enter') confirmAndSaveSemesterAndSchedule()">
+            <label class="active" for="confirmSemAdminPass">กรอกรหัสผ่าน Admin เพื่อยืนยันการบันทึก</label>
+          </div>
+          <div id="confirmSemAuthMsg" class="red-text" style="font-weight: 600; min-height: 24px;"></div>
+        </div>
+        <div class="modal-footer" style="text-align: center; padding-bottom: 20px;">
+          <button type="button" class="btn grey darken-1 waves-effect modal-close" style="margin-right: 10px;">ยกเลิก</button>
+          <button type="button" id="btnConfirmSaveSem" class="btn deep-purple darken-3 waves-effect" onclick="confirmAndSaveSemesterAndSchedule()">✅ ยืนยันและบันทึก</button>
+        </div>
+      </div>
+
+      <!-- Modal แก้ไขข้อมูลและรหัสผ่านเจ้าหน้าที่ (ข้อ 4) -->
+      <div id="editStaffModal" class="modal" style="border-radius: 12px; max-width: 460px;">
+        <div class="modal-content">
+          <h5 class="center-align" style="color: #1565c0; font-weight: 700; margin-bottom: 20px;">✏️ แก้ไขข้อมูลเจ้าหน้าที่</h5>
+          <input type="hidden" id="editStaffOldUsername">
+          <div style="margin-bottom: 14px;">
+            <label class="black-text" style="font-weight: 600;">ชื่อ-นามสกุล เจ้าหน้าที่</label>
+            <input id="editStaffName" type="text" class="browser-default custom-input-box">
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label class="black-text" style="font-weight: 600;">ชื่อผู้ใช้งาน (Username)</label>
+            <input id="editStaffUsername" type="text" class="browser-default custom-input-box">
+          </div>
+          <div style="margin-bottom: 10px;">
+            <label class="black-text" style="font-weight: 600;">รหัสผ่าน (Password)</label>
+            <input id="editStaffPassword" type="text" class="browser-default custom-input-box">
+          </div>
+          <div id="editStaffMsg" class="center-align red-text" style="font-weight: 600; min-height: 24px; margin-top: 10px;"></div>
+        </div>
+        <div class="modal-footer" style="text-align: center; padding-bottom: 20px;">
+          <button type="button" class="btn grey darken-1 waves-effect modal-close" style="margin-right: 10px;">ยกเลิก</button>
+          <button type="button" id="btnSaveEditStaff" class="btn blue darken-3 waves-effect" onclick="doSaveEditStaff()">💾 บันทึกการแก้ไข</button>
         </div>
       </div>
 
@@ -1072,7 +1141,16 @@
             var timeInMin = scanTime.getHours() * 60 + scanTime.getMinutes();
             lateType = (timeInMin <= 510) ? 1 : 2;
           }
-          filteredStudents.push({ id: id, number: student.number, name: student.name, grade: student.grade, room: student.room, fullClassroom: fullClassroom, totalLates: latesMap[id] || 0, lateToday: isLateToday, lateType: lateType, profileUrl: "https://scs.wpt.ac.th/admin/students/qrcode.php?id=" + id });
+          // ใช้ลิงก์จากคอลัมน์ F ในชีท Students เป็นหลัก (หากว่างจึงใช้ลิงก์สำรอง)
+          var finalProfileUrl = (student.qrUrl && student.qrUrl.toString().trim() !== "")
+            ? student.qrUrl.toString().trim()
+            : ("https://scs.wpt.ac.th/admin/students/qrcode.php?id=" + id);
+
+          filteredStudents.push({
+            id: id, number: student.number, name: student.name, grade: student.grade, room: student.room,
+            fullClassroom: fullClassroom, totalLates: latesMap[id] || 0,
+            lateToday: isLateToday, lateType: lateType, profileUrl: finalProfileUrl
+          });
         }
       }
 
@@ -1165,6 +1243,19 @@
       if (panelId === "tabStudentsManage") setTimeout(function() { document.getElementById("regStuQrOrId").focus(); }, 100);
     }
 
+    var staffListCache = [];
+
+    // ป้องกันอักขระพิเศษทำให้ตาราง HTML เพี้ยน
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
     async function loadSettingsInitData() {
       try {
         var res = await callGasApi({ action: "getSettingsInitData", adminPassword: currentAdminPassword });
@@ -1174,25 +1265,249 @@
           populateAdvisorSettingsUI();
         }
       } catch (e) {}
+      loadStaffList(); // โหลดตารางเจ้าหน้าที่เตรียมไว้ทันทีเมื่อเข้าหน้าตั้งค่า
     }
 
-    async function doSaveSemesterAndSchedule() {
+    async function loadStaffList() {
+      var tbody = document.getElementById("staffTableBody");
+      if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="center-align blue-text">⏳ กำลังโหลดข้อมูลเจ้าหน้าที่...</td></tr>';
+      try {
+        var res = await callGasApi({ action: "getStaffList", adminPassword: currentAdminPassword });
+        if (res && res.success) {
+          staffListCache = res.list || [];
+          renderStaffTable();
+        } else if (tbody) {
+          tbody.innerHTML = '<tr><td colspan="5" class="center-align red-text">❌ ' + escapeHtml(res.message || "โหลดข้อมูลไม่สำเร็จ") + '</td></tr>';
+        }
+      } catch (err) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="center-align red-text">❌ เชื่อมต่อไม่ได้: ' + escapeHtml(err.message) + '</td></tr>';
+      }
+    }
+
+    function renderStaffTable() {
+      var tbody = document.getElementById("staffTableBody");
+      if (!tbody) return;
+      if (!staffListCache || staffListCache.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text">ยังไม่มีรายชื่อเจ้าหน้าที่ในชีท Staff</td></tr>';
+        return;
+      }
+      tbody.innerHTML = staffListCache.map(function(item, idx) {
+        return '<tr>' +
+          '<td><b>' + (idx + 1) + '</b></td>' +
+          '<td style="font-weight: 600; color: #222;">' + escapeHtml(item.name) + '</td>' +
+          '<td style="color: #1565c0; font-weight: 600;">' + escapeHtml(item.username) + '</td>' +
+          '<td><code style="background: #eceff1; padding: 3px 8px; border-radius: 6px; color: #c62828; font-weight: 600;">' + escapeHtml(item.password) + '</code></td>' +
+          '<td class="center-align" style="white-space: nowrap;">' +
+            '<button type="button" class="btn-small amber darken-3 waves-effect" onclick="openEditStaffModal(' + idx + ')" style="margin-right: 6px; padding: 0 10px;">✏️ แก้ไข</button>' +
+            '<button type="button" class="btn-small red darken-2 waves-effect" onclick="doDeleteStaff(' + idx + ')" style="padding: 0 10px;">🗑️ ลบ</button>' +
+          '</td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    async function doRegisterStaff() {
+      var name = document.getElementById("newStaffName").value.trim();
+      var user = document.getElementById("newStaffUsername").value.trim();
+      var pass = document.getElementById("newStaffPassword").value.trim();
+      var regMsg = document.getElementById("regMsg");
+      if (!name || !user || !pass) { regMsg.innerText = "กรุณากรอกข้อมูลเจ้าหน้าที่ให้ครบถ้วนทุกช่อง"; regMsg.className = "center-align orange-text text-darken-3"; return; }
+      regMsg.innerText = "กำลังบันทึกข้อมูลเจ้าหน้าที่..."; regMsg.className = "center-align blue-text";
+      try {
+        var res = await callGasApi({ action: "registerStaff", adminPassword: currentAdminPassword, username: user, password: pass, name: name });
+        regMsg.innerText = res.message; regMsg.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
+        if (res.success) {
+          document.getElementById("newStaffName").value = "";
+          document.getElementById("newStaffUsername").value = "";
+          document.getElementById("newStaffPassword").value = "";
+          if (res.list) { staffListCache = res.list; renderStaffTable(); }
+          else { loadStaffList(); }
+        }
+      } catch (err) { regMsg.innerText = "❌ " + err.message; regMsg.className = "center-align red-text text-darken-2"; }
+    }
+
+    function openEditStaffModal(idx) {
+      var staff = staffListCache[idx];
+      if (!staff) return;
+      document.getElementById("editStaffOldUsername").value = staff.username;
+      document.getElementById("editStaffName").value = staff.name;
+      document.getElementById("editStaffUsername").value = staff.username;
+      document.getElementById("editStaffPassword").value = staff.password;
+      document.getElementById("editStaffMsg").innerText = "";
+
+      var modalEl = document.getElementById("editStaffModal");
+      var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
+      instance.open();
+    }
+
+    async function doSaveEditStaff() {
+      var oldUser = document.getElementById("editStaffOldUsername").value.trim();
+      var newName = document.getElementById("editStaffName").value.trim();
+      var newUser = document.getElementById("editStaffUsername").value.trim();
+      var newPass = document.getElementById("editStaffPassword").value.trim();
+      var msgDiv = document.getElementById("editStaffMsg");
+      var btn = document.getElementById("btnSaveEditStaff");
+
+      if (!newName || !newUser || !newPass) {
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "กรุณากรอกข้อมูลให้ครบทุกช่องครับ";
+        return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text";
+      msgDiv.innerText = "⌛ กำลังบันทึกการเปลี่ยนแปลง...";
+
+      try {
+        var res = await callGasApi({
+          action: "updateStaff",
+          adminPassword: currentAdminPassword,
+          oldUsername: oldUser,
+          newUsername: newUser,
+          newPassword: newPass,
+          newName: newName
+        });
+        btn.disabled = false;
+        if (res.success) {
+          var modalEl = document.getElementById("editStaffModal");
+          var instance = M.Modal.getInstance(modalEl);
+          if (instance) instance.close();
+
+          if (res.list) { staffListCache = res.list; renderStaffTable(); }
+          else { loadStaffList(); }
+
+          var statusEl = document.getElementById("staffTableStatus");
+          statusEl.className = "center-align green-text text-darken-2";
+          statusEl.innerText = "✅ " + res.message;
+        } else {
+          msgDiv.className = "center-align red-text";
+          msgDiv.innerText = "❌ " + res.message;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text";
+        msgDiv.innerText = "❌ " + err.message;
+      }
+    }
+
+    async function doDeleteStaff(idx) {
+      var staff = staffListCache[idx];
+      if (!staff) return;
+      var ok = confirm("ต้องการลบเจ้าหน้าที่ '" + staff.name + "' (Username: " + staff.username + ") ออกจากระบบใช่หรือไม่?");
+      if (!ok) return;
+
+      var statusEl = document.getElementById("staffTableStatus");
+      statusEl.className = "center-align blue-text";
+      statusEl.innerText = "⌛ กำลังลบข้อมูลเจ้าหน้าที่...";
+
+      try {
+        var res = await callGasApi({
+          action: "deleteStaff",
+          adminPassword: currentAdminPassword,
+          username: staff.username
+        });
+        if (res.success) {
+          statusEl.className = "center-align green-text text-darken-2";
+          statusEl.innerText = "✅ " + res.message;
+          if (res.list) { staffListCache = res.list; renderStaffTable(); }
+          else { loadStaffList(); }
+        } else {
+          statusEl.className = "center-align red-text";
+          statusEl.innerText = "❌ " + res.message;
+        }
+      } catch (err) {
+        statusEl.className = "center-align red-text";
+        statusEl.innerText = "❌ " + err.message;
+      }
+    }
+
+    // เปิดหน้าต่างถามรหัสผ่าน Admin ซ้ำก่อนบันทึกภาคเรียนและตาราง 20 สัปดาห์
+    function openSemesterConfirmModal() {
       var sem = document.getElementById("setSemester").value;
       var year = document.getElementById("setAcademicYear").value.trim();
       var startDate = document.getElementById("setStartDate").value;
       var resetChk = document.getElementById("chkResetCheckboxes").checked;
       var resetLogs = document.getElementById("chkResetLogs").checked;
       var msgDiv = document.getElementById("semStatusMsg");
-      if (!year) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "กรุณาระบุปีการศึกษา เช่น 2569"; return; }
 
-      msgDiv.className = "center-align blue-text text-darken-2";
-      msgDiv.innerText = "⌛ กำลังอัปเดตหัวตารางและสร้างตาราง 20 สัปดาห์ลงในชีท 1/1 – 6/14 กรุณารอสักครู่...";
+      if (!year) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "กรุณาระบุปีการศึกษา เช่น 2569";
+        return;
+      }
+
+      var summaryHtml = "กำลังจะบันทึก: <b>ภาคเรียนที่ " + sem + " ปีการศึกษา " + year + "</b>";
+      if (startDate) summaryHtml += "<br>วันเปิดภาคเรียน: <b>" + startDate + "</b>";
+      if (resetChk || resetLogs) {
+        summaryHtml += '<br><span style="color:#d32f2f; font-weight:700;">⚠️ คำเตือน: มีการเลือก "ล้างข้อมูลเดิม" ร่วมด้วย กรุณาตรวจสอบให้แน่ใจก่อนยืนยัน</span>';
+      }
+
+      document.getElementById("confirmSemSummary").innerHTML = summaryHtml;
+      document.getElementById("confirmSemAdminPass").value = "";
+      document.getElementById("confirmSemAuthMsg").innerText = "";
+
+      var modalEl = document.getElementById("confirmSemesterModal");
+      var instance = M.Modal.getInstance(modalEl) || M.Modal.init(modalEl);
+      instance.open();
+      setTimeout(function() { document.getElementById("confirmSemAdminPass").focus(); }, 200);
+    }
+
+    // ตรวจสอบรหัสผ่านที่กรอกใหม่กับหลังบ้าน แล้วจึงบันทึกภาคเรียน
+    async function confirmAndSaveSemesterAndSchedule() {
+      var confirmPass = document.getElementById("confirmSemAdminPass").value.trim();
+      var modalMsg = document.getElementById("confirmSemAuthMsg");
+      var btn = document.getElementById("btnConfirmSaveSem");
+      var msgDiv = document.getElementById("semStatusMsg");
+
+      if (!confirmPass) {
+        modalMsg.innerText = "กรุณากรอกรหัสผ่านผู้ดูแลระบบเพื่อยืนยัน";
+        return;
+      }
+
+      var sem = document.getElementById("setSemester").value;
+      var year = document.getElementById("setAcademicYear").value.trim();
+      var startDate = document.getElementById("setStartDate").value;
+      var resetChk = document.getElementById("chkResetCheckboxes").checked;
+      var resetLogs = document.getElementById("chkResetLogs").checked;
+
+      btn.disabled = true;
+      modalMsg.className = "blue-text";
+      modalMsg.innerText = "⌛ กำลังตรวจสอบรหัสผ่านและบันทึกข้อมูล 84 ห้อง กรุณารอสักครู่...";
+
       try {
-        var res = await callGasApi({ action: "saveSemesterAndSchedule", adminPassword: currentAdminPassword, semester: sem, academicYear: year, startDate: startDate, resetCheckboxes: resetChk, resetLogs: resetLogs });
+        // ส่งรหัสผ่านที่เพิ่งกรอกใหม่ไปตรวจสอบจริงที่หลังบ้าน
+        var res = await callGasApi({
+          action: "saveSemesterAndSchedule",
+          adminPassword: confirmPass,
+          semester: sem,
+          academicYear: year,
+          startDate: startDate,
+          resetCheckboxes: resetChk,
+          resetLogs: resetLogs
+        });
+
+        btn.disabled = false;
+        if (res.authError) {
+          modalMsg.className = "red-text";
+          modalMsg.innerText = "❌ รหัสผ่านผู้ดูแลระบบไม่ถูกต้อง กรุณาลองใหม่";
+          return;
+        }
+
+        var modalEl = document.getElementById("confirmSemesterModal");
+        var instance = M.Modal.getInstance(modalEl);
+        if (instance) instance.close();
+
         msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
         msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
-        if (res.success) { document.getElementById("chkResetCheckboxes").checked = false; document.getElementById("chkResetLogs").checked = false; isFrontendDataLoaded = false; }
-      } catch (err) { msgDiv.className = "center-align red-text text-darken-2"; msgDiv.innerText = "❌ เกิดข้อผิดพลาด: " + err.message; }
+        if (res.success) {
+          document.getElementById("chkResetCheckboxes").checked = false;
+          document.getElementById("chkResetLogs").checked = false;
+          isFrontendDataLoaded = false;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        modalMsg.className = "red-text";
+        modalMsg.innerText = "❌ เกิดข้อผิดพลาด: " + err.message;
+      }
     }
 
     async function doRestoreRow45Formulas() {
@@ -1223,17 +1538,6 @@
       var tbody = document.getElementById("activityTableBody");
       if (!settingsDB.activities || settingsDB.activities.length === 0) { tbody.innerHTML = '<tr><td colspan="2" class="center-align grey-text">ยังไม่มีรายการกิจกรรม</td></tr>'; return; }
       tbody.innerHTML = settingsDB.activities.map(function(item) { return '<tr><td style="font-weight: 600; color: #00695c;">' + item.date + '</td><td>' + item.name + '</td></tr>'; }).join("");
-    }
-
-    async function doRegisterStaff() {
-      var name = document.getElementById("newStaffName").value.trim(); var user = document.getElementById("newStaffUsername").value.trim(); var pass = document.getElementById("newStaffPassword").value.trim(); var regMsg = document.getElementById("regMsg");
-      if (!name || !user || !pass) { regMsg.innerText = "กรุณากรอกข้อมูลเจ้าหน้าที่ให้ครบถ้วนทุกช่อง"; regMsg.className = "center-align orange-text text-darken-3"; return; }
-      regMsg.innerText = "กำลังบันทึกข้อมูลเจ้าหน้าที่..."; regMsg.className = "center-align blue-text";
-      try {
-        var res = await callGasApi({ action: "registerStaff", adminPassword: currentAdminPassword, username: user, password: pass, name: name });
-        regMsg.innerText = res.message; regMsg.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
-        if (res.success) { document.getElementById("newStaffName").value = ""; document.getElementById("newStaffUsername").value = ""; document.getElementById("newStaffPassword").value = ""; }
-      } catch (err) { regMsg.innerText = "❌ " + err.message; regMsg.className = "center-align red-text text-darken-2"; }
     }
 
     function populateAdvisorSettingsUI() {
