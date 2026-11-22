@@ -419,7 +419,7 @@
             </div>
             <div class="col s12 center-align">
               <div id="regStuSingleMsg" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 10px;"></div>
-              <button type="button" id="btnScanSmartQr" class="btn waves-effect waves-light green darken-3" onclick="processScannedQrInputNow()">🔍 ตรวจสอบ / บันทึกจากลิงก์ QR Code</button>
+              <button type="button" id="btnScanSmartQr" class="btn waves-effect waves-light green darken-3" onclick="processScannedQrInputNow(true)">🔍 ตรวจสอบ / บันทึกจากลิงก์ QR Code</button>
             </div>
 
             <!-- กล่องแสดงข้อมูลเดิม (กรณีพบข้อมูลใน Students แล้ว) -->
@@ -871,9 +871,17 @@
 
     function goHome() {
       currentAdminPassword = ""; // ล้างสิทธิ์ Admin ออกจากหน่วยความจำ
-      staffListCache = [];       // ล้างข้อมูลและรหัสผ่านเจ้าหน้าที่ออกจากหน่วยความจำ
+      staffListCache = [];       // ล้างข้อมูลและรหัสผ่านเจ้าหน้าที่
+      roomStudentsCache = [];    // ล้างแคชรายชื่อนักเรียนในแท็บ 7.3
+
       var staffTbody = document.getElementById("staffTableBody");
       if (staffTbody) staffTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text">กำลังโหลดรายชื่อเจ้าหน้าที่...</td></tr>';
+      var roomTbody = document.getElementById("manageRoomTableBody");
+      if (roomTbody) roomTbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text" style="padding: 20px;">เลือกชั้นและห้องด้านบน แล้วกดปุ่มแสดงรายชื่อครับ</td></tr>';
+      if (document.getElementById("qrExistingInfoBox")) document.getElementById("qrExistingInfoBox").classList.add("hidden");
+      if (document.getElementById("qrNewStudentConfirmBox")) document.getElementById("qrNewStudentConfirmBox").classList.add("hidden");
+
+      // ... (บรรทัดซ่อน Section และล้าง input เดิมที่เหลือคงไว้เหมือนเดิมครับ)
 
       document.getElementById("scanSection").classList.add("hidden");
       document.getElementById("dashboardSection").classList.add("hidden");
@@ -1855,42 +1863,30 @@
       qrFetchTimer = setTimeout(processScannedQrInputNow, 450);
     }
 
-    // 7.1 สแกน QR Code (URL) ตรวจสอบ 3 เงื่อนไขอัตโนมัติ
-    async function processScannedQrInputNow() {
+    // 7.1 สแกน QR Code (URL) ตรวจสอบ 3 เงื่อนไขอัตโนมัติ (isManualClick = true เมื่อผู้ใช้กดปุ่มเอง)
+    async function processScannedQrInputNow(isManualClick) {
       var inputEl = document.getElementById("regStuQrOrId");
+      var msgDiv = document.getElementById("regStuSingleMsg");
       if (!inputEl || isFetchingQrUrl) return;
       var rawVal = fixThaiKeyboard(inputEl.value.trim());
-      if (!rawVal) return;
+
+      if (!rawVal) {
+        if (isManualClick && msgDiv) {
+          msgDiv.className = "orange-text text-darken-3";
+          msgDiv.innerText = "⚠️ กรุณาสแกนหรือวางลิงก์ QR Code (https://...) ก่อนกดปุ่มครับ";
+        }
+        return;
+      }
       if (rawVal !== inputEl.value.trim()) inputEl.value = rawVal;
 
-      if (rawVal.indexOf("http") !== 0) return;
-
-      isFetchingQrUrl = true;
-      var msgDiv = document.getElementById("regStuSingleMsg");
-      var btn = document.getElementById("btnScanSmartQr");
-      var existBox = document.getElementById("qrExistingInfoBox");
-      var newBox = document.getElementById("qrNewStudentConfirmBox");
-      if (existBox) existBox.classList.add("hidden");
-      if (newBox) newBox.classList.add("hidden");
-
-      btn.disabled = true;
-      msgDiv.className = "blue-text text-darken-2";
-      msgDiv.innerText = "🌐 กำลังดึงข้อมูลจากลิงก์ QR Code และตรวจสอบในชีท Students...";
-
-      try {
-        var res = await callGasApi({
-          action: "scanQrSmartCheckAndSave",
-          adminPassword: currentAdminPassword,
-          qrUrl: rawVal
-        });
-        isFetchingQrUrl = false;
-        btn.disabled = false;
-
-        if (!res || !res.success) {
-          msgDiv.className = "red-text text-darken-2";
-          msgDiv.innerText = "❌ " + ((res && res.message) || "ไม่สามารถดึงข้อมูลจากลิงก์นี้ได้");
-          return;
+      if (rawVal.indexOf("http") !== 0) {
+        if (isManualClick && msgDiv) {
+          msgDiv.className = "orange-text text-darken-3";
+          msgDiv.innerText = "⚠️ ช่องนี้รองรับเฉพาะลิงก์ QR Code ที่ขึ้นต้นด้วย https:// เท่านั้น (หากต้องการเพิ่มด้วยรหัส 5 หลัก ให้ใช้ส่วน 7.2 ด้านล่างครับ)";
         }
+        return;
+      }
+      // ... (โค้ดด้านล่างที่เหลือในฟังก์ชันนี้คงไว้เหมือนเดิมทุกบรรทัดครับ)
 
         var s = res.student;
         if (res.mode === "UPDATED_URL_ONLY" || res.mode === "UPDATED_URL_AND_NAME") {
@@ -2213,7 +2209,7 @@
       else box.classList.add("hidden");
     }
 
-    // อ่านไฟล์ Excel โดยบังคับเริ่มนับจากคอลัมน์ A (index 0) เสมอ เพื่อไม่ให้คอลัมน์ B, C, E, F, G เลื่อนตำแหน่ง
+    // อ่านไฟล์ Excel โดยบังคับเริ่มนับจากคอลัมน์ A (index 0) และไม่ตัดแท็บ (\t) หน้าบรรทัดแรก
     function handleExcelOrCsvFileSelect(inputEl) {
       if (!inputEl.files || !inputEl.files[0]) return;
       var file = inputEl.files[0];
@@ -2245,7 +2241,8 @@
               }).join("\t");
             });
 
-            document.getElementById("bulkStudentsInput").value = tsvLines.join("\n").trim();
+            // ตัดเฉพาะบรรทัดว่างหัว-ท้าย ห้ามใช้ .trim() เพราะจะลบ \t ของคอลัมน์ A แถวแรกทิ้ง
+            document.getElementById("bulkStudentsInput").value = tsvLines.join("\n").replace(/^[\r\n]+|[\r\n]+$/g, "");
             msgDiv.className = "center-align green-text text-darken-2";
             msgDiv.innerText = "✅ อ่านไฟล์ Excel สำเร็จ (" + rows.length + " แถว)! กดปุ่ม 'อัปโหลดปรับปรุงรายชื่อ' ด้านล่างได้เลยครับ";
           } catch (err) {
@@ -2257,11 +2254,73 @@
       } else {
         var textReader = new FileReader();
         textReader.onload = function(e) {
-          document.getElementById("bulkStudentsInput").value = e.target.result;
+          document.getElementById("bulkStudentsInput").value = e.target.result.replace(/^[\r\n]+|[\r\n]+$/g, "");
           msgDiv.className = "center-align green-text text-darken-2";
           msgDiv.innerText = "✅ อ่านไฟล์สำเร็จ!";
         };
         textReader.readAsText(file, "UTF-8");
+      }
+    }
+
+    async function doBulkUploadStudents() {
+      var rawInputEl = document.getElementById("bulkStudentsInput");
+      // คงเครื่องหมายแท็บ (\t) หน้าบรรทัดแรกไว้ ตัดเฉพาะบรรทัดว่างหัว-ท้าย
+      var rawText = rawInputEl.value.replace(/^[\r\n]+|[\r\n]+$/g, "");
+      var uploadMode = document.getElementById("bulkUploadMode") ? document.getElementById("bulkUploadMode").value : "school_excel";
+      var deleteScope = document.getElementById("bulkDeleteScope") ? document.getElementById("bulkDeleteScope").value : "uploaded_rooms";
+      var defaultGrade = document.getElementById("bulkDefaultGrade") ? document.getElementById("bulkDefaultGrade").value : "AUTO";
+      var defaultRoom = document.getElementById("bulkDefaultRoom") ? document.getElementById("bulkDefaultRoom").value : "AUTO";
+      var msgDiv = document.getElementById("bulkUploadStatusMsg");
+      var btn = document.getElementById("btnBulkUploadStu");
+
+      // ใช้ .trim() เฉพาะตอนตรวจว่ากล่องว่างหรือไม่เท่านั้น
+      if (!rawText.trim()) {
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "⚠️ กรุณาเลือกไฟล์ Excel หรือวางข้อมูลก่อนครับ";
+        return;
+      }
+
+      if (deleteScope === "all_school") {
+        var confirmAll = confirm(
+          "⚠️ ยืนยันการลบรายชื่อที่ไม่มีในไฟล์ออกทั้งโรงเรียน?\n\n" +
+          "• นักเรียนในชีท Students ที่ไม่มีชื่อในไฟล์ Excel นี้ จะถูกลบข้อมูล (รหัส, ชื่อ และ URL คอลัมน์ F) ออกทั้งหมด\n" +
+          "• คอลัมน์ B (เลขที่), D (ระดับชั้น) และ E (ห้อง) จะยังคงถูกล็อกไว้ตามเดิม\n\n" +
+          "กรุณาตรวจสอบว่าเป็นไฟล์รายชื่อรวมทั้งโรงเรียนแล้วจึงกดตกลงครับ"
+        );
+        if (!confirmAll) return;
+      }
+
+      btn.disabled = true;
+      msgDiv.className = "center-align blue-text text-darken-2";
+      msgDiv.innerText = "⌛ กำลังจับคู่ ชั้น/ห้อง/เลขที่ ล้างรายชื่อที่ไม่มีในไฟล์ คง URL คอลัมน์ F และซิงค์ห้องเรียน...";
+
+      try {
+        var res = await callGasApi({
+          action: "bulkUploadStudentsData",
+          adminPassword: currentAdminPassword,
+          rawTextData: rawText,
+          defaultGrade: defaultGrade,
+          defaultRoom: defaultRoom,
+          uploadMode: uploadMode,
+          deleteMissingScope: deleteScope
+        });
+        btn.disabled = false;
+        msgDiv.className = res.success ? "center-align green-text text-darken-2" : "center-align red-text text-darken-2";
+        msgDiv.innerText = (res.success ? "✅ " : "❌ ") + res.message;
+        if (res.success) {
+          rawInputEl.value = "";
+          document.getElementById("csvFileInput").value = "";
+          localStudentDB = {};
+          isFrontendDataLoaded = false;
+          // หากด้านบน (ส่วน 7.3) เปิดดูห้องเรียนอยู่ ให้รีเฟรชตารางทันทีเพื่อแสดงข้อมูลใหม่
+          if (roomStudentsCache.length > 0) {
+            loadRoomStudentsManager();
+          }
+        }
+      } catch (err) {
+        btn.disabled = false;
+        msgDiv.className = "center-align red-text text-darken-2";
+        msgDiv.innerText = "❌ " + err.message;
       }
     }
 
